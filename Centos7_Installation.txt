@@ -1,0 +1,62 @@
+############################ Partition For VM######################
+lsblk -p
+NAME                        MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+/dev/sda                      8:0    0  100G  0 disk
+├─/dev/sda1                   8:1    0    2M  0 part
+├─/dev/sda2                   8:2    0    1G  0 part /boot
+└─/dev/sda3                   8:3    0   93G  0 part
+  ├─/dev/mapper/centos-root 253:0    0   50G  0 lvm  /
+  ├─/dev/mapper/centos-swap 253:1    0   20G  0 lvm  [SWAP]
+  ├─/dev/mapper/centos-home 253:2    0   15G  0 lvm  /home
+  └─/dev/mapper/centos-var  253:3    0    8G  0 lvm  /var
+/dev/sr0                     11:0    1 1024M  0 rom
+
+################# Post -Installaiton ######################
+vi  /etc/sysconfig/network-scripts/ifcfg-enspping 
+
+# set StaticIP , DNS
+BOOTPROTO="static"
+IPADDR="192.168.0.151"
+PREFIX="24"
+GATEWAY="192.168.0.1"
+DNS1="192.168.0.150"
+DNS2="192.168.0.1"
+
+# set hostname
+hostnamectl set-hostname centos157.harishfysx.com
+
+# set hosts file
+> vi /etc/hosts
+
+should look like below
+127.0.0.1   centos155.harishfysx.com localhost
+192.68.0.155 centos155.harishfysx.com centos155
+
+
+# Restart network - you may need to connect with new IP
+systemctl restart network
+
+# 
+cat /etc/resolv.conf
+
+#reboot
+
+=======================
+#User Mobax term in windows
+yum install -y xorg-x11-server-Xorg xorg-x11-xauth xorg-x11-apps net-tools -y
+yum update
+
+vi /etc/ssh/sshd_config
+
+Uncomment the following lines:
+
+X11Forwarding yes
+X11DisplayOffset 10
+X11UseLocalhost no
+
+Uncomment the following lines:
+--Restart
+# systemctl restart sshd.service
+# systemctl enable sshd.service
+#################################
+1 Make entry in your DNS server (forward & reverse lookup zone files)
