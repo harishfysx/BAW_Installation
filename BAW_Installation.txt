@@ -45,4 +45,8 @@ after running sqlplus "/ as sysdba"
 #############Creating deployment manager #########################################
 ./BPMConfig.sh -create -de /software/Advanced-PC-ThreeClusters-Oracle.properties
 
-######################################
+###################################### Opening ports ###################
+firewall-cmd --zone=public --add-port=9043/tcp --permanent --add-port=9443/tcp --permanent 
+firewall-cmd --reload
+
+firewall-cmd --zone=public --add-port=9444/tcp --permanent 

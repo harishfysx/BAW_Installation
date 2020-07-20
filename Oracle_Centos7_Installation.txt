@@ -35,7 +35,7 @@ net.core.wmem_max = 1048586
 sysctl -p
 sysctl -a
 ################################ Add Securiry Limist #################################################################################################
-
+vi /etc/security/limits.conf
 # Added for oracle
 oracle soft nproc 2047
 oracle hard nproc 16384
