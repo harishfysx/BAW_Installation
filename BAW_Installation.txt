@@ -1,0 +1,48 @@
+### ###################Unzipping Files #################################
+tar -vzxf BPM_Adv_V857_Linux_x86_1_of_3.tar.gz --directory /software/bpmunzipped/
+unzip agent.installer.linux.gtk.x86_64_1.9.1002.20200325_1842.zip
+
+###################### Installing IM #################################
+./installc -log /tmp/imlog.xml -acceptLicense -installationDirectory /opt/ibm/InstallationManager
+
+##################### Un-installing(incase of update) ######################
+./uninstallc
+########################### opening up IM)############################
+ yum install firefox 
+ cd /opt/ibm/InstallationManager/eclipse
+ 
+ ./IBMIM
+
+ ################################# Configure Oracle for XA ################
+ For example:
+su - oracle
+after running sqlplus "/ as sysdba"
+>SQL @/software/PCCell1/Oracle/orcl152/cell_owner/createUser_cellowner.sql
+######################### Generating DB Scripts for oracle ##########################
+cd /opt/ibm/WebSphere/AppServer/bin
+
+./BPMConfig.sh -create -sqlfiles /software/Advanced-PC-ThreeClusters-Oracle.properties -outputDir /software
+###################Running  generated scripts #################################################
+
+No need of creating any schema or oprocedures form genrated files.. just users and tablespaces...
+su - oracle
+after running sqlplus "/ as sysdba"
+
+
+@/software/PCCell1/Oracle/orcl152/cell_owner/createUser.sql
+@/software/PCCell1.De1/Oracle/orcl152/bpmdb_owner/createUser.sql
+@/software/PCCell1.De1/Oracle/orcl152/cmndb_owner/createUser.sql
+@/software/PCCell1.De1/Oracle/orcl152/dos_owner/createUserTablespace_ECM.sql
+@/software/PCCell1.De1/Oracle/orcl152/icndb_owner/createUser.sql
+@/software/PCCell1.De1/Oracle/orcl152/icndb_owner/createTablespace_Advanced.sql
+@/software/PCCell1.De1/Oracle/orcl152/pdwdb_owner/createUser.sql
+@/software/PCCell1.De1/Oracle/orcl152/tos_owner/createUserTablespace_ECM.sql
+###################################################################### Validating Config file #####################
+./BPMConfig.sh -validate /software/Advanced-PC-ThreeClusters-Oracle.properties
+
+############# Add jdbc drivers if complains ##############
+
+#############Creating deployment manager #########################################
+./BPMConfig.sh -create -de /software/Advanced-PC-ThreeClusters-Oracle.properties
+
+######################################

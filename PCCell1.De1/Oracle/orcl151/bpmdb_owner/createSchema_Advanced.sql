@@ -1,0 +1,26795 @@
+-- BEGIN COPYRIGHT
+-- *************************************************************************
+--
+--  Licensed Materials - Property of IBM
+--  5725-C94, 5725-C95, 5725-C96
+--  (C) Copyright IBM Corporation 2010, 2016. All Rights Reserved.
+--  US Government Users Restricted Rights- Use, duplication or disclosure
+--  restricted by GSA ADP Schedule Contract with IBM Corp.
+--
+-- *************************************************************************
+-- END COPYRIGHT
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_sequences where sequence_owner=UPPER('bpmdb_owner') and sequence_name=UPPER('SEQ_TASK_DISCRIMINATOR');
+    IF (v_table_count = 0) THEN 
+      EXECUTE IMMEDIATE 'CREATE SEQUENCE bpmdb_owner.SEQ_TASK_DISCRIMINATOR INCREMENT BY 1 START WITH 1000 NOMINVALUE NOMAXVALUE NOCYCLE CACHE 1000 ORDER';	
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_METRIC') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_METRIC(
+"METRIC_ID" CHAR(36) NOT NULL ENABLE,
+"UNIT" NUMBER(12,0) NOT NULL ENABLE,
+"ROLLUP_METRIC_REF" CHAR(36),
+"ROLLUP_MULTIPLIER" NUMBER(20,8),
+"XML_DATA" BLOB,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("XML_DATA","DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_SLA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_SLA(
+"SLA_ID" CHAR(36) NOT NULL ENABLE,
+"ITEM_TYPES" NUMBER(12,0) NOT NULL ENABLE,
+"XML_DATA" BLOB NOT NULL ENABLE,
+"PARTICIPANT_REF" CHAR(36),
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("XML_DATA","DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_SIM_SCENARIO') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_SIM_SCENARIO(
+"SCENARIO_ID" CHAR(36) NOT NULL ENABLE,
+"XML_DATA" BLOB NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("XML_DATA","DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_HIST_SCENARIO') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_HIST_SCENARIO(
+"SCENARIO_ID" CHAR(36) NOT NULL ENABLE,
+"XML_DATA" BLOB NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("XML_DATA","DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_EVENT_SUBSCRIPTION') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_EVENT_SUBSCRIPTION(
+"EVENT_SUBSCRIPTION_ID" CHAR(36) NOT NULL ENABLE,
+"EVENT_SUBSCRIPTION_TYPE_ID" NUMBER(2,0) NOT NULL ENABLE,
+"SERVER_NAME" NVARCHAR2(256),
+"EVENT_CLASS" NVARCHAR2(256),
+"OBJECT_TYPE_ID" NVARCHAR2(256),
+"OBJECT_TYPE_ID_DISPLAY_NAME" NVARCHAR2(256),
+"EVENT_TYPE" NVARCHAR2(256),
+"INCLUDE_SUB_TYPE" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"PROCESS_REF" CHAR(36),
+"PARTICIPANT_REF" CHAR(36),
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_EVENT_SUBSCRIPTION_TYPE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_EVENT_SUBSCRIPTION_TYPE(
+"EVENT_SUBSCRIPTION_TYPE_ID" NUMBER(2,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_STAY_ON_PAGE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_STAY_ON_PAGE(
+"STAY_ON_PAGE_ID" CHAR(36) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_PROC_ARTIFACT_REF') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_PROC_ARTIFACT_REF(
+"PROC_ARTIFACT_REF_ID" CHAR(36) NOT NULL ENABLE,
+"PROCESS_ID" CHAR(36) NOT NULL ENABLE,
+"ARTIFACT_REF" CHAR(36) NOT NULL ENABLE,
+"ARTIFACT_ID" CHAR(36) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_CLS_ARTIFACT_REF') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_CLS_ARTIFACT_REF(
+"CLS_ARTIFACT_REF_ID" CHAR(36) NOT NULL ENABLE,
+"CLASS_ID" CHAR(36) NOT NULL ENABLE,
+"ARTIFACT_REF" CHAR(36) NOT NULL ENABLE,
+"ARTIFACT_ID" CHAR(36) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_BPD_ARTIFACT_REF') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_BPD_ARTIFACT_REF(
+"BPD_ARTIFACT_REF_ID" CHAR(36) NOT NULL ENABLE,
+"BPD_ID" CHAR(36) NOT NULL ENABLE,
+"ARTIFACT_REF" CHAR(36) NOT NULL ENABLE,
+"ARTIFACT_ID" CHAR(36) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_BPD') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_BPD(
+"BPD_ID" CHAR(36) NOT NULL ENABLE,
+"DATA" BLOB NOT NULL ENABLE,
+"IS_TRACKING_ENABLED" NCHAR(1) NOT NULL ENABLE,
+"IS_SPC_ENABLED" NCHAR(1) NOT NULL ENABLE,
+"RESTRICTED_NAME" NVARCHAR2(64),
+"IS_CRITICAL_PATH_ENABLED" NCHAR(1) DEFAULT ' || '''' ||'T' || '''' || ' NOT NULL ENABLE,
+"PARTICIPANT_REF" CHAR(36),
+"BUSINESS_DATA_PARTICIPANT_REF" CHAR(36),
+"PERF_METRIC_PARTICIPANT_REF" CHAR(36),
+"OWNER_TEAM_PARTICIPANT_REF" CHAR(36),
+"TIME_SCHEDULE_TYPE" NUMBER(2,0) DEFAULT ' || '''' ||0 || '''' || ',
+"TIME_SCHEDULE_NAME" NVARCHAR2(64),
+"TIME_SCHEDULE_EXPRESSION" NVARCHAR2(64),
+"HOLIDAY_SCHEDULE_TYPE" NUMBER(2,0) DEFAULT ' || '''' ||0 || '''' || ',
+"HOLIDAY_SCHEDULE_NAME" NVARCHAR2(64),
+"HOLIDAY_SCHEDULE_EXPRESSION" NVARCHAR2(64),
+"TIMEZONE_TYPE" NUMBER(2,0) DEFAULT ' || '''' ||0 || '''' || ',
+"TIMEZONE" NVARCHAR2(64),
+"TIMEZONE_EXPRESSION" NVARCHAR2(64),
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"INTERNAL_NAME" NVARCHAR2(100),
+"DESCRIPTION" NCLOB,
+"TYPE" NUMBER(2,0),
+"ROOT_BPD_ID" CHAR(36),
+"PARENT_BPD_ID" CHAR(36),
+"PARENT_FLOW_OBJECT_ID" NVARCHAR2(128),
+"XML_DATA" BLOB,
+"BPMN2_DATA" BLOB,
+"DEPENDENCY_SUMMARY" NCLOB,
+"JSON_DATA" BLOB,
+"MIGRATION_DATA" BLOB,
+"RWF_DATA" NCLOB,
+"RWF_STATUS" NUMBER(2,0),
+"TEMPLATE_ID" CHAR(36),
+"EXTERNAL_ID" NVARCHAR2(512),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NVARCHAR2(128),
+"FIELD3" NUMBER(12,0),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1),
+"CLOB_FIELD1" NCLOB,
+"BLOB_FIELD1" BLOB
+)
+LOB ("DATA","DESCRIPTION","XML_DATA","BPMN2_DATA","DEPENDENCY_SUMMARY","JSON_DATA","MIGRATION_DATA","RWF_DATA","CLOB_FIELD1","BLOB_FIELD1") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_BPD_EVENT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_BPD_EVENT(
+"BPD_EVENT_ID" CHAR(36) NOT NULL ENABLE,
+"UCA_REF" CHAR(36) NOT NULL ENABLE,
+"UCA_ID" CHAR(36) NOT NULL ENABLE,
+"BPD_ID" CHAR(36) NOT NULL ENABLE,
+"BPD_FLOW_OBJECT_ID" NVARCHAR2(128) NOT NULL ENABLE,
+"BPD_OBJECT_ID" NVARCHAR2(128) NOT NULL ENABLE,
+"EVENT_TYPE" NUMBER(2,0) NOT NULL ENABLE,
+"CORRELATION_PARAMETER_ID" CHAR(36) NOT NULL ENABLE,
+"DURABLE_SUBSCRIPTION" NCHAR(1) DEFAULT ' || '''' ||'T' || '''' || ' NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NVARCHAR2(128),
+"FIELD3" NUMBER(12,0),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_BPD_PARAMETER') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_BPD_PARAMETER(
+"BPD_PARAMETER_ID" CHAR(36) NOT NULL ENABLE,
+"BPD_ID" CHAR(36) NOT NULL ENABLE,
+"PARAMETER_TYPE" NUMBER(2,0) NOT NULL ENABLE,
+"IS_ARRAY_OF" NCHAR(1) NOT NULL ENABLE,
+"CLASS_ID" CHAR(36) NOT NULL ENABLE,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DOCUMENTATION" NCLOB,
+"HAS_DEFAULT" NCHAR(1),
+"DEFAULT_VALUE" BLOB,
+"IS_READ_ONLY" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NVARCHAR2(128),
+"FIELD3" NUMBER(12,0),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)
+LOB ("DOCUMENTATION","DEFAULT_VALUE") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_BPD_EVENT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_BPD_EVENT(
+"BPM_EVENT_ID" CHAR(36) NOT NULL ENABLE,
+"CORRELATION_PATH" NVARCHAR2(128),
+"CORRELATION_VALUE" NVARCHAR2(128) NOT NULL ENABLE,
+"ADDITIONAL_DATA" NCLOB,
+"BPD_ID" CHAR(36) NOT NULL ENABLE,
+"BPD_FLOW_OBJECT_ID" NVARCHAR2(128) NOT NULL ENABLE,
+"EVENT_TYPE" NUMBER(2,0) NOT NULL ENABLE,
+"CORRELATION_TYPE" NUMBER(2,0) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NVARCHAR2(128),
+"FIELD3" NUMBER(12,0),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)
+LOB ("ADDITIONAL_DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_BPD_RESOURCE_LINK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_BPD_RESOURCE_LINK(
+"BPD_RESOURCE_LINK_ID" CHAR(36) NOT NULL ENABLE,
+"RESOURCE_BUNDLE_GROUP_ID" CHAR(36) NOT NULL ENABLE,
+"BPD_ID" CHAR(36) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_SHARED_OBJECT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_SHARED_OBJECT(
+"DEFINITION_VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"OBJECT_ID" CHAR(36) NOT NULL ENABLE,
+"DEFINITION_VERSION" NUMBER(12,0) NOT NULL ENABLE,
+"CLASS_VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"BPD_INSTANCE_ID" NUMBER(12,0),
+"TASK_ID" NUMBER(12,0),
+"CREATED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" DATE NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_SHARED_OBJECT_INSTANCE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_SHARED_OBJECT_INSTANCE(
+"INSTANCE_VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"INSTANCE_VERSION" NUMBER(12,0) NOT NULL ENABLE,
+"DEFINITION_VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"JDATA" BLOB,
+"CREATED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" DATE NOT NULL ENABLE
+)
+LOB ("JDATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_SHARED_OBJECT_VALUE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_SHARED_OBJECT_VALUE(
+"VALUE_ID" CHAR(36) NOT NULL ENABLE,
+"INSTANCE_VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"FIELD_PATH" NVARCHAR2(1024) NOT NULL ENABLE,
+"VALUE" BLOB NOT NULL ENABLE,
+"PRIOR_VALUE" BLOB NOT NULL ENABLE
+)
+LOB ("VALUE","PRIOR_VALUE") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_BPD_INSTANCE_SHARED_USAGE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_BPD_INSTANCE_SHARED_USAGE(
+"BPD_INSTANCE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"SHARED_OBJECT_ID" CHAR(36) NOT NULL ENABLE,
+"SHARED_OBJECT_VERSION" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_SHARED_OBJECT_INVALID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_SHARED_OBJECT_INVALID(
+"INVALID_MARKER" CHAR(36) NOT NULL ENABLE,
+"SHARED_OBJECT_ID" CHAR(36) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_UITHEME') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_UITHEME(
+"UITHEME_ID" CHAR(36) NOT NULL ENABLE,
+"THEME_CONTENT" BLOB,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("THEME_CONTENT","DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_UITHEME_GENSYNC') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_UITHEME_GENSYNC(
+"BRANCH_ID" NVARCHAR2(50) NOT NULL ENABLE,
+"ISGENVALID" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || '
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_COACH_VIEW') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_COACH_VIEW(
+"COACH_VIEW_ID" CHAR(36) NOT NULL ENABLE,
+"IS_TEMPLATE" NCHAR(1),
+"LAYOUT" BLOB,
+"PALETTE_ICON" CHAR(36),
+"PREVIEW_IMAGE" CHAR(36),
+"HAS_LABEL" NCHAR(1),
+"LABEL_POSITION" NUMBER(2,0),
+"NINE_SLICE_X1_COORD" NUMBER(5,0),
+"NINE_SLICE_X2_COORD" NUMBER(5,0),
+"NINE_SLICE_Y1_COORD" NUMBER(5,0),
+"NINE_SLICE_Y2_COORD" NUMBER(5,0),
+"EMIT_BOUNDARY" NCHAR(1),
+"IS_PROTOTYPE_FUNC" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"ENABLE_DEV_MODE" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"IS_MOBILE_READY" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"LOAD_JS_FUNCTION" NCLOB,
+"UNLOAD_JS_FUNCTION" NCLOB,
+"VIEW_JS_FUNCTION" NCLOB,
+"CHANGE_JS_FUNCTION" NCLOB,
+"COLLABORATION_JS_FUNCTION" NCLOB,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"VALIDATE_JS_FUNCTION" NCLOB,
+"PREVIEW_ADV_HTML" CHAR(36),
+"PREVIEW_ADV_JS" CHAR(36),
+"USE_URL_BINDING" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NVARCHAR2(128),
+"FIELD3" NUMBER(12,0),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1),
+"CLOB_FIELD1" NCLOB
+)
+LOB ("LAYOUT","LOAD_JS_FUNCTION","UNLOAD_JS_FUNCTION","VIEW_JS_FUNCTION","CHANGE_JS_FUNCTION","COLLABORATION_JS_FUNCTION","DESCRIPTION","VALIDATE_JS_FUNCTION","CLOB_FIELD1") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_COACH_VIEW_LOCAL_RES') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_COACH_VIEW_LOCAL_RES(
+"COACH_VIEW_LOCAL_RES_ID" CHAR(36) NOT NULL ENABLE,
+"COACH_VIEW_ID" CHAR(36) NOT NULL ENABLE,
+"RESOURCE_BUNDLE_GROUP_ID" CHAR(36) NOT NULL ENABLE,
+"SEQ" NUMBER(12,0),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_COACH_VIEW_BINDING_TYPE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_COACH_VIEW_BINDING_TYPE(
+"COACH_VIEW_BINDING_TYPE_ID" CHAR(36) NOT NULL ENABLE,
+"COACH_VIEW_ID" CHAR(36) NOT NULL ENABLE,
+"IS_LIST" NCHAR(1),
+"CLASS_ID" CHAR(36),
+"SEQ" NUMBER(12,0),
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_COACH_VIEW_CONFIG_OPTION') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_COACH_VIEW_CONFIG_OPTION(
+"COACH_VIEW_CONFIG_OPTION_ID" CHAR(36) NOT NULL ENABLE,
+"COACH_VIEW_ID" CHAR(36) NOT NULL ENABLE,
+"IS_LIST" NCHAR(1),
+"PROPERTY_TYPE" NVARCHAR2(64),
+"LABEL" NVARCHAR2(64),
+"CLASS_ID" CHAR(36),
+"PROCESS_ID" CHAR(36),
+"ACTIONFLOW_ID" CHAR(36),
+"IS_ADAPTIVE" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"SEQ" NUMBER(12,0),
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GROUP_NAME" NVARCHAR2(64),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_COACH_VIEW_RESOURCE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_COACH_VIEW_RESOURCE(
+"COACH_VIEW_RESOURCE_ID" CHAR(36) NOT NULL ENABLE,
+"COACH_VIEW_ID" CHAR(36) NOT NULL ENABLE,
+"FILE_PATH" NVARCHAR2(255),
+"IE_CONDITION" NVARCHAR2(1024),
+"MEDIA_QUERY" NVARCHAR2(1024),
+"SCRIPT_LOAD_STYLE" NVARCHAR2(64),
+"ASSET_UUID" CHAR(36),
+"SEQ" NUMBER(12,0),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_COACH_VIEW_DYNAMIC_STYLE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_COACH_VIEW_DYNAMIC_STYLE(
+"COACH_VIEW_DYNAMIC_STYLE_ID" CHAR(36) NOT NULL ENABLE,
+"COACH_VIEW_ID" CHAR(36) NOT NULL ENABLE,
+"FILE_PATH" NVARCHAR2(255),
+"ASSET_UUID" CHAR(36),
+"SEQ" NUMBER(12,0),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_COACH_VIEW_INLINE_SCRIPT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_COACH_VIEW_INLINE_SCRIPT(
+"COACH_VIEW_INLINE_SCRIPT_ID" CHAR(36) NOT NULL ENABLE,
+"COACH_VIEW_ID" CHAR(36) NOT NULL ENABLE,
+"SCRIPT_TYPE" NVARCHAR2(64),
+"SCRIPT_BLOCK" NCLOB,
+"SEQ" NUMBER(12,0),
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("SCRIPT_BLOCK","DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_COACH_VIEW_AMD_DEP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_COACH_VIEW_AMD_DEP(
+"COACH_VIEW_AMD_DEP_ID" CHAR(36) NOT NULL ENABLE,
+"COACH_VIEW_ID" CHAR(36) NOT NULL ENABLE,
+"MODULE_ID" NVARCHAR2(1024),
+"FUNCTION_ARGUMENT" NVARCHAR2(255),
+"SEQ" NUMBER(12,0),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_COACHNG') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_COACHNG(
+"COACHNG_ID" CHAR(36) NOT NULL ENABLE,
+"TITLE" NVARCHAR2(64),
+"LAYOUT_DATA" BLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("LAYOUT_DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_COACHNG_BOUNDARY_EVENT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_COACHNG_BOUNDARY_EVENT(
+"COACHNG_BOUNDARY_EVENT_ID" CHAR(36) NOT NULL ENABLE,
+"COACHNG_ID" CHAR(36) NOT NULL ENABLE,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"END_STATE_ID" NVARCHAR2(128) NOT NULL ENABLE,
+"EVENT_LABEL" NCLOB,
+"VIEW_PATH" NCLOB,
+"IS_VALIDATE_BOUNDARY_EVENT" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"FIRE_VALIDATION" NUMBER(1,0) DEFAULT ' || '''' ||0 || '''' || ',
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("EVENT_LABEL","VIEW_PATH") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_COACH') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_COACH(
+"COACH_ID" CHAR(36) NOT NULL ENABLE,
+"TITLE" NVARCHAR2(64),
+"LAYOUT_REF" CHAR(36),
+"LAYOUT_DATA" NCLOB,
+"XSL_REF" CHAR(36),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("LAYOUT_DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_COACH_BUTTON') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_COACH_BUTTON(
+"COACH_BUTTON_ID" CHAR(36) NOT NULL ENABLE,
+"COACH_ID" CHAR(36) NOT NULL ENABLE,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"END_STATE_ID" NVARCHAR2(128) NOT NULL ENABLE,
+"IS_SPECIAL" NCHAR(1),
+"IS_DISPLAYED" NCHAR(1),
+"BUTTON_LABEL" NVARCHAR2(64),
+"BUTTON_HINT" NVARCHAR2(255),
+"BUTTON_TEXT" NCLOB,
+"BUTTON_EXPRESSION" NVARCHAR2(64),
+"IS_CHECK_BOX_VISIBLE" NCHAR(1),
+"IS_UNCHECK_ALLOWED" NCHAR(1),
+"META_DATA" BLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("BUTTON_TEXT","META_DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_COACH_RESOURCE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_COACH_RESOURCE(
+"COACH_RESOURCE_ID" CHAR(36) NOT NULL ENABLE,
+"COACH_ID" CHAR(36) NOT NULL ENABLE,
+"VIRTUAL_NAME" NVARCHAR2(100) NOT NULL ENABLE,
+"TYPE" NVARCHAR2(64) NOT NULL ENABLE,
+"RESOURCE_DATA" BLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("RESOURCE_DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_INFOPATH_FORM') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_INFOPATH_FORM(
+"INFOPATH_FORM_ID" CHAR(36) NOT NULL ENABLE,
+"URL" NVARCHAR2(1024),
+"TEMPLATE_VERSION" NVARCHAR2(32),
+"DATA_SOURCE_CLASS_REF" CHAR(36),
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_EM_TASK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_EM_TASK(
+"TASK_ID" NUMBER(12,0) NOT NULL ENABLE,
+"DESCRIPTION" NVARCHAR2(120),
+"QUEUE_ID" NUMBER(12,0),
+"SCHEDULED_TIME" DATE NOT NULL ENABLE,
+"DISCRIMINATOR" NUMBER(12),
+"TASK_STATUS" NUMBER(12,0),
+"TASK_OWNER" NUMBER(12,0),
+"BLACKOUT_CALENDAR_ID" NUMBER(12,0),
+"BLACKOUT_BEHAVIOR" NUMBER(12,0),
+"TASK_EXECUTION_CLASS" NVARCHAR2(120) NOT NULL ENABLE,
+"TASK_ARGUMENTS_STR" NVARCHAR2(1000),
+"TASK_ARGUMENTS" BLOB,
+"REPEAT_STRING" NVARCHAR2(512),
+"IN_CLOSING_TRANSACTION" NUMBER(1,0),
+"RE_EXECUTE_COUNT" NUMBER(12,0),
+"LAST_SCHEDULED_TIME" DATE,
+"LAST_EXECUTION_TIME" DATE
+)
+LOB ("TASK_ARGUMENTS") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_EM_TASK_KEYWORDS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_EM_TASK_KEYWORDS(
+"TASK_ID" NUMBER(12,0) NOT NULL ENABLE,
+"KEYWORD" NVARCHAR2(120) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_EM_INSTANCE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_EM_INSTANCE(
+"OWNER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(512) NOT NULL ENABLE,
+"EXPIRATION" DATE,
+"STATUS" NUMBER(12,0)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_EM_TASK_HISTORY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_EM_TASK_HISTORY(
+"TASK_ID" NUMBER(12,0) NOT NULL ENABLE,
+"EXECUTION_ATTEMPT" NUMBER(12,0) NOT NULL ENABLE,
+"SUCCESS" NUMBER(12,0),
+"ERROR_MESSAGE" NCLOB,
+"DESCRIPTION" NVARCHAR2(120),
+"QUEUE_ID" NUMBER(12,0),
+"SCHEDULED_TIME" DATE NOT NULL ENABLE,
+"DISCRIMINATOR" NUMBER(12,0),
+"EM_NAME" NVARCHAR2(512),
+"BLACKOUT_CALENDAR_ID" NUMBER(12,0),
+"BLACKOUT_BEHAVIOR" NUMBER(12,0),
+"TASK_EXECUTION_CLASS" NVARCHAR2(120) NOT NULL ENABLE,
+"TASK_ARGUMENTS" BLOB,
+"IN_CLOSING_TRANSACTION" NUMBER(1,0),
+"EXECUTION_TIME" DATE,
+"EXECUTION_DURATION" NUMBER(12,3)
+)
+LOB ("ERROR_MESSAGE","TASK_ARGUMENTS") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_UCA_SYNC_QUEUE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_UCA_SYNC_QUEUE(
+"SYNC_QUEUE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"DESCRIPTION" NVARCHAR2(450),
+"QUEUE_OWNER" NUMBER(12,0)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_ENV_VAR_SET') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_ENV_VAR_SET(
+"ENV_VAR_SET_ID" CHAR(36) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_ENV_VAR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_ENV_VAR(
+"ENV_VAR_ID" CHAR(36) NOT NULL ENABLE,
+"ENV_VAR_SET_ID" CHAR(36) NOT NULL ENABLE,
+"ENV_VAR_TYPE_ID" NUMBER(2,0) NOT NULL ENABLE,
+"DEFAULT_VALUE" NCLOB,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DEFAULT_VALUE","DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_ENV_VAR_VAL') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_ENV_VAR_VAL(
+"ENV_VAR_VAL_ID" NUMBER(12,0) NOT NULL ENABLE,
+"BRANCH_ID" CHAR(36),
+"SNAPSHOT_ID" CHAR(36),
+"TIP" NCHAR(1),
+"ENV_VAR_ID" CHAR(36) NOT NULL ENABLE,
+"VALUE" NCLOB,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("VALUE","DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_ENV_TYPE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_ENV_TYPE(
+"ENV_TYPE_ID" NUMBER(2,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_ENV_VAR_TYPE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_ENV_VAR_TYPE(
+"ENV_VAR_TYPE_ID" NUMBER(2,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_ENV_VAR_DEFAULT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_ENV_VAR_DEFAULT(
+"ENV_VAR_DEFAULT_ID" CHAR(36) NOT NULL ENABLE,
+"ENV_TYPE_ID" NUMBER(2,0) NOT NULL ENABLE,
+"ENV_VAR_ID" CHAR(36) NOT NULL ENABLE,
+"VALUE" NCLOB NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("VALUE") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_EPV') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_EPV(
+"EPV_ID" CHAR(36) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"EXT_DESCRIPTION" NCLOB,
+"FEEDBACK" NVARCHAR2(255),
+"PARTICIPANT_REF" CHAR(36),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE
+)
+LOB ("DESCRIPTION","EXT_DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_EPV_VAR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_EPV_VAR(
+"EPV_VAR_ID" CHAR(36) NOT NULL ENABLE,
+"EPV_ID" CHAR(36) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"VAR_NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"EXT_DESCRIPTION" NCLOB,
+"VARIABLE_TYPE_REF" CHAR(36) NOT NULL ENABLE,
+"DEFAULT_VALUE" NVARCHAR2(255),
+"IS_CHG_ACTIVE_PROC" NCHAR(1),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("EXT_DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_EPV_VAR_VALUE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_EPV_VAR_VALUE(
+"EPV_VAR_VALUE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"SNAPSHOT_ID" CHAR(36),
+"TIP" NCHAR(1),
+"BRANCH_ID" CHAR(36),
+"EPV_VAR_ID" CHAR(36) NOT NULL ENABLE,
+"EFFECTIVE_ON" TIMESTAMP NOT NULL ENABLE,
+"VALUE" NCLOB,
+"REASON" NCLOB,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("VALUE","REASON") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_BLUEPRINT_SUBSCRIPTION') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_BLUEPRINT_SUBSCRIPTION(
+"BLUEPRINT_SUBSCRIPTION_ID" CHAR(36) NOT NULL ENABLE,
+"PROCESS_ID" NVARCHAR2(25) NOT NULL ENABLE,
+"BLUEPRINT_ID" NVARCHAR2(25) NOT NULL ENABLE,
+"PROCESS_REVISION_ID" NVARCHAR2(25),
+"ROOT_BPD_ID" CHAR(36) NOT NULL ENABLE,
+"ACCOUNT" NVARCHAR2(255),
+"LAST_SUBSCRIBED" DATE,
+"LAST_IMPORTED" DATE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_EXTACT_PARAMETER') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_EXTACT_PARAMETER(
+"EA_PARAMETER_ID" CHAR(36) NOT NULL ENABLE,
+"EXTERNAL_ACTIVITY_ID" CHAR(36) NOT NULL ENABLE,
+"PARAMETER_TYPE" NUMBER(2,0) NOT NULL ENABLE,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(255) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"CLASS_REF" CHAR(36) NOT NULL ENABLE,
+"IS_ARRAY_OF" NCHAR(1) NOT NULL ENABLE,
+"HAS_DEFAULT" NCHAR(1) NOT NULL ENABLE,
+"DEFAULT_VALUE" BLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION","DEFAULT_VALUE") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_EXTACT_PROPERTY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_EXTACT_PROPERTY(
+"EA_PROPERTY_ID" CHAR(36) NOT NULL ENABLE,
+"EXTERNAL_ACTIVITY_ID" CHAR(36) NOT NULL ENABLE,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(255) NOT NULL ENABLE,
+"VALUE" NVARCHAR2(255) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_EXTERNAL_ACTIVITY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_EXTERNAL_ACTIVITY(
+"EXTERNAL_ACTIVITY_ID" CHAR(36) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"AUTH_AJAXSVC" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"IS_GENERATED_ACTIVITY" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"URL_TEMPLATE" NVARCHAR2(2000),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_MANAGED_ASSET') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_MANAGED_ASSET(
+"MANAGED_ASSET_ID" CHAR(36) NOT NULL ENABLE,
+"ASSET_UUID" CHAR(36),
+"MIME_TYPE" NVARCHAR2(100) DEFAULT ' || '''' ||'application/octet-stream' || '''' || ',
+"CHAR_ENCODING" NVARCHAR2(100) DEFAULT ' || '''' ||'UTF-8' || '''' || ',
+"ASSET_TYPE_CODE" NVARCHAR2(1) DEFAULT ' || '''' ||'W' || '''' || ' NOT NULL ENABLE,
+"LENGTH" NUMBER(19,0),
+"LOCAL_LAST_MODIFICATION" NUMBER(19,0),
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"IS_DOCUMENTATION_FILE" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_MANAGED_ASSET_DATA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_MANAGED_ASSET_DATA(
+"ASSET_DATA_ID" CHAR(36) NOT NULL ENABLE,
+"ASSET_DATA" BLOB
+)
+LOB ("ASSET_DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_EXTACT_AJAXSVC') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_EXTACT_AJAXSVC(
+"EA_AJAXSVC_ID" CHAR(36) NOT NULL ENABLE,
+"EXTERNAL_ACTIVITY_ID" CHAR(36) NOT NULL ENABLE,
+"SERVICE_REF" CHAR(36) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_CONTRIBUTION') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_CONTRIBUTION(
+"CONTRIBUTION_ID" CHAR(36) NOT NULL ENABLE,
+"FILENAME" NVARCHAR2(1024) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"CREATED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" DATE NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_CTRB_PROPERTY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_CTRB_PROPERTY(
+"PROPERTY_ID" CHAR(36) NOT NULL ENABLE,
+"CONTRIBUTION_ID" CHAR(36) NOT NULL ENABLE,
+"PROP_VALUE" NVARCHAR2(1000),
+"PROP_TYPE_CODE" NUMBER(8,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_CTRB_DEPENDENCY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_CTRB_DEPENDENCY(
+"CTRB_DEPENDENCY_ID" CHAR(36) NOT NULL ENABLE,
+"LIBRARY_NAME" NVARCHAR2(1024) NOT NULL ENABLE,
+"CONTRIBUTION_ID" CHAR(36) NOT NULL ENABLE,
+"CONTRIBUTION_REF" CHAR(36),
+"DEPLOY_WITH" NCHAR(1) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_ARTIFACT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_ARTIFACT(
+"ARTIFACT_ID" CHAR(36) NOT NULL ENABLE,
+"ART_DATA_UUID" CHAR(36),
+"CONTRIBUTION_ID" CHAR(36) NOT NULL ENABLE,
+"MEDIA_TYPE" NVARCHAR2(100) DEFAULT ' || '''' ||'application/octet-stream' || '''' || ',
+"CHAR_ENCODING" NVARCHAR2(100) DEFAULT ' || '''' ||'UTF-8' || '''' || ',
+"LENGTH" NUMBER(19,0),
+"FULL_PATH" NVARCHAR2(1024) NOT NULL ENABLE,
+"DIGEST" NVARCHAR2(45) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"CREATED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" DATE NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_ARTIFACT_DATA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_ARTIFACT_DATA(
+"ART_DATA_ID" CHAR(36) NOT NULL ENABLE,
+"ART_DATA" BLOB
+)
+LOB ("ART_DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_MON_MODEL_DATA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_MON_MODEL_DATA(
+"MM_ID" CHAR(36) NOT NULL ENABLE,
+"NAME" NVARCHAR2(128) NOT NULL ENABLE,
+"DATA" BLOB,
+"IS_DIRTY" NCHAR(1)
+)
+LOB ("DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_SAVED_SEARCHES') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_SAVED_SEARCHES(
+"SEARCH_ID" NUMBER(18,0) NOT NULL ENABLE,
+"SEARCH_NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"QUERY" NCLOB NOT NULL ENABLE,
+"USER_ID" NUMBER(18,0),
+"SEARCH_TYPE" NUMBER(18,0) DEFAULT ' || '''' ||1 || '''' || ' NOT NULL ENABLE,
+"OWNER" NUMBER(18,0),
+"LAST_UPDATED" TIMESTAMP,
+"LAST_UPDATED_BY" NUMBER(18,0)
+)
+LOB ("QUERY") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_SAVED_SEARCH_TEAM') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_SAVED_SEARCH_TEAM(
+"SEARCH_TEAM_ID" NUMBER(18,0) NOT NULL ENABLE,
+"SEARCH_ID" NUMBER(18,0) NOT NULL ENABLE,
+"TEAM_ID" CHAR(36) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_INSTALLATION') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_INSTALLATION(
+"INSTALLATION_ID" CHAR(36) NOT NULL ENABLE,
+"SNAPSHOT_ID" CHAR(36) NOT NULL ENABLE,
+"STATUS" NUMBER(2,0) NOT NULL ENABLE,
+"DETAILS" BLOB
+)
+LOB ("DETAILS") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_RELEASE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_RELEASE(
+"RELEASE_ID" CHAR(36) NOT NULL ENABLE,
+"CREATED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" TIMESTAMP NOT NULL ENABLE,
+"SNAPSHOT_ID" CHAR(36) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_USER_FAVORITE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_USER_FAVORITE(
+"FAVORITE_ID" CHAR(36) NOT NULL ENABLE,
+"USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"PO_TYPE" NUMBER(8,0) NOT NULL ENABLE,
+"PO_ID" CHAR(36) NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NUMBER(12,0),
+"FIELD3" CHAR(36),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_SMART_FOLDER') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_SMART_FOLDER(
+"SMART_FOLDER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"SHARED" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"LIVE" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"INCLUDE_TK" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"DATA" BLOB,
+"SNAPSHOT_ID" CHAR(36) NOT NULL ENABLE,
+"CREATED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" DATE NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NUMBER(12,0),
+"FIELD3" CHAR(36),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)
+LOB ("DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_CA_TEMPLATE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_CA_TEMPLATE(
+"ID" NUMBER(12,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(128) NOT NULL ENABLE,
+"BPD_GUID" NVARCHAR2(128) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_CA_TEMPLATE_DATA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_CA_TEMPLATE_DATA(
+"ID" NUMBER(12,0) NOT NULL ENABLE,
+"CA_GUID" NVARCHAR2(128) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_LAUNCHER') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_LAUNCHER(
+"LAUNCHER_ID" CHAR(36) NOT NULL ENABLE,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NVARCHAR2(255),
+"CMD" NVARCHAR2(1000) NOT NULL ENABLE,
+"CMD_TYPE" NUMBER(12,0)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_BREAKPOINT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_BREAKPOINT(
+"BREAKPOINT_ID" CHAR(36) NOT NULL ENABLE,
+"USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"PROCESS_ID" CHAR(36) NOT NULL ENABLE,
+"PROCESS_ITEM_ID" CHAR(36) NOT NULL ENABLE,
+"PROCESS_ITEM_NAME" NVARCHAR2(64),
+"IS_CONDITION_IN_USE" NCHAR(1),
+"CONDITION" NVARCHAR2(1000)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_OSLC_PROVIDER') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_OSLC_PROVIDER(
+"PROVIDER_ID" CHAR(36) NOT NULL ENABLE,
+"NAME" NVARCHAR2(256),
+"URL" NVARCHAR2(1024) NOT NULL ENABLE,
+"DATA" NCLOB,
+"CREATED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" DATE NOT NULL ENABLE
+)
+LOB ("DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_INSTALLATION_MESSAGE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_INSTALLATION_MESSAGE(
+"MESSAGE_ID" CHAR(36) NOT NULL ENABLE,
+"PARENT_MESSAGE_ID" CHAR(36),
+"SNAPSHOT_ID" CHAR(36) NOT NULL ENABLE,
+"SERVER_ID" CHAR(36),
+"SERVER_NAME" NVARCHAR2(256) NOT NULL ENABLE,
+"THREAD_ID" NVARCHAR2(16),
+"USER_NAME" NVARCHAR2(256) NOT NULL ENABLE,
+"TYPE" NUMBER(2,0) NOT NULL ENABLE,
+"STATE" NUMBER(2,0),
+"START_DATETIME" TIMESTAMP NOT NULL ENABLE,
+"END_DATETIME" TIMESTAMP,
+"MESSAGE_NAME" NVARCHAR2(256) NOT NULL ENABLE,
+"REPLACEMENT_TEXT" NVARCHAR2(2000)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_MIGRATION_POLICY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_MIGRATION_POLICY(
+"MIGRATION_POLICY_ID" CHAR(36) NOT NULL ENABLE,
+"SOURCE_SNAPSHOT_ID" CHAR(36) NOT NULL ENABLE,
+"TARGET_SNAPSHOT_ID" CHAR(36) NOT NULL ENABLE,
+"XML_DATA" BLOB
+)
+LOB ("XML_DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_CLASS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_CLASS(
+"CLASS_ID" CHAR(36) NOT NULL ENABLE,
+"IS_SYSTEM" NCHAR(1),
+"SHARED" NCHAR(1),
+"IS_SHADOW" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"LIFETIME" NCHAR(1),
+"TYPE" NUMBER(3,0) NOT NULL ENABLE,
+"XML_DATA" BLOB,
+"INTERNAL_NAME" NVARCHAR2(100),
+"EXTENSION_TYPE" NUMBER(2,0),
+"SAVE_SERVICE_REF" CHAR(36),
+"BPMN2_DATA" BLOB,
+"EXTERNAL_ID" NVARCHAR2(512),
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"DEPENDENCY_SUMMARY" NCLOB,
+"JSON_DATA" BLOB,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NVARCHAR2(128),
+"FIELD3" NUMBER(12,0),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1),
+"CLOB_FIELD1" NCLOB,
+"BLOB_FIELD1" BLOB
+)
+LOB ("XML_DATA","BPMN2_DATA","DESCRIPTION","DEPENDENCY_SUMMARY","JSON_DATA","CLOB_FIELD1","BLOB_FIELD1") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_LAYOUT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_LAYOUT(
+"LAYOUT_ID" CHAR(36) NOT NULL ENABLE,
+"TYPE" NVARCHAR2(64) NOT NULL ENABLE,
+"URL" NVARCHAR2(255),
+"DOCUMENT_TYPE" NVARCHAR2(64),
+"IMAGE_URL" NVARCHAR2(255),
+"META_DATA_LABEL" NVARCHAR2(255),
+"META_DATA_UI" NVARCHAR2(255),
+"LAYOUT_DATA" BLOB,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("LAYOUT_DATA","DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_LAYOUT_PARAM') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_LAYOUT_PARAM(
+"LAYOUT_PARAM_ID" CHAR(36) NOT NULL ENABLE,
+"LAYOUT_ID" CHAR(36) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"TYPE" NUMBER(12,0),
+"SEQ" NUMBER(12,0),
+"VALUE" NVARCHAR2(64),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_PROJECT_DEFAULTS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_PROJECT_DEFAULTS(
+"PROJECT_DEFAULTS_ID" CHAR(36) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"PARTICIPANT_REF" CHAR(36),
+"DEFAULT_XSL_REF" CHAR(36),
+"DEFAULT_CSS_REF" CHAR(36),
+"DEFAULT_THEME" CHAR(36),
+"THEME_VERSION" NVARCHAR2(128),
+"DEFAULT_JS_REFS" NVARCHAR2(2000),
+"IS_WBM_ENABLED" NCHAR(1),
+"NAMESPACE" NVARCHAR2(256),
+"IS_IID_OPTIMIZED" NCHAR(1),
+"IS_QUEUE_BYPASS" NUMBER(1,0),
+"TEMPLATE_ACRONYM_REFERENCE" NVARCHAR2(64),
+"TEMPLATE_SNAPSHOT_REFERENCE" NVARCHAR2(64),
+"TARGET_ENVIRONMENT" NVARCHAR2(64)
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_RESOURCE_BUNDLE_GROUP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_RESOURCE_BUNDLE_GROUP(
+"RESOURCE_BUNDLE_GROUP_ID" CHAR(36) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"JSON_DATA" BLOB
+)
+LOB ("DESCRIPTION","JSON_DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_RESOURCE_BUNDLE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_RESOURCE_BUNDLE(
+"RESOURCE_BUNDLE_ID" CHAR(36) NOT NULL ENABLE,
+"RESOURCE_BUNDLE_GROUP_ID" CHAR(36) NOT NULL ENABLE,
+"LOCALE_LANGUAGE" NVARCHAR2(2),
+"LOCALE_COUNTRY" NVARCHAR2(2),
+"LOCALE_VARIANT" NVARCHAR2(32),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"JSON_DATA" BLOB
+)
+LOB ("JSON_DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_RESOURCE_BUNDLE_KEY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_RESOURCE_BUNDLE_KEY(
+"RESOURCE_BUNDLE_KEY_ID" CHAR(36) NOT NULL ENABLE,
+"RESOURCE_BUNDLE_ID" CHAR(36),
+"AKEY" NVARCHAR2(64) NOT NULL ENABLE,
+"VALUE" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("VALUE") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_SCRIPT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_SCRIPT(
+"SCRIPT_ID" CHAR(36) NOT NULL ENABLE,
+"SCRIPT_TYPE_ID" NUMBER(12,0),
+"IS_ACTIVE" NCHAR(1),
+"IS_RULE" NCHAR(1),
+"SCRIPT" BLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("SCRIPT") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_TWCLASS_EXTENSION') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_TWCLASS_EXTENSION(
+"EXTENSION_ID" CHAR(36) NOT NULL ENABLE,
+"CLASS_ID" CHAR(36) NOT NULL ENABLE,
+"XML_DATA" BLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("XML_DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_APP_CONTRIBUTOR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_APP_CONTRIBUTOR(
+"APP_CONTRIBUTOR_ID" CHAR(36) NOT NULL ENABLE,
+"TYPE" NVARCHAR2(32) NOT NULL ENABLE,
+"CONTENT" NCLOB,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"CREATED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" DATE NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("CONTENT") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_COMMENT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_COMMENT(
+"COMMENT_ID" CHAR(36) NOT NULL ENABLE,
+"PROJECT_ID" CHAR(36) NOT NULL ENABLE,
+"SNAPSHOT_NAME" NVARCHAR2(512),
+"COMMENT_TYPE" NVARCHAR2(128) NOT NULL ENABLE,
+"CONTENT" NCLOB NOT NULL ENABLE,
+"CREATED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" DATE NOT NULL ENABLE
+)
+LOB ("CONTENT") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_SERVER') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_SERVER(
+"CREATED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" TIMESTAMP NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"SERVER_ID" CHAR(36) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"ADDRESS" NVARCHAR2(128),
+"PROVIDER_URL" NVARCHAR2(500) NOT NULL ENABLE,
+"PORT" NVARCHAR2(5) NOT NULL ENABLE,
+"IS_OFFLINE" NCHAR(1) DEFAULT ' || '''' ||'0' || '''' || ',
+"LAST_HEARTBEAT" DATE,
+"IS_AVAILABLE" NCHAR(1) DEFAULT ' || '''' ||'0' || '''' || ',
+"TYPE" NUMBER(12,0) DEFAULT ' || '''' ||0 || '''' || ',
+"USER_NAME" NVARCHAR2(50),
+"PASSWORD" NVARCHAR2(250),
+"IS_ENCRYPTED" NCHAR(1) DEFAULT ' || '''' ||'0' || '''' || ',
+"INSTALLER_GROUP_ID" NUMBER(12,0),
+"IS_COMPATIBLE" NCHAR(1) DEFAULT ' || '''' ||'T' || '''' || ' NOT NULL ENABLE,
+"IS_GENERIC" NCHAR(1) DEFAULT ' || '''' ||'0' || '''' || ',
+"TARGET_ENVIRONMENT" NVARCHAR2(64)
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_DEPLOYMENT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_DEPLOYMENT(
+"DEPLOYMENT_ID" CHAR(36) NOT NULL ENABLE,
+"CREATED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" TIMESTAMP NOT NULL ENABLE,
+"SNAPSHOT_ID" CHAR(36) NOT NULL ENABLE,
+"SERVER_ID" CHAR(36) NOT NULL ENABLE,
+"INSTANCE_COUNT" NUMBER(12,0) DEFAULT ' || '''' ||0 || '''' || ',
+"STATUS" NVARCHAR2(64),
+"STATE" NUMBER(2,0) DEFAULT ' || '''' ||0 || '''' || ' NOT NULL ENABLE,
+"STATUS_DESCRIPTION" NVARCHAR2(1000),
+"IS_GENERIC" NCHAR(1) DEFAULT ' || '''' ||'0' || '''' || '
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_SERVER_CAPABILITY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_SERVER_CAPABILITY(
+"SERVER_CAPABILITY_ID" CHAR(36) NOT NULL ENABLE,
+"SERVER_ID" CHAR(36) NOT NULL ENABLE,
+"CAPABILITY_TYPE" NVARCHAR2(64) NOT NULL ENABLE,
+"CAPABILITY_VERSION" NVARCHAR2(64) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_CAPABILITY_TYPE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_CAPABILITY_TYPE(
+"CAPABILITY_TYPE_ID" NUMBER(2,0) NOT NULL ENABLE,
+"CAPABILITY_CONFIG_ID" NVARCHAR2(64) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"IS_OPTIONAL" NCHAR(1) DEFAULT ' || '''' ||'0' || '''' || '
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_DEPLOYMENT_PACKAGE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_DEPLOYMENT_PACKAGE(
+"SNAPSHOT_ID" CHAR(36),
+"SERVER_ID" CHAR(36) NOT NULL ENABLE,
+"DEPLOYMENT_PACKAGE" BLOB
+)
+LOB ("DEPLOYMENT_PACKAGE") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_REGISTRATION') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_REGISTRATION(
+"REG_ID" CHAR(36) NOT NULL ENABLE,
+"PC_URL" NVARCHAR2(256) NOT NULL ENABLE,
+"PC_ID" CHAR(36) NOT NULL ENABLE,
+"PC_NAME" NVARCHAR2(128) NOT NULL ENABLE,
+"PC_VER" NVARCHAR2(16) NOT NULL ENABLE,
+"REG_USER" NVARCHAR2(256) NOT NULL ENABLE,
+"REGISTERED_ON" TIMESTAMP,
+"ACTIVE" NCHAR(1) DEFAULT ' || '''' ||'T' || '''' || ' NOT NULL ENABLE,
+"IS_INITIATOR" NCHAR(1) DEFAULT ' || '''' ||'T' || '''' || ' NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_REPOSITORY_LOG') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_REPOSITORY_LOG(
+"REPOSITORY_LOG_ID" CHAR(36) NOT NULL ENABLE,
+"PROJECT_ID" CHAR(36),
+"ACTION_TYPE" NUMBER(8,0) NOT NULL ENABLE,
+"TARGET_ITEM_NAME" NVARCHAR2(198),
+"REPOSITORY_UUID" CHAR(36),
+"CREATED_BY_USER" NVARCHAR2(256),
+"CREATED" TIMESTAMP,
+"PROPERTIES" NCLOB
+)
+LOB ("PROPERTIES") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_SHARED_TK_USAGES') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_SHARED_TK_USAGES(
+"SHARED_TK_USAGE_ID" CHAR(36) NOT NULL ENABLE,
+"PROJECT_ID" CHAR(36) NOT NULL ENABLE,
+"SNAPSHOT_ID" CHAR(36) NOT NULL ENABLE,
+"REGISTRATION_ID" CHAR(36) NOT NULL ENABLE,
+"DEPENDENT_PROJECT_NAME" NVARCHAR2(128) NOT NULL ENABLE,
+"IS_TOOLKIT" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_SNAPSHOT_STATUS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_SNAPSHOT_STATUS(
+"STATUS_ID" CHAR(36) NOT NULL ENABLE,
+"STATUS" NVARCHAR2(64) NOT NULL ENABLE,
+"IS_SYSTEM" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_PROJECT_SUBSCRIPTION') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_PROJECT_SUBSCRIPTION(
+"PROJECT_SUBSCRIPTION_ID" CHAR(36) NOT NULL ENABLE,
+"REGISTRATION_ID" CHAR(36) NOT NULL ENABLE,
+"PROJECT_ID" CHAR(36) NOT NULL ENABLE,
+"SUBSCRIBED_BY" NUMBER(12,0) NOT NULL ENABLE,
+"SUBSCRIBED_ON" DATE NOT NULL ENABLE,
+"STATUS" NVARCHAR2(64),
+"ACTIVE" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"SHARED_BY_USER_ID" NVARCHAR2(256),
+"SHARED_ON" DATE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_PROJECT_SUBSCRIBED') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_PROJECT_SUBSCRIBED(
+"PROJECT_SUBSCRIBED_ID" CHAR(36) NOT NULL ENABLE,
+"REGISTRATION_ID" CHAR(36) NOT NULL ENABLE,
+"PROJECT_ID" CHAR(36) NOT NULL ENABLE,
+"SUBSCRIBED_BY" NVARCHAR2(256) NOT NULL ENABLE,
+"SUBSCRIBED_ON" DATE NOT NULL ENABLE,
+"LAST_MODIFICATION" DATE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_PC_IDX_ACTION') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_PC_IDX_ACTION(
+"ACTION_ID" CHAR(36) NOT NULL ENABLE,
+"PO_ID" CHAR(36) NOT NULL ENABLE,
+"PO_TYPE" NUMBER(8,0) NOT NULL ENABLE,
+"USER_ACTION" NUMBER(8,0) NOT NULL ENABLE,
+"CREATED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" DATE NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_PC_INDEXER') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_PC_INDEXER(
+"INDEXER_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_INDEXED_ON" DATE NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_GOVERNANCE_ASSIGNMENT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_GOVERNANCE_ASSIGNMENT(
+"ASSIGNMENT_ID" CHAR(36) NOT NULL ENABLE,
+"PROJECT_ID" CHAR(36) NOT NULL ENABLE,
+"EVENT_TYPE_ID" CHAR(36) NOT NULL ENABLE,
+"GOV_SNAPSHOT_ID" CHAR(36) NOT NULL ENABLE,
+"GOV_PROCESS_ID" CHAR(36) NOT NULL ENABLE,
+"GOV_PROCESS_TYPE" NUMBER(8,0) NOT NULL ENABLE,
+"ACTIVE" NCHAR(1) DEFAULT ' || '''' ||'T' || '''' || ' NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_GOVERNANCE_EVENT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_GOVERNANCE_EVENT(
+"EVENT_TYPE_ID" CHAR(36) NOT NULL ENABLE,
+"EVENT_TYPE" NUMBER(8,0) NOT NULL ENABLE,
+"EVENT_TYPE_NAME" NVARCHAR2(198) NOT NULL ENABLE,
+"GOV_DEFAULT_SNAPSHOT_ID" CHAR(36) NOT NULL ENABLE,
+"GOV_DEFAULT_PROCESS_ID" CHAR(36) NOT NULL ENABLE,
+"GOV_DEFAULT_PROCESS_TYPE" NUMBER(8,0) NOT NULL ENABLE,
+"GOV_CUSTOM_DEFAULT_SNAPSHOT_ID" CHAR(36),
+"GOV_CUSTOM_DEFAULT_PROCESS_ID" CHAR(36),
+"GOV_CUSTOM_DEFAULT_PROCESS_TYP" NUMBER(8,0)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_PERF_DATA_TRANSFER') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_PERF_DATA_TRANSFER(
+"PERF_DATA_TRANSFER_ID" NVARCHAR2(64) NOT NULL ENABLE,
+"DATA" BLOB NOT NULL ENABLE,
+"TIME_CLAIMED" DATE,
+"CLAIMED_BY" NVARCHAR2(64)
+)
+LOB ("DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TRACKING_GROUP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TRACKING_GROUP(
+"TRACKING_GROUP_ID" CHAR(36) NOT NULL ENABLE,
+"EXTERNAL_UNIQUE_ID" NVARCHAR2(64) NOT NULL ENABLE,
+"IS_ENABLED" NCHAR(1),
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"JSON_DATA" BLOB
+)
+LOB ("DESCRIPTION","JSON_DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TRACKED_VARIABLE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TRACKED_VARIABLE(
+"TRACKED_VARIABLE_ID" CHAR(36) NOT NULL ENABLE,
+"TRACKING_GROUP_ID" CHAR(36) NOT NULL ENABLE,
+"EXTERNAL_UNIQUE_ID" NVARCHAR2(64) NOT NULL ENABLE,
+"TYPE" NVARCHAR2(8) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TRACKING_POINT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TRACKING_POINT(
+"TRACKING_POINT_ID" CHAR(36) NOT NULL ENABLE,
+"TRACKING_GROUP_REF" CHAR(36),
+"EXTERNAL_UNIQUE_ID" NVARCHAR2(64) NOT NULL ENABLE,
+"OTHER_TASK_ID" NVARCHAR2(64),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TRACKED_VARIABLE_USE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TRACKED_VARIABLE_USE(
+"TRACKING_VARIABLE_USE_ID" CHAR(36) NOT NULL ENABLE,
+"TRACKED_VARIABLE_ID" CHAR(36) NOT NULL ENABLE,
+"TRACKING_POINT_ID" CHAR(36) NOT NULL ENABLE,
+"VALUE_EXPRESSION" NVARCHAR2(255),
+"IS_EXPRESSION_ENABLED" NCHAR(1),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TIMING_INTERVAL') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TIMING_INTERVAL(
+"TIMING_INTERVAL_ID" CHAR(36) NOT NULL ENABLE,
+"EXTERNAL_UNIQUE_ID" NVARCHAR2(64) NOT NULL ENABLE,
+"INTERVAL_START" NVARCHAR2(8) NOT NULL ENABLE,
+"INTERVAL_END" NVARCHAR2(8) NOT NULL ENABLE,
+"XML_DATA" BLOB,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("XML_DATA","DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TIMING_INTERVAL_BOUND') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TIMING_INTERVAL_BOUND(
+"TIMING_INTERVAL_BOUND_ID" CHAR(36) NOT NULL ENABLE,
+"TIMING_INTERVAL_ID" CHAR(36) NOT NULL ENABLE,
+"TRACKING_POINT_EUID" NVARCHAR2(64) NOT NULL ENABLE,
+"BOUND" NVARCHAR2(8) NOT NULL ENABLE,
+"BPD_REF" CHAR(36),
+"PROCESS_REF" CHAR(36),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_ECM_CONNECTOR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_ECM_CONNECTOR(
+"ECM_CONNECTOR_ID" CHAR(36) NOT NULL ENABLE,
+"DEFINITION" BLOB NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DEFINITION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_ILOG_DECISION') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_ILOG_DECISION(
+"ILOG_DECISION_ID" CHAR(36) NOT NULL ENABLE,
+"DEFINITION" BLOB NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DEFINITION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_SCA_CONNECTOR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_SCA_CONNECTOR(
+"SCA_CONNECTOR_ID" CHAR(36) NOT NULL ENABLE,
+"BINDING_TYPE" NUMBER(2,0) DEFAULT ' || '''' ||0 || '''' || ',
+"PROJECT_ID" CHAR(36),
+"ENV_VAR_ID" CHAR(36),
+"MODULE_NAME" NVARCHAR2(256),
+"EXPORT_NAME" NVARCHAR2(256),
+"MODULE_VERSION" NVARCHAR2(32),
+"IS_MODULE_CELL_SCOPED" NCHAR(1) DEFAULT ' || '''' ||'T' || '''' || ',
+"OPERATION_NAME" NVARCHAR2(256),
+"LAST_SYNCHRONIZED" NVARCHAR2(128),
+"IS_ASYNC_INVOCATION" NCHAR(1),
+"OPERATION_STYLE" NUMBER(1,0),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_STEP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_STEP(
+"STEP_ID" CHAR(36) NOT NULL ENABLE,
+"IS_IC_ACTIVE" NCHAR(1) NOT NULL ENABLE,
+"IC_REF" CHAR(36),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_CONNECTOR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_CONNECTOR(
+"CONNECTOR_ID" CHAR(36) NOT NULL ENABLE,
+"IS_SYSTEM" NCHAR(1) NOT NULL ENABLE,
+"DEFINITION" BLOB NOT NULL ENABLE,
+"CONNECTOR_TYPE" NUMBER(2,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DEFINITION","DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_IC') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_IC(
+"IC_ID" CHAR(36) NOT NULL ENABLE,
+"IS_TEMPLATE" NCHAR(1),
+"CONNECTOR_REF" CHAR(36) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_JAVA_CONNECTOR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_JAVA_CONNECTOR(
+"JAVA_CONNECTOR_ID" CHAR(36) NOT NULL ENABLE,
+"DEFINITION" BLOB NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DEFINITION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_WS_CONNECTOR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_WS_CONNECTOR(
+"WS_CONNECTOR_ID" CHAR(36) NOT NULL ENABLE,
+"DEFINITION" BLOB NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DEFINITION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_ILOG_CONNECTOR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_ILOG_CONNECTOR(
+"ILOG_CONNECTOR_ID" CHAR(36) NOT NULL ENABLE,
+"DEFINITION" BLOB NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DEFINITION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_ICMCASE_CONNECTOR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_ICMCASE_CONNECTOR(
+"ICMCASE_CONNECTOR_ID" CHAR(36) NOT NULL ENABLE,
+"DEFINITION" BLOB NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DEFINITION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_EPV_PROCESS_LINK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_EPV_PROCESS_LINK(
+"EPV_PROCESS_LINK_ID" CHAR(36) NOT NULL ENABLE,
+"EPV_ID" CHAR(36) NOT NULL ENABLE,
+"PROCESS_ID" CHAR(36) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_RESOURCE_PROCESS_LINK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_RESOURCE_PROCESS_LINK(
+"RESOURCE_PROCESS_LINK_ID" CHAR(36) NOT NULL ENABLE,
+"RESOURCE_BUNDLE_GROUP_ID" CHAR(36) NOT NULL ENABLE,
+"PROCESS_ID" CHAR(36) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_EXCEPTION') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_EXCEPTION(
+"EXCEPTION_ID" CHAR(36) NOT NULL ENABLE,
+"MESSAGE" NCLOB,
+"ATTACHED_PROCESS_REF" CHAR(36),
+"FAULT_STYLE" NUMBER(2,0),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("MESSAGE") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_EXIT_POINT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_EXIT_POINT(
+"EXIT_POINT_ID" CHAR(36) NOT NULL ENABLE,
+"HALT_PROCESS" NCHAR(1),
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TASK_SENDER_FILE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TASK_SENDER_FILE(
+"TASK_SENDER_FILE_ID" CHAR(36) NOT NULL ENABLE,
+"TASK_SENDER_ID" CHAR(36) NOT NULL ENABLE,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"FILE_NAME" NVARCHAR2(255),
+"IS_LOCKED" NCHAR(1),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TASK_SENDER_ADDR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TASK_SENDER_ADDR(
+"TASK_SENDER_ADDR_ID" CHAR(36) NOT NULL ENABLE,
+"TASK_SENDER_ID" CHAR(36) NOT NULL ENABLE,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"SEND_TO" NVARCHAR2(255),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_PROCESS_ITEM_PRE_POST') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_PROCESS_ITEM_PRE_POST(
+"PROCESS_ITEM_PRE_POST_ID" CHAR(36) NOT NULL ENABLE,
+"PROCESS_ITEM_ID" CHAR(36) NOT NULL ENABLE,
+"LOCATION" NUMBER(1,0) NOT NULL ENABLE,
+"SCRIPT" BLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("SCRIPT") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_PROCESS_LINK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_PROCESS_LINK(
+"PROCESS_LINK_ID" CHAR(36) NOT NULL ENABLE,
+"PROCESS_ID" CHAR(36) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64),
+"DESCRIPTION" NCLOB,
+"FROM_PROCESS_ITEM_ID" CHAR(36) NOT NULL ENABLE,
+"END_STATE_ID" NVARCHAR2(128) NOT NULL ENABLE,
+"TO_PROCESS_ITEM_ID" CHAR(36) NOT NULL ENABLE,
+"DATA" BLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION","DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_FILE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_FILE(
+"FILE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"FILE_NAME" NVARCHAR2(128) NOT NULL ENABLE,
+"CONTENT_TYPE" NVARCHAR2(128) NOT NULL ENABLE,
+"CREATED_BY" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_DATE" DATE,
+"FILE_DETAIL" BLOB NOT NULL ENABLE,
+"IS_LOCKED" NCHAR(1)
+)
+LOB ("FILE_DETAIL") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_IC_INPUT_PROPERTY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_IC_INPUT_PROPERTY(
+"IC_INPUT_PROPERTY_ID" CHAR(36) NOT NULL ENABLE,
+"IC_ID" CHAR(36) NOT NULL ENABLE,
+"KEY_VAL" NVARCHAR2(1000) NOT NULL ENABLE,
+"NAME" NVARCHAR2(1000) NOT NULL ENABLE,
+"CLASS_TYPE" NVARCHAR2(1024) NOT NULL ENABLE,
+"DESCRIPTION" NVARCHAR2(255) NOT NULL ENABLE,
+"VALUE" BLOB,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("VALUE") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_IC_OUTPUT_PROPERTY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_IC_OUTPUT_PROPERTY(
+"IC_OUTPUT_PROPERTY_ID" CHAR(36) NOT NULL ENABLE,
+"IC_ID" CHAR(36) NOT NULL ENABLE,
+"KEY_VAL" NVARCHAR2(1000) NOT NULL ENABLE,
+"NAME" NVARCHAR2(1000) NOT NULL ENABLE,
+"CLASS_TYPE" NVARCHAR2(1024),
+"DESCRIPTION" NVARCHAR2(255),
+"VALUE" NCLOB,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("VALUE") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_PARAMETER_MAPPING') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_PARAMETER_MAPPING(
+"PARAMETER_MAPPING_ID" CHAR(36) NOT NULL ENABLE,
+"PROCESS_PARAMETER_ID" CHAR(36) NOT NULL ENABLE,
+"PARENT_TYPE" NUMBER(12,0) NOT NULL ENABLE,
+"PARENT_ID" CHAR(36) NOT NULL ENABLE,
+"USE_DEFAULT" NCHAR(1),
+"VALUE" BLOB,
+"CLASS_REF" CHAR(36) NOT NULL ENABLE,
+"IS_LIST" NCHAR(1),
+"IS_INPUT" NCHAR(1),
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("VALUE","DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_PRIORITY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_PRIORITY(
+"PRIORITY_ID" NUMBER(12,0) NOT NULL ENABLE,
+"RANKING" NUMBER(12,0),
+"IS_DEFAULT" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"LEGACY_GUID" NVARCHAR2(128),
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_PROCESS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_PROCESS(
+"PROCESS_ID" CHAR(36) NOT NULL ENABLE,
+"IMAGE" NVARCHAR2(255),
+"TAB_GROUP" NVARCHAR2(255),
+"STARTING_PROCESS_ITEM_ID" CHAR(36),
+"IS_ROOT_PROCESS" NCHAR(1) NOT NULL ENABLE,
+"PROCESS_TYPE" NUMBER(12,0) DEFAULT ' || '''' ||0 || '''' || ' NOT NULL ENABLE,
+"DATA" BLOB,
+"IS_ERROR_HANDLER_ENABLED" NCHAR(1) NOT NULL ENABLE,
+"ERROR_HANDLER_ITEM_ID" CHAR(36),
+"IS_LOGGING_VARIABLES" NCHAR(1),
+"IS_TRANSACTIONAL" NCHAR(1),
+"PROCESS_TIMING_LEVEL" NCHAR(1),
+"PARTICIPANT_REF" CHAR(36),
+"EXPOSED_TYPE" NUMBER(10,0),
+"IS_TRACKING_ENABLED" NCHAR(1) NOT NULL ENABLE,
+"XML_DATA" BLOB,
+"CACHING_TYPE" NCHAR(1),
+"ITEM_LABEL" NVARCHAR2(255),
+"CACHE_LENGTH" NUMBER(12,0) DEFAULT ' || '''' ||0 || '''' || ',
+"MOBILE_READY" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"SBO_SYNC_ENABLED" NCHAR(1) DEFAULT ' || '''' ||'T' || '''' || ',
+"EXTERNAL_ID" NVARCHAR2(512),
+"IS_SECURED" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"IS_AJAX_EXPOSED" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"DEPENDENCY_SUMMARY" NCLOB,
+"JSON_DATA" BLOB,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NVARCHAR2(128),
+"FIELD3" NUMBER(12,0),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1),
+"CLOB_FIELD1" NCLOB,
+"BLOB_FIELD1" BLOB
+)
+LOB ("DATA","XML_DATA","DESCRIPTION","DEPENDENCY_SUMMARY","JSON_DATA","CLOB_FIELD1","BLOB_FIELD1") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_PROCESS_ITEM') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_PROCESS_ITEM(
+"PROCESS_ITEM_ID" CHAR(36) NOT NULL ENABLE,
+"PROCESS_ID" CHAR(36) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"TWCOMPONENT_NAME" NVARCHAR2(80) NOT NULL ENABLE,
+"TWCOMPONENT_ID" CHAR(36) NOT NULL ENABLE,
+"IS_LOG_ENABLED" NCHAR(1),
+"IS_TRACE_ENABLED" NCHAR(1),
+"TRACE_CATEGORY" NVARCHAR2(255),
+"TRACE_LEVEL" NUMBER(1,0),
+"TRACE_MESSAGE" NCLOB,
+"TRACE_SYMBOL_TABLE" NCHAR(4),
+"IS_EXEC_CONTEXT_TRACED" NCHAR(1),
+"SAVE_EXEC_CONTEXT" NCHAR(1) NOT NULL ENABLE,
+"DOCUMENTATION" NCLOB,
+"DATA" BLOB,
+"IS_ERROR_HANDLER_ENABLED" NCHAR(1) NOT NULL ENABLE,
+"ERROR_HANDLER_ITEM_ID" CHAR(36),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"EXTERNAL_SERVICE_REF" CHAR(36),
+"EXTERNAL_SERVICE_OP" NVARCHAR2(255),
+"NODE_COLOR" NVARCHAR2(255)
+)
+LOB ("TRACE_MESSAGE","DOCUMENTATION","DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_SUBPROCESS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_SUBPROCESS(
+"SUBPROCESS_ID" CHAR(36) NOT NULL ENABLE,
+"ATTACHED_PROCESS_REF" CHAR(36),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_PROCESS_LABEL') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_PROCESS_LABEL(
+"PROCESS_LABEL_ID" CHAR(36) NOT NULL ENABLE,
+"PROCESS_ID" CHAR(36) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"DATA" BLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION","DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_PROCESS_VARIABLE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_PROCESS_VARIABLE(
+"PROCESS_VARIABLE_ID" CHAR(36) NOT NULL ENABLE,
+"NAME" NVARCHAR2(255) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"PROCESS_ID" CHAR(36) NOT NULL ENABLE,
+"NAMESPACE" NUMBER(2,0) NOT NULL ENABLE,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"IS_ARRAY_OF" NCHAR(1) NOT NULL ENABLE,
+"IS_TRANSIENT" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"CLASS_ID" CHAR(36) NOT NULL ENABLE,
+"HAS_DEFAULT" NCHAR(1) NOT NULL ENABLE,
+"DEFAULT_VALUE" BLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION","DEFAULT_VALUE") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_PROCESS_PARAMETER') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_PROCESS_PARAMETER(
+"PROCESS_PARAMETER_ID" CHAR(36) NOT NULL ENABLE,
+"PROCESS_ID" CHAR(36) NOT NULL ENABLE,
+"PARAMETER_TYPE" NUMBER(2,0) NOT NULL ENABLE,
+"IS_ARRAY_OF" NCHAR(1) NOT NULL ENABLE,
+"CLASS_ID" CHAR(36) NOT NULL ENABLE,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"HAS_DEFAULT" NCHAR(1),
+"DEFAULT_VALUE" BLOB,
+"IS_LOCKED" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DEFAULT_VALUE","DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_SWITCH') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_SWITCH(
+"SWITCH_ID" CHAR(36) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_SWITCH_CONDITION') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_SWITCH_CONDITION(
+"SWITCH_CONDITION_ID" CHAR(36) NOT NULL ENABLE,
+"SWITCH_ID" CHAR(36) NOT NULL ENABLE,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"END_STATE_ID" NVARCHAR2(128) NOT NULL ENABLE,
+"CONDITION" NVARCHAR2(1000),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TASK_SENDER') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TASK_SENDER(
+"TASK_SENDER_ID" CHAR(36) NOT NULL ENABLE,
+"ACTION" NUMBER(1,0) NOT NULL ENABLE,
+"SUBJECT" NVARCHAR2(255),
+"PRIORITY" NUMBER(12,0) NOT NULL ENABLE,
+"IS_ORIGINAL_DATE_KEPT" NCHAR(1),
+"DUE_IN_OPTION" NUMBER(2,0) NOT NULL ENABLE,
+"DUE_DATE_INCR_DATA" NVARCHAR2(255),
+"DUE_DATE_INCR_NUMBER" NUMBER(3,0),
+"DUE_DATE_FIXED_DATA" NVARCHAR2(255),
+"DUE_DATE_FIXED_TIME" DATE,
+"DUE_DATE_SPECIFIC_DATE" NVARCHAR2(255),
+"DUE_DATE_INCR_TYPE" NUMBER(1,0),
+"ATTACHED_PROCESS_REF" CHAR(36),
+"IS_SEND_OTHER_TASK" NCHAR(1),
+"OTHER_TASK_ID" NVARCHAR2(64),
+"MESSAGE" BLOB,
+"IS_IGNORE_EXCEPTION" NCHAR(1),
+"IS_REPARENT_TASK" NCHAR(1),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("MESSAGE") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TASK_SENDER_EXVAR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TASK_SENDER_EXVAR(
+"TASK_SENDER_EXVAR_ID" CHAR(36) NOT NULL ENABLE,
+"TASK_SENDER_ID" CHAR(36) NOT NULL ENABLE,
+"VARIABLE_NAME" NVARCHAR2(255),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_ES_CONNECTOR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_ES_CONNECTOR(
+"ES_CONNECTOR_ID" CHAR(36) NOT NULL ENABLE,
+"DEFINITION" BLOB NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DEFINITION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_SKEL_CONNECTOR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_SKEL_CONNECTOR(
+"SKEL_CONNECTOR_ID" CHAR(36) NOT NULL ENABLE,
+"DEFINITION" BLOB NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DEFINITION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_REPORT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_REPORT(
+"REPORT_ID" CHAR(36) NOT NULL ENABLE,
+"DEFAULT_START_PAGE_ID" CHAR(36),
+"PARTICIPANT_REF" CHAR(36),
+"SECURITY_GROUP" NVARCHAR2(64),
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_REPORT_EPV_LINK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_REPORT_EPV_LINK(
+"REPORT_EPV_LINK_ID" CHAR(36) NOT NULL ENABLE,
+"REPORT_ID" CHAR(36) NOT NULL ENABLE,
+"EPV_REF" CHAR(36) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_REPORT_RBG_LINK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_REPORT_RBG_LINK(
+"REPORT_RBG_LINK_ID" CHAR(36) NOT NULL ENABLE,
+"REPORT_ID" CHAR(36) NOT NULL ENABLE,
+"RBG_REF" CHAR(36) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_REPORT_DATASOURCE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_REPORT_DATASOURCE(
+"REPORT_DATASOURCE_ID" CHAR(36) NOT NULL ENABLE,
+"REPORT_ID" CHAR(36) NOT NULL ENABLE,
+"LAYOUT_REF" CHAR(36) NOT NULL ENABLE,
+"SCRIPT" BLOB,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("SCRIPT","DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_REPORT_TG_LINK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_REPORT_TG_LINK(
+"REPORT_TG_LINK_ID" CHAR(36) NOT NULL ENABLE,
+"REPORT_ID" CHAR(36) NOT NULL ENABLE,
+"TRACKING_GROUP_REF" CHAR(36) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_REPORT_PAGE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_REPORT_PAGE(
+"REPORT_PAGE_ID" CHAR(36) NOT NULL ENABLE,
+"REPORT_ID" CHAR(36) NOT NULL ENABLE,
+"HEIGHT" NUMBER(12,0) NOT NULL ENABLE,
+"WIDTH" NUMBER(12,0) NOT NULL ENABLE,
+"DATA" BLOB,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DATA","DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_REPORT_CHART') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_REPORT_CHART(
+"REPORT_CHART_ID" CHAR(36) NOT NULL ENABLE,
+"REPORT_ID" CHAR(36) NOT NULL ENABLE,
+"LAYOUT_REF" CHAR(36),
+"DATA" BLOB,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DATA","DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_REPORT_VARIABLES') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_REPORT_VARIABLES(
+"REPORT_VARIABLES_ID" CHAR(36) NOT NULL ENABLE,
+"REPORT_ID" CHAR(36) NOT NULL ENABLE,
+"VALUE" NVARCHAR2(1000),
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_REPORT_DATASOURCE_IC_LINK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_REPORT_DATASOURCE_IC_LINK(
+"REPORT_DATASOURCE_IC_LINK_ID" CHAR(36) NOT NULL ENABLE,
+"REPORT_DATASOURCE_ID" CHAR(36) NOT NULL ENABLE,
+"IC_REF" CHAR(36) NOT NULL ENABLE,
+"POS" NUMBER(12,0) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_REPORT_DATASOURCE_SRV_LINK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_REPORT_DATASOURCE_SRV_LINK(
+"REPORT_DATASOURCE_SRV_LINK_ID" CHAR(36) NOT NULL ENABLE,
+"REPORT_DATASOURCE_ID" CHAR(36) NOT NULL ENABLE,
+"SERVICE_REF" CHAR(36) NOT NULL ENABLE,
+"POS" NUMBER(12,0) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_REPORT_DS_LAYOUT_LINK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_REPORT_DS_LAYOUT_LINK(
+"REPORT_DS_LAYOUT_LINK_ID" CHAR(36) NOT NULL ENABLE,
+"REPORT_DATASOURCE_ID" CHAR(36) NOT NULL ENABLE,
+"LAYOUT_REF" CHAR(36) NOT NULL ENABLE,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"LABEL" NVARCHAR2(255) NOT NULL ENABLE,
+"DEFAULT_VALUE" NVARCHAR2(1000),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_SCBD') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_SCBD(
+"SCBD_ID" CHAR(36) NOT NULL ENABLE,
+"TITLE" NVARCHAR2(255),
+"REPORT_TITLE" NVARCHAR2(255),
+"ALERT_TITLE" NVARCHAR2(255),
+"LAYOUT_REF" CHAR(36) NOT NULL ENABLE,
+"PARTICIPANT_REF" CHAR(36),
+"CSS_OVERRIDE" NVARCHAR2(255),
+"ENABLED" NCHAR(1),
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_SCBD_RPT_LINK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_SCBD_RPT_LINK(
+"SCBD_RPT_LINK_ID" CHAR(36) NOT NULL ENABLE,
+"SCBD_ID" CHAR(36) NOT NULL ENABLE,
+"REPORT_REF" CHAR(36) NOT NULL ENABLE,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_BLACKOUT_CALENDAR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_BLACKOUT_CALENDAR(
+"CALENDAR_ID" NUMBER(12,0) NOT NULL ENABLE,
+"IS_BLACKED_OUT" NUMBER(12,0),
+"NEXT_START" DATE,
+"NEXT_END" DATE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_HOLIDAY_SCHEDULE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_HOLIDAY_SCHEDULE(
+"HOLIDAY_ID" NUMBER(12,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"HOLIDAY_LIST" NVARCHAR2(2000)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TIME_PERIOD') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TIME_PERIOD(
+"PERIOD_ID" NUMBER(12,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"START_TIME" NCHAR(4),
+"END_TIME" NCHAR(4),
+"EFFECTIVE_DAYS" NVARCHAR2(1024)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TIME_SCHEDULE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TIME_SCHEDULE(
+"SCHEDULE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"EXCLUDE_HOLIDAY" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TIME_SCHEDULE_PERIOD') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TIME_SCHEDULE_PERIOD(
+"SCHEDULE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"PERIOD_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_BPD_SOAPHEADER') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_BPD_SOAPHEADER(
+"BPD_INSTANCE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"DATA" BLOB
+)
+LOB ("DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_TASK_ACTIVITY_MEASURES') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_TASK_ACTIVITY_MEASURES(
+"TASK_MEASURES_ID" NUMBER(15,0) NOT NULL ENABLE,
+"CREATED_BY_BPD_FLOW_OBJECT_ID" NVARCHAR2(128) NOT NULL ENABLE,
+"USER_ID" NUMBER(12,0),
+"COMPLETION_COUNT" NUMBER(8,0) NOT NULL ENABLE,
+"AVG_COMPLETION_TIME" NUMBER(12,0) NOT NULL ENABLE,
+"MIN_COMPLETION_TIME" NUMBER(12,0) NOT NULL ENABLE,
+"MAX_COMPLETION_TIME" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_TASK_MARKERS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_TASK_MARKERS(
+"MARKER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"TASK_ID" NUMBER(12,0),
+"MARKER_TYPE" NUMBER(12,0) NOT NULL ENABLE,
+"CREATOR" NUMBER(12,0) NOT NULL ENABLE,
+"TARGET_USER" NUMBER(12,0) NOT NULL ENABLE,
+"MARKER_COMMENT" BLOB,
+"CREATED_DATE" DATE NOT NULL ENABLE,
+"BPD_INSTANCE_ID" NUMBER(12,0)
+)
+LOB ("MARKER_COMMENT") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_BPD_DOCUMENTS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_BPD_DOCUMENTS(
+"DOC_ID" NUMBER(10,0) NOT NULL ENABLE,
+"BPD_ID" CHAR(36) NOT NULL ENABLE,
+"PARENT_DOC_ID" NUMBER(18,0) NOT NULL ENABLE,
+"DOC_NAME" NVARCHAR2(50) NOT NULL ENABLE,
+"FILENAME" NVARCHAR2(1000) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"FILETYPE" NUMBER(4,0) DEFAULT ' || '''' ||-1 || '''' || ' NOT NULL ENABLE,
+"AUTHOR_ID" NUMBER(18,0) NOT NULL ENABLE,
+"AUTHORED_DTG" DATE NOT NULL ENABLE,
+"VERSION" NUMBER(4,0) NOT NULL ENABLE,
+"CONTENT_TYPE" NVARCHAR2(128),
+"DOCUMENT" BLOB
+)
+LOB ("DESCRIPTION","DOCUMENT") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_BPD_INSTANCE_VARIABLES') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_BPD_INSTANCE_VARIABLES(
+"BPD_INST_VARS_ID" NUMBER(18,0) NOT NULL ENABLE,
+"BPD_INSTANCE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"VARIABLE_NAME" NVARCHAR2(512) NOT NULL ENABLE,
+"ALIAS" NVARCHAR2(512),
+"BOOLEAN_VALUE" NCHAR(1),
+"STRING_VALUE" NVARCHAR2(512),
+"INT_VALUE" NUMBER(17,0),
+"DEC_VALUE" NUMBER(17,2),
+"DATE_VALUE" DATE,
+"VARIABLE_TYPE" NVARCHAR2(64) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_BPD_INSTANCE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_BPD_INSTANCE(
+"BPD_INSTANCE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"INSTANCE_NAME" NVARCHAR2(512),
+"BPD_REF" NUMBER(19,0) NOT NULL ENABLE,
+"CACHED_BPD_VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"CREATE_DATETIME" DATE NOT NULL ENABLE,
+"DUE_DATE" DATE,
+"LAST_MODIFIED_DATETIME" DATE NOT NULL ENABLE,
+"SAVE_SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"EXECUTION_STATUS" NUMBER(12,0) NOT NULL ENABLE,
+"ERROR" NCLOB,
+"ERROR_STACK_TRACE" NCLOB,
+"SHAREPOINT_SITE_URL" NVARCHAR2(512),
+"TIP" NCHAR(1) NOT NULL ENABLE,
+"SNAPSHOT_ID" CHAR(36) NOT NULL ENABLE,
+"AT_RISK_DATE" DATE,
+"ATTACHMENT_STORE" NUMBER(4,0) DEFAULT ' || '''' ||0 || '''' || ' NOT NULL ENABLE,
+"CLOSE_DATETIME" DATE,
+"GROUP_ID" NUMBER(12,0),
+"CASE_FOLDER_ID" NVARCHAR2(41),
+"CASE_FOLDER_SERVER_NAME" NVARCHAR2(20),
+"SECURITY_FOLDER_ID" NVARCHAR2(40),
+"STARTING_DOCUMENT_ID" NVARCHAR2(128),
+"STARTING_DOCUMENT_SERVER_NAME" NVARCHAR2(64),
+"PARENT_CASE_ID" NVARCHAR2(40),
+"PARENT_ACTIVITY_ID" NVARCHAR2(40),
+"WORKFLOW_APPLICATION" NVARCHAR2(32),
+"OWNER_GROUP_ID" NUMBER(12,0),
+"DOCUMENTS_STATE" NUMBER(1,0) DEFAULT ' || '''' ||0 || '''' || ' NOT NULL ENABLE,
+"STARTER_ID" NUMBER(12,0),
+"PROJECT_ID" CHAR(36),
+"BPD_NAME" NVARCHAR2(64),
+"SBO_SYNC_ENABLED" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"CAN_DELETE_INSTANCE" NCHAR(1) DEFAULT ' || '''' ||'T' || '''' || ' NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NUMBER(12,0),
+"FIELD3" CHAR(36),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)
+LOB ("ERROR","ERROR_STACK_TRACE") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_BPD_INSTANCE_DATA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_BPD_INSTANCE_DATA(
+"BPD_INSTANCE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"DATA" BLOB
+)
+LOB ("DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_BPD_NOTIFICATION') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_BPD_NOTIFICATION(
+"BPD_NOTIFICATION_ID" NUMBER(12,0) NOT NULL ENABLE,
+"BPD_INSTANCE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"STATUS" NUMBER(12,0) NOT NULL ENABLE,
+"ERROR" NCLOB,
+"ERROR_STACK_TRACE" NCLOB,
+"DATA" BLOB,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NUMBER(12,0),
+"FIELD3" CHAR(36),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)
+LOB ("ERROR","ERROR_STACK_TRACE","DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_BPD_INSTANCE_COMMENT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_BPD_INSTANCE_COMMENT(
+"COMMENT_ID" NUMBER(4,0) NOT NULL ENABLE,
+"BPD_INSTANCE_ID" NUMBER(18,0),
+"USER_ID" NUMBER(18,0),
+"DATE_TIME" DATE,
+"SUBJECT" NVARCHAR2(255),
+"COMMENT" NCLOB
+)
+LOB ("COMMENT") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_BPD_INSTANCE_DOCUMENTS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_BPD_INSTANCE_DOCUMENTS(
+"DOC_ID" NUMBER(10,0) NOT NULL ENABLE,
+"BPD_INSTANCE_ID" NUMBER(10,0) NOT NULL ENABLE,
+"PARENT_DOC_ID" NUMBER(18,0) NOT NULL ENABLE,
+"DOC_NAME" NVARCHAR2(50) NOT NULL ENABLE,
+"FILENAME" NVARCHAR2(1000) NOT NULL ENABLE,
+"FILETYPE" NUMBER(4,0) DEFAULT ' || '''' ||-1 || '''' || ' NOT NULL ENABLE,
+"AUTHOR_ID" NUMBER(18,0) NOT NULL ENABLE,
+"AUTHORED_DTG" DATE NOT NULL ENABLE,
+"VERSION" NUMBER(4,0) NOT NULL ENABLE,
+"CONTENT_TYPE" NVARCHAR2(128),
+"DOCUMENT" BLOB,
+"HIDE_IN_PORTAL" NCHAR(1),
+"MIGRATION_STATE" NUMBER(4,0) DEFAULT ' || '''' ||1 || '''' || ' NOT NULL ENABLE,
+"MIGRATION_ERROR" NVARCHAR2(256)
+)
+LOB ("DOCUMENT") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_BPD_INSTANCE_DOC_PROPS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_BPD_INSTANCE_DOC_PROPS(
+"NAME" NVARCHAR2(1000) NOT NULL ENABLE,
+"VALUE" NVARCHAR2(1000),
+"DOC_ID" NUMBER(10,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_BPD_STATUS_CODES') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_BPD_STATUS_CODES(
+"STATUS_ID" NUMBER(4,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(50),
+"CONST_VALUE" NVARCHAR2(50)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_FILE_TYPES') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_FILE_TYPES(
+"FILETYPE_ID" NUMBER(18,0) NOT NULL ENABLE,
+"EXT" NVARCHAR2(10),
+"FILETYPE" NVARCHAR2(50)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_DUR_MSG_RECEIVED') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_DUR_MSG_RECEIVED(
+"MSG_ID" NUMBER(20,0) NOT NULL ENABLE,
+"CREATED_ON" DATE NOT NULL ENABLE,
+"UCA_ID" CHAR(36) NOT NULL ENABLE,
+"VALUES_DATA" BLOB,
+"CORRELATION_KEY" NUMBER(12,0) NOT NULL ENABLE,
+"CORRELATION_TYPE" NUMBER(2,0) NOT NULL ENABLE,
+"CORRELATION_STRING" NVARCHAR2(255),
+"CORRELATION_BLOB" BLOB,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NUMBER(12,0),
+"FIELD3" CHAR(36),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)
+LOB ("VALUES_DATA","CORRELATION_BLOB") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_INST_MSG_INCL') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_INST_MSG_INCL(
+"ID" NUMBER(20,0) NOT NULL ENABLE,
+"CREATED_ON" DATE NOT NULL ENABLE,
+"BPD_INSTANCE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"DURABLE" NCHAR(1) DEFAULT ' || '''' ||'T' || '''' || ' NOT NULL ENABLE,
+"EVENT_ID" CHAR(36),
+"SUB_EVENT_ID" NUMBER(12,0),
+"UCA_ID" CHAR(36) NOT NULL ENABLE,
+"CORRELATION_KEY" NUMBER(12,0) NOT NULL ENABLE,
+"CORRELATION_TYPE" NUMBER(2,0) NOT NULL ENABLE,
+"CORRELATION_STRING" NVARCHAR2(255),
+"CORRELATION_BLOB" BLOB,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NUMBER(12,0),
+"FIELD3" CHAR(36),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)
+LOB ("CORRELATION_BLOB") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_INST_MSG_EXCL') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_INST_MSG_EXCL(
+"ID" NUMBER(20,0) NOT NULL ENABLE,
+"CREATED_ON" DATE NOT NULL ENABLE,
+"BPD_INSTANCE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"EVENT_ID" CHAR(36),
+"SUB_EVENT_ID" NUMBER(12,0),
+"MSG_ID" NUMBER(20,0) NOT NULL ENABLE,
+"WAIT_ID" NUMBER(20,0),
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NUMBER(12,0),
+"FIELD3" CHAR(36),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_RUNTIME_ERROR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_RUNTIME_ERROR(
+"ERROR_ID" NUMBER(12,0) NOT NULL ENABLE,
+"TIP" NCHAR(1) NOT NULL ENABLE,
+"SNAPSHOT_ID" CHAR(36),
+"ERROR_MESSAGE" NCLOB,
+"LOGGED" DATE NOT NULL ENABLE,
+"BPD_INSTANCE_ID" NUMBER(12,0),
+"TASK_ID" NUMBER(12,0),
+"SOURCE_REF" NUMBER(19,0) NOT NULL ENABLE,
+"SOURCE_GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"SOURCE_NAME" NVARCHAR2(64),
+"SOURCE_ITEM" NVARCHAR2(64),
+"SOURCE_SUBITEM" NVARCHAR2(64),
+"JAVA_TRACE" BLOB,
+"JS_TRACE" BLOB,
+"TW_TRACE" BLOB,
+"ERROR_CODE" NVARCHAR2(220),
+"ERROR_DATA" BLOB,
+"FAULT_STYLE" NUMBER(2,0) DEFAULT ' || '''' ||0 || '''' || ' NOT NULL ENABLE
+)
+LOB ("ERROR_MESSAGE","JAVA_TRACE","JS_TRACE","TW_TRACE","ERROR_DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_SLA_PROCESSING') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_SLA_PROCESSING(
+"SLA_GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VIOLATION_LEVEL" NUMBER(31,6) NOT NULL ENABLE,
+"VALUE" NUMBER(30,10) NOT NULL ENABLE,
+"NI_VIOLATION_LEVEL" NUMBER(31,6) NOT NULL ENABLE,
+"NI_VALUE" NUMBER(30,10) NOT NULL ENABLE,
+"END_TIME" DATE NOT NULL ENABLE,
+"TIME_LOWER_BOUND" DATE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_STORED_SYMBOL_TABLE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_STORED_SYMBOL_TABLE(
+"SYMBOL_TABLE_ID" CHAR(36) NOT NULL ENABLE,
+"TASK_ID" NUMBER(12,0) NOT NULL ENABLE,
+"STORED_SYMBOL_TABLE" BLOB
+)
+LOB ("STORED_SYMBOL_TABLE") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TASK_STATUS_CODES') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TASK_STATUS_CODES(
+"STATUS_ID" NUMBER(4,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(50),
+"STATUS_VALUE" NVARCHAR2(2)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TASK_EXTACT_DATA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TASK_EXTACT_DATA(
+"TASK_EXTACT_DATA_ID" NUMBER(12,0) NOT NULL ENABLE,
+"TASK_ID" NUMBER(12,0) NOT NULL ENABLE,
+"EXTERNAL_ACTIVITY_REF" NUMBER(19,0),
+"DATA" BLOB
+)
+LOB ("DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TASK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TASK(
+"TASK_ID" NUMBER(12,0) NOT NULL ENABLE,
+"TIP" NCHAR(1) NOT NULL ENABLE,
+"SNAPSHOT_ID" CHAR(36),
+"USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"GROUP_ID" NUMBER(12,0) NOT NULL ENABLE,
+"PARTICIPANT_ID" CHAR(36),
+"MANAGERS_GROUP_ID" NUMBER(12,0),
+"EXPERT_PARTICIPANT_REF" NUMBER(19,0),
+"STATUS" NVARCHAR2(2) NOT NULL ENABLE,
+"PRIORITY_ID" NUMBER(12,0) NOT NULL ENABLE,
+"DUE_DATE" DATE NOT NULL ENABLE,
+"DUE_TIME" DATE,
+"AT_RISK_DATE" DATE,
+"SUBJECT" NVARCHAR2(255) NOT NULL ENABLE,
+"RCVD_DATETIME" DATE NOT NULL ENABLE,
+"RCVD_FROM" NUMBER(12,0) NOT NULL ENABLE,
+"RCVD_TASK_ID" NUMBER(12,0),
+"COLLABORATION" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"SENT_DATETIME" DATE,
+"READ_DATETIME" DATE,
+"CLOSE_DATETIME" DATE,
+"CLOSE_BY" NUMBER(12,0),
+"ORIG_TASK_ID" NUMBER(12,0),
+"START_PROCESS_REF" NUMBER(19,0),
+"CACHED_PROCESS_VERSION_ID" CHAR(36),
+"GROUP_ID_TYPE" NUMBER(12,0),
+"EXECUTION_STATUS" NUMBER(12,0),
+"BPD_INSTANCE_ID" NUMBER(12,0),
+"CREATED_BY_BPD_REF" NUMBER(19,0),
+"CACHED_CBB_VERSION_ID" CHAR(36),
+"CREATED_BY_BPD_FLOW_OBJECT_ID" NVARCHAR2(128),
+"ASSUMER_ID" NUMBER(12,0),
+"ATTACHED_FORM_REF" NUMBER(19,0),
+"CACHED_FORM_VERSION_ID" CHAR(36),
+"ATTACHED_EXT_ACTIVITY_REF" NUMBER(19,0),
+"CACHED_EXTACT_VERSION_ID" CHAR(36),
+"SHAREPOINT_DISCUSSION_URL" NVARCHAR2(512),
+"ACTIVITY_NAME" NVARCHAR2(128),
+"ACTIVITY_TASK_TYPE" NUMBER(12,0),
+"LAST_MODIFIED_DATETIME" TIMESTAMP,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NUMBER(12,0),
+"FIELD3" CHAR(36),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TASK_IPF_DATA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TASK_IPF_DATA(
+"TASK_INFOPATHFORM_DATA_ID" NUMBER(12,0) NOT NULL ENABLE,
+"TASK_ID" NUMBER(12,0) NOT NULL ENABLE,
+"INFOPATH_FORM_REF" CHAR(36),
+"DATA" BLOB
+)
+LOB ("DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TASK_FILE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TASK_FILE(
+"TASK_ID" NUMBER(12,0) NOT NULL ENABLE,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"FILE_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TASK_ADDR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TASK_ADDR(
+"TASK_ADDR_ID" NUMBER(12,0) NOT NULL ENABLE,
+"TASK_ID" NUMBER(12,0) NOT NULL ENABLE,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"SEND_TO_ID" NVARCHAR2(255) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TASK_NARR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TASK_NARR(
+"TASK_NARR_ID" NUMBER(12,0) NOT NULL ENABLE,
+"TASK_ID" NUMBER(12,0) NOT NULL ENABLE,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"NARRATIVE" BLOB,
+"NARRATIVE_RAW" BLOB,
+"I18N_NARRATIVES" BLOB,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NUMBER(12,0),
+"FIELD3" CHAR(36),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)
+LOB ("NARRATIVE","NARRATIVE_RAW","I18N_NARRATIVES") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TASK_ACTION') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TASK_ACTION(
+"TASK_ACTION_ID" CHAR(36) NOT NULL ENABLE,
+"CAN_CHANGE_DUEDATE" NCHAR(1),
+"DUE_IN_OPTION" NUMBER(2,0) NOT NULL ENABLE,
+"DUE_DATE_INCR_DATA" NVARCHAR2(255),
+"DUE_DATE_FIXED_DATA" NVARCHAR2(255),
+"DUE_DATE_INCR_TYPE" NUMBER(1,0) NOT NULL ENABLE,
+"DUE_DATE_SPECIFIC_DATE" NVARCHAR2(255),
+"IS_CHANGE_STATUS_ACTIVE" NCHAR(1),
+"NEW_STATUS_OPTION" NUMBER(2,0) NOT NULL ENABLE,
+"NEW_STATUS" NVARCHAR2(2),
+"IS_PRIORITY_ACTIVE" NCHAR(1) NOT NULL ENABLE,
+"PRIORITY_OPTION" NUMBER(2,0) NOT NULL ENABLE,
+"NEW_PRIORITY_ID" NUMBER(12,0),
+"NEW_PRIORITY_SCRIPT" NVARCHAR2(255),
+"IS_SUBJECT_ACTIVE" NCHAR(1) NOT NULL ENABLE,
+"SUBJECT_OPTION" NUMBER(2,0) NOT NULL ENABLE,
+"SUBJECT_SCRIPT" NVARCHAR2(255),
+"IS_NARRATIVE_ACTIVE" NCHAR(1) NOT NULL ENABLE,
+"NARRATIVE_OPTION" NUMBER(2,0) NOT NULL ENABLE,
+"NARRATIVE_SCRIPT" NCLOB,
+"TIME_SCHEDULE_NAME" NVARCHAR2(64) DEFAULT ' || '''' ||'24X7' || '''' || ',
+"HOLIDAY_SCHEDULE_NAME" NVARCHAR2(64) DEFAULT ' || '''' ||'default US holiday' || '''' || ',
+"TIMEZONE" NVARCHAR2(64) DEFAULT ' || '''' ||'America/Chicago' || '''' || ',
+"IS_IGNORE_EXCEPTION" NCHAR(1) NOT NULL ENABLE,
+"SUSPEND_PROCESS" NCHAR(1),
+"IS_ACTION_OTHER_TASK" NCHAR(1),
+"OTHER_TASK_ID" NVARCHAR2(64),
+"IS_REASSIGN_ACTIVE" NCHAR(1),
+"REASSIGN_OPTION" NUMBER(2,0) NOT NULL ENABLE,
+"REASSIGN_TO" NVARCHAR2(255),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("NARRATIVE_SCRIPT") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TASK_EXECUTION_CONTEXT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TASK_EXECUTION_CONTEXT(
+"TASK_EXECUTION_CONTEXT_ID" NUMBER(12,0) NOT NULL ENABLE,
+"TASK_ID" NUMBER(12,0) NOT NULL ENABLE,
+"EXECUTION_CONTEXT" BLOB
+)
+LOB ("EXECUTION_CONTEXT") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_MIGRATION_STATUS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_MIGRATION_STATUS(
+"EVENT" NUMBER(4,0) NOT NULL ENABLE,
+"STATUS" NUMBER(4,0) NOT NULL ENABLE,
+"EVENT_COUNT" NUMBER(8,0) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"DETAILS" NVARCHAR2(256)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_BPD_INSTANCE_MEASURES') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_BPD_INSTANCE_MEASURES(
+"MEASURES_ID" CHAR(36) NOT NULL ENABLE,
+"SNAPSHOT_ID" CHAR(36) NOT NULL ENABLE,
+"BPD_REF" NUMBER(19,0) NOT NULL ENABLE,
+"BPD_FLOW_OBJECT_ID" NVARCHAR2(128),
+"AVG_TIME_TO_COMPLETION" NUMBER(12,0) NOT NULL ENABLE,
+"COMPLETION_COUNT" NUMBER(8,0) NOT NULL ENABLE,
+"IS_POTENTIALLY_IN_LOOP" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || '
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_SYNCHRONIZE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_SYNCHRONIZE(
+"IDENTIFIER" NVARCHAR2(256) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_BPD_ACTIVITY_INSTANCE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_BPD_ACTIVITY_INSTANCE(
+"INSTANCE_ID" CHAR(36) NOT NULL ENABLE,
+"BPD_FLOW_OBJECT_ID" NVARCHAR2(128) NOT NULL ENABLE,
+"PARENT_NODE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"BPD_INSTANCE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(128) NOT NULL ENABLE,
+"EXECUTION_STATE" NUMBER(12,0) NOT NULL ENABLE,
+"TASK_TYPE" NUMBER(12,0) NOT NULL ENABLE,
+"TASK_ID" NUMBER(12,0),
+"REQUIRED" NCHAR(1) NOT NULL ENABLE,
+"REPEATABLE" NCHAR(1) NOT NULL ENABLE,
+"HIDDEN" NCHAR(1) NOT NULL ENABLE,
+"EXECUTION_TYPE" NUMBER(12,0) NOT NULL ENABLE,
+"OPTION_TYPE" NUMBER(12,0) NOT NULL ENABLE,
+"PRECONDITION_TYPE" NUMBER(12,0) NOT NULL ENABLE,
+"OWNER_GROUP_ID" NUMBER(12,0),
+"START_DATE" DATE,
+"END_DATE" DATE,
+"LAST_MODIFIED_DATETIME" DATE NOT NULL ENABLE,
+"ENABLING_DOCUMENT_ID" NVARCHAR2(128),
+"EVALUATED_NARRATIVES" BLOB,
+"ERRORS" BLOB,
+"ENABLDOC_SERVER_NAME" NVARCHAR2(64),
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NUMBER(12,0),
+"FIELD3" CHAR(36),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)
+LOB ("EVALUATED_NARRATIVES","ERRORS") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_BPD_INSTANCE_CORRELATION') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_BPD_INSTANCE_CORRELATION(
+"CORRELATION_PK" NUMBER(12,0) NOT NULL ENABLE,
+"BPD_ID" CHAR(36) NOT NULL ENABLE,
+"BPD_INSTANCE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CORRELATION_NAME" NVARCHAR2(512) NOT NULL ENABLE,
+"CORRELATION_VALUE" NCLOB NOT NULL ENABLE,
+"HASH_CODE" CHAR(32) NOT NULL ENABLE,
+"CORRELATION_TYPE" NUMBER(2,0) DEFAULT ' || '''' ||1 || '''' || ' NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NUMBER(12,0),
+"FIELD3" CHAR(36),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)
+LOB ("CORRELATION_VALUE") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_BPD_INSTANCE_EXT_DATA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_BPD_INSTANCE_EXT_DATA(
+"BPD_EXTENDED_DATA_ID" NUMBER(12,0) NOT NULL ENABLE,
+"BPD_INSTANCE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"DATA" BLOB,
+"TYPE" NUMBER(2,0) NOT NULL ENABLE
+)
+LOB ("DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_RELATIONSHIP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_RELATIONSHIP(
+"INSTANCE_ID" CHAR(36) NOT NULL ENABLE,
+"SOURCE_OBJECT_LOCAL_ID" NUMBER(12,0) NOT NULL ENABLE,
+"SOURCE_ID_TYPE" NUMBER(6,0) NOT NULL ENABLE,
+"TARGET_OBJECT_LOCAL_ID" NUMBER(12,0) NOT NULL ENABLE,
+"TARGET_ID_TYPE" NUMBER(6,0) NOT NULL ENABLE,
+"TYPE" NUMBER(4,0) NOT NULL ENABLE,
+"CREATED_BY_USER_ID" NUMBER(12,0),
+"DESCRIPTION" NCLOB,
+"CREATED_DATE" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_DATETIME" DATE NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NUMBER(12,0),
+"FIELD3" CHAR(36),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TASK_CTX_HISTORY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_TASK_CTX_HISTORY(
+"TASK_ID" NUMBER(12,0) NOT NULL ENABLE,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" TIMESTAMP NOT NULL ENABLE,
+"EXECUTION_CONTEXT" BLOB
+)
+LOB ("EXECUTION_CONTEXT") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_TMP_IDS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  GLOBAL TEMPORARY TABLE bpmdb_owner.LSW_TMP_IDS(
+"ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_RWF_INSTANCE_DATA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_RWF_INSTANCE_DATA(
+"BPD_INSTANCE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64),
+"DESCRIPTION" NCLOB,
+"STATUS" NUMBER(2,0),
+"PO_ID" CHAR(36),
+"LIVE_ID" CHAR(36),
+"TASK_ID" NUMBER(12,0),
+"EXECUTION_STATUS" NUMBER(12,0) NOT NULL ENABLE,
+"TASK_OWNER" NUMBER(12,0),
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NUMBER(12,0),
+"FIELD3" CHAR(36),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_HISTORICAL_DATA_PLAYBACK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_HISTORICAL_DATA_PLAYBACK(
+"BPD_INSTANCE_ID" NUMBER(31,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('WL_WLSTORE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.WL_WLSTORE(
+"ID" NUMBER(30,0) NOT NULL ENABLE,
+"TYPE" NUMBER(30,0),
+"HANDLE" NUMBER(30,0),
+"RECORD" LONG RAW
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_PRI_KEY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_PRI_KEY(
+"TABLE_ID" NVARCHAR2(255) NOT NULL ENABLE,
+"HIGH_KEY" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_SYSTEM') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_SYSTEM(
+"PROPKEY" NVARCHAR2(256) NOT NULL ENABLE,
+"PROPVALUE" NVARCHAR2(256) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_SYSTEM_SCHEMA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_SYSTEM_SCHEMA(
+"PROPNAME" NVARCHAR2(50) NOT NULL ENABLE,
+"PROPVALUE" NVARCHAR2(50)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_LEGACY_ID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_LEGACY_ID(
+"LEGACY_ID" NUMBER(19,0) NOT NULL ENABLE,
+"UUID" CHAR(36) NOT NULL ENABLE,
+"PO_TYPE" NUMBER(8,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_LOCK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_LOCK(
+"LOCK_ID" NVARCHAR2(128) NOT NULL ENABLE,
+"DESCRIPTION" NVARCHAR2(256)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_ASYNC_OP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_ASYNC_OP(
+"OP_ID" NUMBER(12,0) NOT NULL ENABLE,
+"OWNER" NVARCHAR2(128) NOT NULL ENABLE,
+"STATE" NUMBER(2,0) DEFAULT ' || '''' ||0 || '''' || ' NOT NULL ENABLE,
+"LAST_STATE_MODIFIED" TIMESTAMP,
+"RESULT" NCLOB
+)
+LOB ("RESULT") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('DBUPGRADE_PROGRESS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.DBUPGRADE_PROGRESS(
+"TRANSACTIONID" NVARCHAR2(200) NOT NULL ENABLE,
+"TRANSACTIONTIME" NVARCHAR2(200),
+"PHASENAME" NVARCHAR2(200)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_TASK_INDEX') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_TASK_INDEX(
+"TASK_ID" NUMBER(12,0) NOT NULL ENABLE,
+"INSTANCE_ID" NUMBER(12,0),
+"MAJOR_EVENT_DATETIME" TIMESTAMP,
+"MINOR_EVENT_DATETIME" TIMESTAMP,
+"TASK_DATA" BLOB,
+"DELETED_DATETIME" TIMESTAMP
+)
+LOB ("TASK_DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_TASK_INDEX_JOB') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_TASK_INDEX_JOB(
+"INDEX_ID" CHAR(36) NOT NULL ENABLE,
+"INDEX_START_TIME" TIMESTAMP NOT NULL ENABLE,
+"INDEX_END_TIME" TIMESTAMP,
+"INDEX_LAST_PURGE_TIME" TIMESTAMP,
+"LAST_RETENTION_DAYS" NUMBER(12,0),
+"RECORDS_INDEXED" NUMBER(12,0),
+"RESULT_VALUE" NVARCHAR2(256)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_SRCH_INDEX_SCHEMA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_SRCH_INDEX_SCHEMA(
+"BPDID" NCHAR(36) NOT NULL ENABLE,
+"FIELD_NAME" NVARCHAR2(512) NOT NULL ENABLE,
+"FIELD_NAME_EXTERNAL" NVARCHAR2(512),
+"FIELD_TYPE" NVARCHAR2(20),
+"FIELD_TYPE_EXTERNAL" NVARCHAR2(20),
+"PUBLIC_FLAG" NUMBER(2,0),
+"BUSINESS_DATA" NUMBER(2,0),
+"LAST_UPDATED" TIMESTAMP NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_INSTANCE_INDEX') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_INSTANCE_INDEX(
+"INSTANCE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"MAJOR_EVENT_DATETIME" TIMESTAMP,
+"MINOR_EVENT_DATETIME" TIMESTAMP,
+"INSTANCE_DATA" BLOB,
+"DELETED_DATETIME" TIMESTAMP
+)
+LOB ("INSTANCE_DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_INVOKE_UCA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_INVOKE_UCA(
+"INVOKE_UCA_ID" CHAR(36) NOT NULL ENABLE,
+"IS_UCA_ACTIVE" NCHAR(1),
+"UCA_REF" CHAR(36),
+"TRIG_IN_SS_CTX" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_UCA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_UCA(
+"UCA_ID" CHAR(36) NOT NULL ENABLE,
+"PROCESS_REF" CHAR(36) NOT NULL ENABLE,
+"SCHED_TYPE" NUMBER(12,0),
+"SCHED_EVENT_NAME" NVARCHAR2(80),
+"QUEUE" NUMBER(12,0),
+"IS_ENABLED" NCHAR(1),
+"SHARED_SYMBOL_TABLE_ID" NUMBER(12,0),
+"MONTH_LIST" NVARCHAR2(24),
+"FREQ_TYPE" NUMBER(12,0),
+"DAY_LIST" NVARCHAR2(78),
+"HOUR_LIST" NVARCHAR2(48),
+"MINUTE_LIST" NVARCHAR2(120),
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"UCA_EVENT_TYPE_REF" NUMBER(2,0),
+"VARIABLE_REF" CHAR(36),
+"IMPLEMENTATION_TYPE" NVARCHAR2(80),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_UCA_PARM') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_UCA_PARM(
+"UCA_PARM_ID" CHAR(36) NOT NULL ENABLE,
+"UCA_ID" CHAR(36) NOT NULL ENABLE,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"PARM_NAME" NVARCHAR2(255) NOT NULL ENABLE,
+"PARM_VALUE" NVARCHAR2(1000),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_UCA_BLACKOUT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_UCA_BLACKOUT(
+"BLACKOUT_ID" CHAR(36) NOT NULL ENABLE,
+"FROM_DATETIME" DATE NOT NULL ENABLE,
+"TO_DATETIME" DATE NOT NULL ENABLE,
+"DATE_TYPE" NCHAR(1) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_UCA_EVENT_TYPE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_UCA_EVENT_TYPE(
+"UCA_EVENT_TYPE_ID" NUMBER(2,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_USR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_USR(
+"USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"USER_NAME" NVARCHAR2(50) NOT NULL ENABLE,
+"PASSWD" NVARCHAR2(250) NOT NULL ENABLE,
+"FULL_NAME" NVARCHAR2(50) NOT NULL ENABLE,
+"IS_DISABLED" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"LAST_LOGIN_DATETIME" DATE,
+"OLD_PASSWORDS" NCLOB
+)
+LOB ("OLD_PASSWORDS") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_USR_XREF') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_USR_XREF(
+"USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"USER_NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"FULL_NAME" NVARCHAR2(255),
+"PROVIDER" NVARCHAR2(256),
+"USER_STATE" NUMBER(2,0) DEFAULT ' || '''' ||0 || '''' || ' NOT NULL ENABLE,
+"LAST_STATE_MODIFIED" TIMESTAMP
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_USR_GRP_XREF') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_USR_GRP_XREF(
+"GROUP_ID" NUMBER(12,0) NOT NULL ENABLE,
+"GROUP_NAME" NVARCHAR2(256) NOT NULL ENABLE,
+"DISPLAY_NAME" NVARCHAR2(256) NOT NULL ENABLE,
+"PARENT_GROUP_ID" NUMBER(12,0),
+"GROUP_TYPE" NUMBER(2,0) DEFAULT ' || '''' ||0 || '''' || ' NOT NULL ENABLE,
+"DESCRIPTION" NVARCHAR2(255),
+"GROUP_STATE" NUMBER(2,0) DEFAULT ' || '''' ||0 || '''' || ' NOT NULL ENABLE,
+"PARTICIPANT_ID" CHAR(36)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_USR_GRP_MEM_XREF') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_USR_GRP_MEM_XREF(
+"USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"GROUP_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_GRP_GRP_MEM_XREF') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_GRP_GRP_MEM_XREF(
+"GROUP_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CONTAINER_GROUP_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_GRP_GRP_MEM_EXPLODED_XREF') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_GRP_GRP_MEM_EXPLODED_XREF(
+"GROUP_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CONTAINER_GROUP_ID" NUMBER(12,0) NOT NULL ENABLE,
+"MEM_PATH" NVARCHAR2(1024) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_USR_ASSUME') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_USR_ASSUME(
+"USR_ASSUME_ID" NUMBER(12,0) NOT NULL ENABLE,
+"USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"ASSUMED_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"START_DATETIME" DATE,
+"END_DATETIME" DATE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_ACCESS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_ACCESS(
+"USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"ASSUMED_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"START_DATETIME" DATE,
+"END_DATETIME" DATE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_DYNAMIC_GROUP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_DYNAMIC_GROUP(
+"DYNAMIC_GROUP_ID" NUMBER(12,0) NOT NULL ENABLE,
+"NAME" NVARCHAR2(128) NOT NULL ENABLE,
+"CONSTRAINTS_SET_OPERATOR" NUMBER(12,0) NOT NULL ENABLE,
+"SNAPSHOT_ID" CHAR(36),
+"BRANCH_ID" CHAR(36),
+"TIP" NCHAR(1) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_DYNAMIC_GROUP_CONSTRAINT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_DYNAMIC_GROUP_CONSTRAINT(
+"DYNAMIC_GROUP_CONSTRAINT_ID" NUMBER(18,0) NOT NULL ENABLE,
+"DYNAMIC_GROUP_ID" NUMBER(12,0) NOT NULL ENABLE,
+"MATCH_TYPE" NUMBER(12,0) NOT NULL ENABLE,
+"CONSTRAINT_TYPE" NUMBER(12,0) NOT NULL ENABLE,
+"LIBRARY_ELEMENT_TYPE" NUMBER(10,0),
+"LIBRARY_ELEMENT_REF" NUMBER(19,0),
+"LIBRARY_ELEMENT_ID" CHAR(36),
+"VALUE" NVARCHAR2(1000)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_DYNAMIC_GROUP_DEPENDENCY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_DYNAMIC_GROUP_DEPENDENCY(
+"PARENT_GROUP_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CHILD_GROUP_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_USR_ATTR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_USR_ATTR(
+"USER_ATTR_ID" NUMBER(12,0) NOT NULL ENABLE,
+"USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"ATTR_VALUE" NVARCHAR2(1000),
+"ATTR_NUMBER_VALUE" NUMBER(31,6),
+"USER_ATTR_DEF_VALUE_ID" CHAR(36),
+"USER_ATTR_DEF_ID" CHAR(36) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_USER_ATTR_DEF_VALUES') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_USER_ATTR_DEF_VALUES(
+"USER_ATTR_DEF_VALUE_ID" CHAR(36) NOT NULL ENABLE,
+"USER_ATTRIBUTE_DEF_ID" CHAR(36) NOT NULL ENABLE,
+"VALUE" NVARCHAR2(100) NOT NULL ENABLE,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_USER_ATTRIBUTE_DEF') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_USER_ATTRIBUTE_DEF(
+"USER_ATTRIBUTE_ID" CHAR(36) NOT NULL ENABLE,
+"CLASS_REF" CHAR(36) NOT NULL ENABLE,
+"STORAGE_SOURCE" NUMBER(12,0) DEFAULT ' || '''' ||0 || '''' || ' NOT NULL ENABLE,
+"STORAGE_PROVIDER" NUMBER(12,0),
+"STORAGE_PROVIDER_ATTRIBUTE" NVARCHAR2(255),
+"STORAGE_SERVICE" NUMBER(12,0),
+"VALUES_SOURCE" NUMBER(12,0),
+"VALUES_SERVICE" NUMBER(12,0),
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_RT_USER_ATTRIBUTE_DEF') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_RT_USER_ATTRIBUTE_DEF(
+"USER_ATTRIBUTE_ID" CHAR(36) NOT NULL ENABLE,
+"SNAPSHOT_ID" CHAR(36) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_PARTICIPANT_GROUP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_PARTICIPANT_GROUP(
+"SNAPSHOT_ID" CHAR(36),
+"BRANCH_ID" CHAR(36),
+"TIP" NCHAR(1) NOT NULL ENABLE,
+"PARTICIPANT_ID" CHAR(36) NOT NULL ENABLE,
+"CACHED_PART_VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"GROUP_ID" NUMBER(12,0) NOT NULL ENABLE,
+"HIDDEN" NCHAR(1) NOT NULL ENABLE,
+"ENABLE_AUTOMATIC_REFRESH" NCHAR(1) DEFAULT ' || '''' ||'T' || '''' || ',
+"MANAGERS_NAME" NVARCHAR2(64),
+"MANAGERS_GROUP_ID" NUMBER(12,0),
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NUMBER(12,0),
+"FIELD3" CHAR(36),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_PARTICIPANT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_PARTICIPANT(
+"PARTICIPANT_ID" CHAR(36) NOT NULL ENABLE,
+"COST" NUMBER(12,2) DEFAULT ' || '''' ||10.0 || '''' || ' NOT NULL ENABLE,
+"CURRENCY_CODE" NCHAR(3),
+"PARTICIPANT_DEFINITION" NVARCHAR2(1000),
+"SIMULATION_GROUP_SIZE" NUMBER(12,0) NOT NULL ENABLE,
+"CAPACITY_TYPE" NUMBER(12,0),
+"DEFINITION_TYPE" NUMBER(12,0),
+"PERCENT_AVAILABLE" NUMBER(12,2),
+"PERCENT_EFFICIENCY" NUMBER(12,2),
+"IMAGE" NVARCHAR2(1024),
+"SERVICE_REF" CHAR(36),
+"MANAGERS_REF" CHAR(36),
+"DATA" BLOB,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"JSON_DATA" BLOB,
+"EXTERNAL_ID" NVARCHAR2(128)
+)
+LOB ("DATA","DESCRIPTION","JSON_DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_ACL_ENTRY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_ACL_ENTRY(
+"ACL_ENTRY_ID" NUMBER(12,0) NOT NULL ENABLE,
+"USER_ID" NUMBER(12,0),
+"GROUP_ID" NUMBER(12,0),
+"PO_TYPE" NUMBER(8,0) NOT NULL ENABLE,
+"PO_ID" CHAR(36) NOT NULL ENABLE,
+"MASK" NUMBER(19,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_FAVORITE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_FAVORITE(
+"FAVORITE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"GROUP_ID" NUMBER(12,0),
+"NAME" NVARCHAR2(1000) NOT NULL ENABLE,
+"EFFECTIVE_DATE" DATE,
+"SNAPSHOT_ID" CHAR(36),
+"TIP" NCHAR(1),
+"BRANCH_ID" CHAR(36),
+"ITEM_TYPE" NUMBER(10,0) NOT NULL ENABLE,
+"ITEM_REF" NUMBER(19,0),
+"ITEM_ID" CHAR(36),
+"EXPOSED_SERVICE_TYPE" NUMBER(10,0),
+"EXPOSED_PROCESS_TYPE" NUMBER(10,0),
+"CACHED_PROCESS_VERSION_ID" CHAR(36),
+"CACHED_BPD_VERSION_ID" CHAR(36),
+"CACHED_REPORT_VERSION_ID" CHAR(36),
+"CACHED_SCBD_VERSION_ID" CHAR(36),
+"CACHED_EPV_VERSION_ID" CHAR(36),
+"CACHED_UCA_VERSION_ID" CHAR(36),
+"CACHED_WS_VERSION_ID" CHAR(36),
+"CACHED_SLA_VERSION_ID" CHAR(36),
+"CACHED_EVENT_SUB_VERSION_ID" CHAR(36),
+"EVENT_SOURCE_ID" NVARCHAR2(128),
+"ITEM_LABEL" NVARCHAR2(255),
+"ENABLED" NCHAR(1) DEFAULT ' || '''' ||'T' || '''' || ' NOT NULL ENABLE,
+"STARTABLE_BPD_NO_NONE_START" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NUMBER(12,0),
+"FIELD3" CHAR(36),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_FAVORITE_ADDITIONAL_INFO') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_FAVORITE_ADDITIONAL_INFO(
+"FAV_ADDITIONAL_INFO_ID" NUMBER(12,0) NOT NULL ENABLE,
+"INFO_TYPE" NUMBER(2,0) NOT NULL ENABLE,
+"FAVORITE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"EVENT_SOURCE_ID" NVARCHAR2(128),
+"SERVER_NAME" NVARCHAR2(128),
+"INFO" NVARCHAR2(850),
+"INCLUDE_SUB_TYPES" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NVARCHAR2(128),
+"FIELD3" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_USR_AVATAR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_USR_AVATAR(
+"USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"USER_AVATAR_IMAGE" BLOB,
+"LAST_UPDATE" TIMESTAMP
+)
+LOB ("USER_AVATAR_IMAGE") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_USR_RUNTIME_PROPS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_USR_RUNTIME_PROPS(
+"USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"USER_NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"ONLINE_STATUS" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"ONLINE_SERVER_ID" NVARCHAR2(255)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_SNAPSHOT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_SNAPSHOT(
+"SNAPSHOT_ID" CHAR(36) NOT NULL ENABLE,
+"REPOSITORY_BRANCH_ID" CHAR(36),
+"CREATED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" TIMESTAMP NOT NULL ENABLE,
+"NAME" NVARCHAR2(128),
+"ACRONYM" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"BRANCH_ID" CHAR(36) NOT NULL ENABLE,
+"PROJECT_ID" CHAR(36) NOT NULL ENABLE,
+"SEQ_NUM" NUMBER(19,0) NOT NULL ENABLE,
+"IS_ACTIVE" NCHAR(1) DEFAULT ' || '''' ||'T' || '''' || ' NOT NULL ENABLE,
+"IS_BLA_ACTIVE" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"IS_STARTED" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"IS_INSTALLED" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"IS_BLA_INSTALLED" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"IS_TIP_DEPLOYED" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"IS_DEFAULT" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"ERROR_COUNTER" NUMBER(8,0),
+"CHANGE_DATA" BLOB,
+"TIP_DEPLOYMENT_IN_PROGRESS" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"ORIG_CREATED_ON" TIMESTAMP NOT NULL ENABLE,
+"ACTIVATED_ON" TIMESTAMP,
+"HAS_SUSPENDED_ALL_INSTANCES" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"STATUS" NVARCHAR2(64) DEFAULT ' || '''' ||'New' || '''' || ' NOT NULL ENABLE,
+"CAPABILITY" NCHAR(1),
+"IS_ARCHIVED" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"ARCHIVED_ON" DATE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"ASSETS" BLOB,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NVARCHAR2(128),
+"FIELD3" NUMBER(12,0),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)
+LOB ("DESCRIPTION","CHANGE_DATA","ASSETS") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_BRANCH') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_BRANCH(
+"BRANCH_ID" CHAR(36) NOT NULL ENABLE,
+"CREATED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" TIMESTAMP NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"IS_ARCHIVED" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"ARCHIVED_ON" DATE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"ACRONYM" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"TIP_SEQ_NUM" NUMBER(19,0) NOT NULL ENABLE,
+"TIP_SNAPSHOT_ID" CHAR(36),
+"IS_DEFAULT" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"PROJECT_ID" CHAR(36) NOT NULL ENABLE,
+"BASE_SNAPSHOT_ID" CHAR(36)
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_PROJECT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_PROJECT(
+"PROJECT_ID" CHAR(36) NOT NULL ENABLE,
+"CREATED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" TIMESTAMP NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"IS_ARCHIVED" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"ARCHIVED_ON" DATE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"SHORT_NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"RELEASE_PROCESS_ID" CHAR(36),
+"RELEASE_PROCESS_BRANCH_ID" CHAR(36),
+"IS_TOOLKIT" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"IS_BRANCHING_ENABLED" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"IS_HIDDEN" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"IS_SYSTEM" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"IS_IMMUTABLE" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"IS_SHARED" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"SHARED_BY_USER_ID" NUMBER(12,0),
+"SHARED_ON" TIMESTAMP,
+"IS_GOVERNED" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"IS_GOVERNANCE" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"SOLUTION_ID" NVARCHAR2(41),
+"SOLUTION_SERVER_NAME" NVARCHAR2(64),
+"SOLUTION_PREFIX" NVARCHAR2(64),
+"TYPE" NVARCHAR2(16),
+"IS_TEMPLATE" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"ICON" BLOB,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NVARCHAR2(128),
+"FIELD3" NUMBER(12,0),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)
+LOB ("DESCRIPTION","ICON") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_PO_VERSIONS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_PO_VERSIONS(
+"VERSION_SUMMARY_ID" CHAR(36) NOT NULL ENABLE,
+"START_SEQ_NUM" NUMBER(19,0) NOT NULL ENABLE,
+"END_SEQ_NUM" NUMBER(19,0) NOT NULL ENABLE,
+"BRANCH_ID" CHAR(36) NOT NULL ENABLE,
+"PO_TYPE" NUMBER(8,0) NOT NULL ENABLE,
+"PO_ID" CHAR(36) NOT NULL ENABLE,
+"PO_ROOT_ID" CHAR(36) NOT NULL ENABLE,
+"PO_GUID" NVARCHAR2(128),
+"PO_VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"PO_ORIG_VERSION_ID" CHAR(36),
+"PO_NAME" NVARCHAR2(64),
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0),
+"LAST_MODIFIED" TIMESTAMP,
+"ORIG_LAST_MODIFIED_BY_USER" NVARCHAR2(64),
+"ORIG_LAST_MODIFIED" TIMESTAMP,
+"PO_DATA" BLOB,
+"VALID_STATE" NUMBER(1,0),
+"VALIDATION_ERRS" BLOB,
+"EXTERNAL_ID" NVARCHAR2(512),
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NVARCHAR2(128),
+"FIELD3" NUMBER(12,0),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)
+LOB ("PO_DATA","VALIDATION_ERRS") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_PO_METADATA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_PO_METADATA(
+"START_SEQ_NUM" NUMBER(19,0) NOT NULL ENABLE,
+"END_SEQ_NUM" NUMBER(19,0) NOT NULL ENABLE,
+"BRANCH_ID" CHAR(36) NOT NULL ENABLE,
+"PO_TYPE" NUMBER(8,0) NOT NULL ENABLE,
+"PO_ID" CHAR(36) NOT NULL ENABLE,
+"META_KEY" NVARCHAR2(128) NOT NULL ENABLE,
+"PO_DATA" BLOB
+)
+LOB ("PO_DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_PROJECT_DEPENDENCY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_PROJECT_DEPENDENCY(
+"PROJECT_DEPENDENCY_ID" CHAR(36) NOT NULL ENABLE,
+"TARGET_SNAPSHOT_ID" CHAR(36) NOT NULL ENABLE,
+"LATEST_SNAPSHOT_SEQ_NUM" NUMBER(19,0),
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"IS_SYSTEM" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"NAME" NVARCHAR2(64),
+"RANK" NUMBER(12,0),
+"DESCRIPTION" NCLOB,
+"IS_ACTIVE" NCHAR(1) DEFAULT ' || '''' ||'T' || '''' || ' NOT NULL ENABLE,
+"IS_MANAGED" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NVARCHAR2(128),
+"FIELD3" NUMBER(12,0),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_DEP_PATH') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_DEP_PATH(
+"DEP_PATH_ID" NUMBER(19,0) NOT NULL ENABLE,
+"IDX" NUMBER(6,0) NOT NULL ENABLE,
+"COUNT" NUMBER(6,0) NOT NULL ENABLE,
+"HASH" NUMBER(12,0) NOT NULL ENABLE,
+"DEPENDENCY_ID" CHAR(36) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_PO_REFERENCE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_PO_REFERENCE(
+"REFERENCE_ID" CHAR(36) NOT NULL ENABLE,
+"START_SEQ_NUM" NUMBER(19,0) NOT NULL ENABLE,
+"END_SEQ_NUM" NUMBER(19,0) NOT NULL ENABLE,
+"BRANCH_ID" CHAR(36) NOT NULL ENABLE,
+"DEP_PATH_ID" NUMBER(19,0) NOT NULL ENABLE,
+"TARGET_TYPE" NUMBER(8,0) NOT NULL ENABLE,
+"TARGET_ID" CHAR(36) NOT NULL ENABLE,
+"TARGET_SUMMARY_DATA" BLOB
+)
+LOB ("TARGET_SUMMARY_DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_PO_DEPENDENCY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_PO_DEPENDENCY(
+"START_SEQ_NUM" NUMBER(19,0) NOT NULL ENABLE,
+"END_SEQ_NUM" NUMBER(19,0) NOT NULL ENABLE,
+"SOURCE_TYPE" NUMBER(4,0) NOT NULL ENABLE,
+"BRANCH_ID" CHAR(36) NOT NULL ENABLE,
+"SOURCE_ID" CHAR(36) NOT NULL ENABLE,
+"SOURCE_LOCATION" NVARCHAR2(1024) NOT NULL ENABLE,
+"TARGET_REF" CHAR(36) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_RT_REFERENCE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_RT_REFERENCE(
+"REFERENCE_ID" NUMBER(19,0) NOT NULL ENABLE,
+"DEP_PATH_ID" NUMBER(19,0) NOT NULL ENABLE,
+"PO_TYPE" NUMBER(8,0) NOT NULL ENABLE,
+"PO_ID" CHAR(36) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_WEB_SERVICE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_WEB_SERVICE(
+"WEB_SERVICE_ID" CHAR(36) NOT NULL ENABLE,
+"IS_PROTECTED" NCHAR(1),
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"TARGET_NAMESPACE_SCHEME" NVARCHAR2(64),
+"TARGET_NAMESPACE" NVARCHAR2(512),
+"POLICY_SET" NVARCHAR2(512),
+"POLICY_BINDING" NVARCHAR2(512),
+"JSON_DATA" BLOB,
+"BINDING_STYLE" NVARCHAR2(64) DEFAULT ' || '''' ||'soap11' || '''' || ',
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION","JSON_DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_WEB_SERVICE_OP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_WEB_SERVICE_OP(
+"WEB_SERVICE_OP_ID" CHAR(36) NOT NULL ENABLE,
+"WEB_SERVICE_ID" CHAR(36) NOT NULL ENABLE,
+"SEQ" NUMBER(12,0) NOT NULL ENABLE,
+"PROCESS_REF" CHAR(36) NOT NULL ENABLE,
+"IS_PROTECTED" NCHAR(1),
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_ASSET_CACHE_STATUS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_ASSET_CACHE_STATUS(
+"ASSET_ID" NVARCHAR2(60) NOT NULL ENABLE,
+"CONTAINER_ID" CHAR(36) NOT NULL ENABLE,
+"SESSION_ID" NVARCHAR2(36),
+"CLIENT_ID" NVARCHAR2(36),
+"LATEST_SNAPSHOT_ID" NVARCHAR2(100),
+"VERSION_ID" CHAR(36),
+"L_MODEL_BATCH_NO_IN_SS" NUMBER(19,0) DEFAULT ' || '''' ||0 || '''' || ',
+"L_MODEL_BATCH_NO" NUMBER(19,0) DEFAULT ' || '''' ||0 || '''' || ' NOT NULL ENABLE,
+"L_RN_TAG_BATCH_NO_IN_SS" NUMBER(19,0) DEFAULT ' || '''' ||0 || '''' || ' NOT NULL ENABLE,
+"L_RN_TAG_BATCH_NO" NUMBER(19,0) DEFAULT ' || '''' ||0 || '''' || ' NOT NULL ENABLE,
+"COMMITTED_MODEL_BATCH_NO" NUMBER(19,0) DEFAULT ' || '''' ||0 || '''' || ' NOT NULL ENABLE,
+"LATEST_BATCH_NO" NUMBER(19,0) DEFAULT ' || '''' ||0 || '''' || ' NOT NULL ENABLE,
+"LATEST_COMMIT_SEQ" NUMBER(19,0) DEFAULT ' || '''' ||0 || '''' || ' NOT NULL ENABLE,
+"L_SUMMARY_COMMIT_SEQ" NUMBER(19,0) DEFAULT ' || '''' ||0 || '''' || ' NOT NULL ENABLE,
+"CORRUPTED_BATCH_NO" NUMBER(19,0),
+"ASSET_TYPE" NVARCHAR2(128),
+"USER_ID" NVARCHAR2(100) NOT NULL ENABLE,
+"LOCK_STATUS" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"LOCKED_ON" TIMESTAMP,
+"LAST_MODIFIED_ON" TIMESTAMP NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NVARCHAR2(128),
+"FIELD3" NUMBER(19,0)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_ASSET_CACHE_SAVE_INSTR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_ASSET_CACHE_SAVE_INSTR(
+"ASSET_ID" NVARCHAR2(60) NOT NULL ENABLE,
+"ROOT_ID" NVARCHAR2(60) NOT NULL ENABLE,
+"CONTAINER_ID" CHAR(36) NOT NULL ENABLE,
+"BATCH_NO" NUMBER(19,0) NOT NULL ENABLE,
+"DATA_SEQ" NUMBER(3,0) NOT NULL ENABLE,
+"DATA" NVARCHAR2(2000),
+"COMMIT_SEQ" NUMBER(19,0),
+"SNAPSHOT_ID" NVARCHAR2(100),
+"SNAPSHOT_SEQ" NUMBER(19,0) DEFAULT ' || '''' ||0 || '''' || ',
+"USER_ID" NVARCHAR2(100) NOT NULL ENABLE,
+"PENDING_SUMMARY" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"RN_TAG" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"BAD_BATCH" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"MODIFIED_ON" TIMESTAMP NOT NULL ENABLE,
+"BASE_BATCH_NO" NUMBER(19,0),
+"CLIENT_ID" NVARCHAR2(36),
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NVARCHAR2(128),
+"FIELD3" NUMBER(19,0)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_ASSET_CACHE_INSTR_DISCARD') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_ASSET_CACHE_INSTR_DISCARD(
+"ASSET_ID" NVARCHAR2(60) NOT NULL ENABLE,
+"ROOT_ID" NVARCHAR2(60) NOT NULL ENABLE,
+"CONTAINER_ID" CHAR(36) NOT NULL ENABLE,
+"BATCH_NO" NUMBER(19,0) NOT NULL ENABLE,
+"DATA_SEQ" NUMBER(3,0) NOT NULL ENABLE,
+"DATA" NVARCHAR2(2000),
+"COMMIT_SEQ" NUMBER(19,0),
+"SNAPSHOT_ID" NVARCHAR2(100),
+"SNAPSHOT_SEQ" NUMBER(19,0) DEFAULT ' || '''' ||0 || '''' || ',
+"USER_ID" NVARCHAR2(100) NOT NULL ENABLE,
+"PENDING_SUMMARY" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"RN_TAG" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"BAD_BATCH" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"MODIFIED_ON" TIMESTAMP NOT NULL ENABLE,
+"BASE_BATCH_NO" NUMBER(19,0),
+"DISCARD_GUID" CHAR(36),
+"CLIENT_ID" NVARCHAR2(36),
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NVARCHAR2(128),
+"FIELD3" NUMBER(19,0)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_ASSET_CACHE_SAVE_INSTR_BK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_ASSET_CACHE_SAVE_INSTR_BK(
+"ASSET_ID" NVARCHAR2(60) NOT NULL ENABLE,
+"ROOT_ID" NVARCHAR2(60) NOT NULL ENABLE,
+"CONTAINER_ID" CHAR(36) NOT NULL ENABLE,
+"BATCH_NO" NUMBER(19,0) NOT NULL ENABLE,
+"DATA_SEQ" NUMBER(3,0) NOT NULL ENABLE,
+"DATA" NVARCHAR2(2000),
+"COMMIT_SEQ" NUMBER(19,0),
+"SNAPSHOT_ID" NVARCHAR2(100),
+"SNAPSHOT_SEQ" NUMBER(19,0) DEFAULT ' || '''' ||0 || '''' || ',
+"USER_ID" NVARCHAR2(100) NOT NULL ENABLE,
+"PENDING_SUMMARY" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"RN_TAG" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"BAD_BATCH" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"MODIFIED_ON" TIMESTAMP NOT NULL ENABLE,
+"BASE_BATCH_NO" NUMBER(19,0),
+"CLIENT_ID" NVARCHAR2(36),
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NVARCHAR2(128),
+"FIELD3" NUMBER(19,0)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_ASSET_CACHE_SAVE_LOCK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_ASSET_CACHE_SAVE_LOCK(
+"ASSET_ID" NVARCHAR2(60) NOT NULL ENABLE,
+"CONTAINER_ID" CHAR(36) NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NVARCHAR2(128),
+"FIELD3" NUMBER(19,0)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_ASSET_CACHE_REPO_LOCK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_ASSET_CACHE_REPO_LOCK(
+"ASSET_ID" NVARCHAR2(60) NOT NULL ENABLE,
+"CONTAINER_ID" CHAR(36) NOT NULL ENABLE,
+"USER_ID" NVARCHAR2(100) NOT NULL ENABLE,
+"LOCK_STATUS" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ',
+"LOCKED_ON" TIMESTAMP NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NVARCHAR2(128),
+"FIELD3" NUMBER(19,0)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_ASSET') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_ASSET(
+"ASSET_ID" CHAR(36) NOT NULL ENABLE,
+"ASSET_TYPE" NUMBER(3,0) NOT NULL ENABLE,
+"ASSET_SUB_TYPE" NUMBER(3,0) DEFAULT ' || '''' ||0 || '''' || ',
+"NAMESPACE" NVARCHAR2(1024),
+"IS_READ_ONLY" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"VISIBILITY_LEVEL" NUMBER(2,0) DEFAULT ' || '''' ||99 || '''' || ' NOT NULL ENABLE,
+"DATA" BLOB NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NVARCHAR2(128),
+"FIELD3" NUMBER(19,0),
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DATA","DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_ASSET_CACHE_CONTENT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_ASSET_CACHE_CONTENT(
+"VERSION_CONTEXT" NVARCHAR2(100) NOT NULL ENABLE,
+"ASSET_ID" CHAR(36) NOT NULL ENABLE,
+"CACHE_KEY" CHAR(36) NOT NULL ENABLE,
+"CONTAINER_ID" CHAR(36) NOT NULL ENABLE,
+"DATA_TYPE" NCHAR(1) DEFAULT ' || '''' ||'X' || '''' || ' NOT NULL ENABLE,
+"DATA" BLOB NOT NULL ENABLE,
+"CACHED_ON" TIMESTAMP NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NVARCHAR2(128),
+"FIELD3" NUMBER(19,0)
+)
+LOB ("DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_ASSET_CACHE_EVENT_MSG') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_ASSET_CACHE_EVENT_MSG(
+"CONTAINER_ID" CHAR(36) NOT NULL ENABLE,
+"SNAPSHOT_ID" NVARCHAR2(100) NOT NULL ENABLE,
+"SNAPSHOT_SEQ" NUMBER(19,0) DEFAULT ' || '''' ||0 || '''' || ' NOT NULL ENABLE,
+"FROM_EDIT_CACHE" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"STATUS" NUMBER(1,0) NOT NULL ENABLE,
+"DATA" NVARCHAR2(2000),
+"LOB_DATA" NCLOB,
+"CACHED_ON" TIMESTAMP NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NVARCHAR2(128),
+"FIELD3" NUMBER(19,0)
+)
+LOB ("LOB_DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_WEBPD_CLIENT_STATE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_WEBPD_CLIENT_STATE(
+"CLIENT_ID" NVARCHAR2(36) NOT NULL ENABLE,
+"USER_ID" NVARCHAR2(100) NOT NULL ENABLE,
+"CREATED_ON" TIMESTAMP NOT NULL ENABLE,
+"MODIFIED_ON" TIMESTAMP NOT NULL ENABLE,
+"CREATED_BY_USER" NVARCHAR2(100) NOT NULL ENABLE,
+"MODIFIED_BY_USER" NVARCHAR2(100) NOT NULL ENABLE,
+"CLIENT_STATE" BLOB
+)
+LOB ("CLIENT_STATE") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_EXTENDED_PROPERTY_SET') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_EXTENDED_PROPERTY_SET(
+"EXTENDED_PROPERTY_SET_ID" CHAR(36) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_EXTENDED_PROPERTY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_EXTENDED_PROPERTY(
+"EXTENDED_PROPERTY_ID" CHAR(36) NOT NULL ENABLE,
+"EXTENDED_PROPERTY_SET_ID" CHAR(36) NOT NULL ENABLE,
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_SAP_CONNECTION') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_SAP_CONNECTION(
+"SAP_CONNECTION_ID" CHAR(36) NOT NULL ENABLE,
+"CREATED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" TIMESTAMP NOT NULL ENABLE,
+"MODIFIED_ON" TIMESTAMP,
+"IS_DEFAULT" NCHAR(1) DEFAULT ' || '''' ||'F' || '''' || ' NOT NULL ENABLE,
+"SYSNAME" NVARCHAR2(400) NOT NULL ENABLE,
+"SAPUID" NVARCHAR2(400) NOT NULL ENABLE,
+"PASSWORD" NVARCHAR2(400) NOT NULL ENABLE,
+"CLIENT" NVARCHAR2(400) NOT NULL ENABLE,
+"PORT" NVARCHAR2(400) NOT NULL ENABLE,
+"LOCATION" NVARCHAR2(400) NOT NULL ENABLE,
+"PROTOCAL" NVARCHAR2(400),
+"WEBSERVICE_PATTERN" NVARCHAR2(400)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_CASE_PROPERTY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_CASE_PROPERTY(
+"PROP_ID" CHAR(36) NOT NULL ENABLE,
+"SYMBOLIC_NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"SNAPSHOT_ID" CHAR(36),
+"BRANCH_ID" CHAR(36) NOT NULL ENABLE,
+"PROJECT_ID" CHAR(36) NOT NULL ENABLE,
+"IS_TIP" NCHAR(1),
+"REF_PO_INTERNAL_NAME" NVARCHAR2(56) NOT NULL ENABLE,
+"REF_PO_TYPE" NUMBER(2,0) NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NUMBER(12,0),
+"FIELD3" CHAR(36),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_ECM_OBJECT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_ECM_OBJECT(
+"ECM_OBJECT_ID" CHAR(36) NOT NULL ENABLE,
+"BPD_INSTANCE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"OBJECT_TYPE" NUMBER(1,0) NOT NULL ENABLE,
+"PARENT_ID" CHAR(36),
+"AUTHORED_OBJECT_ID" NVARCHAR2(64),
+"ALLOW_LOCAL_DOC" NUMBER(1,0),
+"ALLOW_FOLDER_REF" NUMBER(1,0),
+"ALLOW_DOC_REF" NUMBER(1,0),
+"ALLOW_SUB_FOLDER" NUMBER(1,0),
+"OBJECT_NAME" NVARCHAR2(256),
+"SERVER_NAME" NVARCHAR2(64),
+"EVENT_SOURCE_ID" NVARCHAR2(128),
+"OBJECT_ID" NVARCHAR2(128),
+"VERSION_SERIES_ID" NVARCHAR2(128),
+"OBJECT_TYPE_ID" NVARCHAR2(128),
+"BPMDOC_ID" NUMBER(12,0),
+"BPMDOC_PARENT_ID" NUMBER(12,0),
+"CREATED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" DATE NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NUMBER(12,0),
+"FIELD3" CHAR(36),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_REF_PO') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_REF_PO(
+"REF_ID" CHAR(36) NOT NULL ENABLE,
+"NAME" NVARCHAR2(256) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"CREATED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" DATE NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"TYPE" NUMBER(2,0),
+"EXTERNAL_ID" NVARCHAR2(512),
+"EXTERNAL_VERSION" NVARCHAR2(512)
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_ES_ES_ART_REF') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_ES_ES_ART_REF(
+"ES_ES_ART_REF_ID" CHAR(36) NOT NULL ENABLE,
+"ES_ARTIFACT_ID" CHAR(36) NOT NULL ENABLE,
+"ES_ESART_REF" CHAR(36) NOT NULL ENABLE,
+"TESARTIFACT_ID" CHAR(36) NOT NULL ENABLE,
+"EXTERNAL_ID" NVARCHAR2(512),
+"MIME_TYPE" NVARCHAR2(64),
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_ES_ARTIFACT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_ES_ARTIFACT(
+"ES_ARTIFACT_ID" CHAR(36) NOT NULL ENABLE,
+"ES_ART_DATA_UUID" CHAR(36),
+"MEDIA_TYPE" NVARCHAR2(100) DEFAULT ' || '''' ||'application/octet-stream' || '''' || ',
+"CHAR_ENCODING" NVARCHAR2(100) DEFAULT ' || '''' ||'UTF-8' || '''' || ',
+"LENGTH" NUMBER(19,0),
+"DIGEST" NVARCHAR2(45) NOT NULL ENABLE,
+"EXTERNAL_ID" NVARCHAR2(512),
+"NAME" NVARCHAR2(64) NOT NULL ENABLE,
+"DESCRIPTION" NCLOB,
+"GUID" NVARCHAR2(128) NOT NULL ENABLE,
+"VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"CREATED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" DATE NOT NULL ENABLE,
+"LAST_MODIFIED" DATE NOT NULL ENABLE,
+"LAST_MODIFIED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE
+)
+LOB ("DESCRIPTION") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('BPM_ES_ART_DATA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.BPM_ES_ART_DATA(
+"ES_ART_DATA_ID" CHAR(36) NOT NULL ENABLE,
+"ES_ART_DATA" BLOB
+)
+LOB ("ES_ART_DATA") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_CONTENT_OBJECT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_CONTENT_OBJECT(
+"CONTENT_OBJECT_ID" CHAR(36) NOT NULL ENABLE,
+"PARENT_CASE_ID" NVARCHAR2(40),
+"PARENT_ACTIVITY_ID" NVARCHAR2(40),
+"SEQUENCE_NUMBER" NUMBER(12,0) NOT NULL ENABLE,
+"CLASS_VERSION_ID" CHAR(36) NOT NULL ENABLE,
+"CREATED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" DATE NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NUMBER(12,0),
+"FIELD3" CHAR(36),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_CONTENT_OBJECT_INSTANCE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_CONTENT_OBJECT_INSTANCE(
+"CONTENT_OBJECT_INSTANCE_ID" CHAR(36) NOT NULL ENABLE,
+"SEQUENCE_NUMBER" NUMBER(12,0) NOT NULL ENABLE,
+"CONTENT_OBJECT_ID" CHAR(36) NOT NULL ENABLE,
+"PARENT_CASE_ID" NVARCHAR2(40),
+"PARENT_ACTIVITY_ID" NVARCHAR2(40),
+"SNAPSHOT_ID" CHAR(36) NOT NULL ENABLE,
+"JDATA" BLOB,
+"PROPERTIES_MAP" BLOB,
+"CREATED_BY_USER_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CREATED_ON" DATE NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NUMBER(12,0),
+"FIELD3" CHAR(36),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1),
+"BLOB_FIELD1" BLOB
+)
+LOB ("JDATA","PROPERTIES_MAP","BLOB_FIELD1") STORE AS SECUREFILE';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+	BEGIN
+		DECLARE
+		v_table_count NUMBER;
+  	BEGIN
+    	select count(*) into v_table_count from all_objects where object_type='TABLE' and object_name = UPPER('LSW_BPD_INSTANCE_CONTENT_USAGE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') ) ;    
+	    IF (v_table_count = 0) THEN 
+	    EXECUTE IMMEDIATE  'CREATE  TABLE bpmdb_owner.LSW_BPD_INSTANCE_CONTENT_USAGE(
+"BPD_INSTANCE_ID" NUMBER(12,0) NOT NULL ENABLE,
+"CONTENT_OBJECT_ID" CHAR(36) NOT NULL ENABLE,
+"SEQUENCE_NUMBER" NUMBER(12,0) NOT NULL ENABLE,
+"FIELD1" NVARCHAR2(128),
+"FIELD2" NUMBER(12,0),
+"FIELD3" CHAR(36),
+"FIELD4" CHAR(36),
+"FIELD5" NCHAR(1)
+)';
+    END IF ;
+    END ;
+    END ;
+    
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_METRIC_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_METRIC_PK ON bpmdb_owner.LSW_METRIC("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_METRIC_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_METRIC ADD CONSTRAINT LSWC_METRIC_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SLA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SLA_PK ON bpmdb_owner.LSW_SLA("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_SLA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_SLA ADD CONSTRAINT LSWC_SLA_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SIM_SCEN_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SIM_SCEN_PK ON bpmdb_owner.LSW_SIM_SCENARIO("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_SIM_SCEN_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_SIM_SCENARIO ADD CONSTRAINT LSWC_SIM_SCEN_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_HIST_SCEN_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_HIST_SCEN_PK ON bpmdb_owner.LSW_HIST_SCENARIO("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_HIST_SCEN_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_HIST_SCENARIO ADD CONSTRAINT LSWC_HIST_SCEN_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_EVENT_SUBSCRIPTION_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_EVENT_SUBSCRIPTION_PK ON bpmdb_owner.BPM_EVENT_SUBSCRIPTION("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_EVENT_SUBSCRIPTION_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_EVENT_SUBSCRIPTION ADD CONSTRAINT BPM_EVENT_SUBSCRIPTION_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPM_EVT_SUBN_TYPE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BPM_EVT_SUBN_TYPE_PK ON bpmdb_owner.BPM_EVENT_SUBSCRIPTION_TYPE("EVENT_SUBSCRIPTION_TYPE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_BPM_EVT_SUBN_TYPE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_EVENT_SUBSCRIPTION_TYPE ADD CONSTRAINT LSWC_BPM_EVT_SUBN_TYPE_PK
+    PRIMARY KEY("EVENT_SUBSCRIPTION_TYPE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_STAY_ON_PAGE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_STAY_ON_PAGE_PK ON bpmdb_owner.LSW_STAY_ON_PAGE("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_STAY_ON_PAGE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_STAY_ON_PAGE ADD CONSTRAINT BPM_STAY_ON_PAGE_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_PAREF_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_PAREF_PK ON bpmdb_owner.BPM_PROC_ARTIFACT_REF("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_PAREF_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_PROC_ARTIFACT_REF ADD CONSTRAINT BPM_PAREF_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_CAREF_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_CAREF_PK ON bpmdb_owner.BPM_CLS_ARTIFACT_REF("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_CAREF_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_CLS_ARTIFACT_REF ADD CONSTRAINT BPM_CAREF_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_BAREF_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_BAREF_PK ON bpmdb_owner.BPM_BPD_ARTIFACT_REF("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_BAREF_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_BPD_ARTIFACT_REF ADD CONSTRAINT BPM_BAREF_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BPD_PK ON bpmdb_owner.LSW_BPD("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_BPD_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BPD ADD CONSTRAINT LSWC_BPD_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_EVENT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BPD_EVENT_PK ON bpmdb_owner.LSW_BPD_EVENT("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_BPD_EVENT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BPD_EVENT ADD CONSTRAINT LSWC_BPD_EVENT_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_PARM_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BPD_PARM_PK ON bpmdb_owner.LSW_BPD_PARAMETER("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_BPD_PARM_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BPD_PARAMETER ADD CONSTRAINT LSWC_BPD_PARM_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPM_BPD_EVENT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BPM_BPD_EVENT_PK ON bpmdb_owner.BPM_BPD_EVENT("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_BPM_BPD_EVENT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_BPD_EVENT ADD CONSTRAINT LSWC_BPM_BPD_EVENT_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_BPD_RES_LK_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_BPD_RES_LK_PK ON bpmdb_owner.BPM_BPD_RESOURCE_LINK("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_BPD_RES_LK_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_BPD_RESOURCE_LINK ADD CONSTRAINT BPM_BPD_RES_LK_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_SHARED_OBJECT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_SHARED_OBJECT_PK ON bpmdb_owner.BPM_SHARED_OBJECT("DEFINITION_VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_SHARED_OBJECT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_SHARED_OBJECT ADD CONSTRAINT BPM_SHARED_OBJECT_PK
+    PRIMARY KEY("DEFINITION_VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_SHARED_OBJECT_INSTANCE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_SHARED_OBJECT_INSTANCE_PK ON bpmdb_owner.BPM_SHARED_OBJECT_INSTANCE("INSTANCE_VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_SHARED_OBJECT_INSTANCE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_SHARED_OBJECT_INSTANCE ADD CONSTRAINT BPM_SHARED_OBJECT_INSTANCE_PK
+    PRIMARY KEY("INSTANCE_VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_SHARED_OBJECT_VALUE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_SHARED_OBJECT_VALUE_PK ON bpmdb_owner.BPM_SHARED_OBJECT_VALUE("VALUE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_SHARED_OBJECT_VALUE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_SHARED_OBJECT_VALUE ADD CONSTRAINT BPM_SHARED_OBJECT_VALUE_PK
+    PRIMARY KEY("VALUE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_BPD_INST_SHARED_USAGE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSW_BPD_INST_SHARED_USAGE_PK ON bpmdb_owner.LSW_BPD_INSTANCE_SHARED_USAGE("BPD_INSTANCE_ID","SHARED_OBJECT_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSW_BPD_INST_SHARED_USAGE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BPD_INSTANCE_SHARED_USAGE ADD CONSTRAINT LSW_BPD_INST_SHARED_USAGE_PK
+    PRIMARY KEY("BPD_INSTANCE_ID","SHARED_OBJECT_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_SHARED_OBJECT_INVALID_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_SHARED_OBJECT_INVALID_PK ON bpmdb_owner.BPM_SHARED_OBJECT_INVALID("INVALID_MARKER")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_SHARED_OBJECT_INVALID_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_SHARED_OBJECT_INVALID ADD CONSTRAINT BPM_SHARED_OBJECT_INVALID_PK
+    PRIMARY KEY("INVALID_MARKER")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_UITHEME_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_UITHEME_PK ON bpmdb_owner.BPM_UITHEME("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_UITHEME_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_UITHEME ADD CONSTRAINT BPM_UITHEME_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('THEMEGEN_BRID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.THEMEGEN_BRID ON bpmdb_owner.BPM_UITHEME_GENSYNC("BRANCH_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('THEMEGEN_BRID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_UITHEME_GENSYNC ADD CONSTRAINT THEMEGEN_BRID
+    PRIMARY KEY("BRANCH_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_CH_VIEW_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_CH_VIEW_PK ON bpmdb_owner.BPM_COACH_VIEW("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_CH_VIEW_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_COACH_VIEW ADD CONSTRAINT BPM_CH_VIEW_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_VIEW_LOC_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_VIEW_LOC_PK ON bpmdb_owner.BPM_COACH_VIEW_LOCAL_RES("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_VIEW_LOC_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_COACH_VIEW_LOCAL_RES ADD CONSTRAINT BPM_VIEW_LOC_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_VIEW_BIND_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_VIEW_BIND_PK ON bpmdb_owner.BPM_COACH_VIEW_BINDING_TYPE("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_VIEW_BIND_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_COACH_VIEW_BINDING_TYPE ADD CONSTRAINT BPM_VIEW_BIND_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_VIEW_CONFIG_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_VIEW_CONFIG_PK ON bpmdb_owner.BPM_COACH_VIEW_CONFIG_OPTION("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_VIEW_CONFIG_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_COACH_VIEW_CONFIG_OPTION ADD CONSTRAINT BPM_VIEW_CONFIG_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_VIEW_RES_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_VIEW_RES_PK ON bpmdb_owner.BPM_COACH_VIEW_RESOURCE("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_VIEW_RES_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_COACH_VIEW_RESOURCE ADD CONSTRAINT BPM_VIEW_RES_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_VIEW_DYNSTL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_VIEW_DYNSTL_PK ON bpmdb_owner.BPM_COACH_VIEW_DYNAMIC_STYLE("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_VIEW_DYNSTL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_COACH_VIEW_DYNAMIC_STYLE ADD CONSTRAINT BPM_VIEW_DYNSTL_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_VIEW_SCRIPT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_VIEW_SCRIPT_PK ON bpmdb_owner.BPM_COACH_VIEW_INLINE_SCRIPT("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_VIEW_SCRIPT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_COACH_VIEW_INLINE_SCRIPT ADD CONSTRAINT BPM_VIEW_SCRIPT_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_VIEW_AMD_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_VIEW_AMD_PK ON bpmdb_owner.BPM_COACH_VIEW_AMD_DEP("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_VIEW_AMD_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_COACH_VIEW_AMD_DEP ADD CONSTRAINT BPM_VIEW_AMD_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_COACHNG_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_COACHNG_PK ON bpmdb_owner.BPM_COACHNG("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_COACHNG_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_COACHNG ADD CONSTRAINT BPM_COACHNG_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_COACHNG_BE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_COACHNG_BE_PK ON bpmdb_owner.BPM_COACHNG_BOUNDARY_EVENT("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_COACHNG_BE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_COACHNG_BOUNDARY_EVENT ADD CONSTRAINT BPM_COACHNG_BE_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_COACH_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_COACH_PK ON bpmdb_owner.LSW_COACH("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_COACH_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_COACH ADD CONSTRAINT LSWC_COACH_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_COACH_BTN_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_COACH_BTN_PK ON bpmdb_owner.LSW_COACH_BUTTON("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_COACH_BTN_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_COACH_BUTTON ADD CONSTRAINT LSWC_COACH_BTN_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_COACH_RES_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_COACH_RES_PK ON bpmdb_owner.LSW_COACH_RESOURCE("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_COACH_RES_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_COACH_RESOURCE ADD CONSTRAINT LSWC_COACH_RES_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_INFOPATHF_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_INFOPATHF_PK ON bpmdb_owner.LSW_INFOPATH_FORM("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_INFOPATHF_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_INFOPATH_FORM ADD CONSTRAINT LSWC_INFOPATHF_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EM_TASK_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_EM_TASK_PK ON bpmdb_owner.LSW_EM_TASK("TASK_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_EM_TASK_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_EM_TASK ADD CONSTRAINT LSWC_EM_TASK_PK
+    PRIMARY KEY("TASK_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EM_KEYWORD_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_EM_KEYWORD_PK ON bpmdb_owner.LSW_EM_TASK_KEYWORDS("TASK_ID","KEYWORD")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_EM_KEYWORD_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_EM_TASK_KEYWORDS ADD CONSTRAINT LSWC_EM_KEYWORD_PK
+    PRIMARY KEY("TASK_ID","KEYWORD")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EM_INST_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_EM_INST_PK ON bpmdb_owner.LSW_EM_INSTANCE("OWNER_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_EM_INST_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_EM_INSTANCE ADD CONSTRAINT LSWC_EM_INST_PK
+    PRIMARY KEY("OWNER_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TASK_HIST_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TASK_HIST_PK ON bpmdb_owner.LSW_EM_TASK_HISTORY("TASK_ID","EXECUTION_ATTEMPT")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TASK_HIST_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_EM_TASK_HISTORY ADD CONSTRAINT LSWC_TASK_HIST_PK
+    PRIMARY KEY("TASK_ID","EXECUTION_ATTEMPT")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SYNCQUEUE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SYNCQUEUE_PK ON bpmdb_owner.LSW_UCA_SYNC_QUEUE("SYNC_QUEUE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_SYNCQUEUE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_UCA_SYNC_QUEUE ADD CONSTRAINT LSWC_SYNCQUEUE_PK
+    PRIMARY KEY("SYNC_QUEUE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ENV_VARS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_ENV_VARS_PK ON bpmdb_owner.LSW_ENV_VAR_SET("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_ENV_VARS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_ENV_VAR_SET ADD CONSTRAINT LSWC_ENV_VARS_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ENV_VAR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_ENV_VAR_PK ON bpmdb_owner.LSW_ENV_VAR("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_ENV_VAR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_ENV_VAR ADD CONSTRAINT LSWC_ENV_VAR_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_E_VAR_VAL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_E_VAR_VAL_PK ON bpmdb_owner.LSW_ENV_VAR_VAL("ENV_VAR_VAL_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_E_VAR_VAL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_ENV_VAR_VAL ADD CONSTRAINT LSWC_E_VAR_VAL_PK
+    PRIMARY KEY("ENV_VAR_VAL_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ENV_TYPE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_ENV_TYPE_PK ON bpmdb_owner.LSW_ENV_TYPE("ENV_TYPE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_ENV_TYPE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_ENV_TYPE ADD CONSTRAINT LSWC_ENV_TYPE_PK
+    PRIMARY KEY("ENV_TYPE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ENV_VART_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_ENV_VART_PK ON bpmdb_owner.LSW_ENV_VAR_TYPE("ENV_VAR_TYPE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_ENV_VART_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_ENV_VAR_TYPE ADD CONSTRAINT LSWC_ENV_VART_PK
+    PRIMARY KEY("ENV_VAR_TYPE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ENV_DFLT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_ENV_DFLT_PK ON bpmdb_owner.LSW_ENV_VAR_DEFAULT("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_ENV_DFLT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_ENV_VAR_DEFAULT ADD CONSTRAINT LSWC_ENV_DFLT_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EPV_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_EPV_PK ON bpmdb_owner.LSW_EPV("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_EPV_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_EPV ADD CONSTRAINT LSWC_EPV_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EPV_VAR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_EPV_VAR_PK ON bpmdb_owner.LSW_EPV_VAR("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_EPV_VAR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_EPV_VAR ADD CONSTRAINT LSWC_EPV_VAR_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EPV_VAL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_EPV_VAL_PK ON bpmdb_owner.LSW_EPV_VAR_VALUE("EPV_VAR_VALUE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_EPV_VAL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_EPV_VAR_VALUE ADD CONSTRAINT LSWC_EPV_VAL_PK
+    PRIMARY KEY("EPV_VAR_VALUE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BPS_PK ON bpmdb_owner.LSW_BLUEPRINT_SUBSCRIPTION("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_BPS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BLUEPRINT_SUBSCRIPTION ADD CONSTRAINT LSWC_BPS_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EA_PARAM_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_EA_PARAM_PK ON bpmdb_owner.LSW_EXTACT_PARAMETER("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_EA_PARAM_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_EXTACT_PARAMETER ADD CONSTRAINT LSWC_EA_PARAM_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EA_PROP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_EA_PROP_PK ON bpmdb_owner.LSW_EXTACT_PROPERTY("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_EA_PROP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_EXTACT_PROPERTY ADD CONSTRAINT LSWC_EA_PROP_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EXT_ACT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_EXT_ACT_PK ON bpmdb_owner.LSW_EXTERNAL_ACTIVITY("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_EXT_ACT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_EXTERNAL_ACTIVITY ADD CONSTRAINT LSWC_EXT_ACT_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_MGD_ASSET_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_MGD_ASSET_PK ON bpmdb_owner.LSW_MANAGED_ASSET("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_MGD_ASSET_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_MANAGED_ASSET ADD CONSTRAINT LSWC_MGD_ASSET_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ASSET_DATA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_ASSET_DATA_PK ON bpmdb_owner.LSW_MANAGED_ASSET_DATA("ASSET_DATA_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_ASSET_DATA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_MANAGED_ASSET_DATA ADD CONSTRAINT LSWC_ASSET_DATA_PK
+    PRIMARY KEY("ASSET_DATA_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EA_AJAXSVC_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_EA_AJAXSVC_PK ON bpmdb_owner.LSW_EXTACT_AJAXSVC("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_EA_AJAXSVC_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_EXTACT_AJAXSVC ADD CONSTRAINT LSWC_EA_AJAXSVC_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_NODE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_NODE_PK ON bpmdb_owner.BPM_CONTRIBUTION("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_NODE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_CONTRIBUTION ADD CONSTRAINT BPM_NODE_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_CPRP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_CPRP_PK ON bpmdb_owner.BPM_CTRB_PROPERTY("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_CPRP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_CTRB_PROPERTY ADD CONSTRAINT BPM_CPRP_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_CDEP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_CDEP_PK ON bpmdb_owner.BPM_CTRB_DEPENDENCY("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_CDEP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_CTRB_DEPENDENCY ADD CONSTRAINT BPM_CDEP_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_NPRP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_NPRP_PK ON bpmdb_owner.BPM_ARTIFACT("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_NPRP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_ARTIFACT ADD CONSTRAINT BPM_NPRP_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ART_DATA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_ART_DATA_PK ON bpmdb_owner.BPM_ARTIFACT_DATA("ART_DATA_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_ART_DATA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_ARTIFACT_DATA ADD CONSTRAINT BPM_ART_DATA_PK
+    PRIMARY KEY("ART_DATA_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_MMDATA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_MMDATA_PK ON bpmdb_owner.BPM_MON_MODEL_DATA("MM_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_MMDATA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_MON_MODEL_DATA ADD CONSTRAINT BPM_MMDATA_PK
+    PRIMARY KEY("MM_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SAV_SRCH_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SAV_SRCH_PK ON bpmdb_owner.LSW_SAVED_SEARCHES("SEARCH_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_SAV_SRCH_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_SAVED_SEARCHES ADD CONSTRAINT LSWC_SAV_SRCH_PK
+    PRIMARY KEY("SEARCH_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_SAV_SRCH_TEAM_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_SAV_SRCH_TEAM_PK ON bpmdb_owner.BPM_SAVED_SEARCH_TEAM("SEARCH_TEAM_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_SAV_SRCH_TEAM_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_SAVED_SEARCH_TEAM ADD CONSTRAINT BPM_SAV_SRCH_TEAM_PK
+    PRIMARY KEY("SEARCH_TEAM_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_INSTALL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_INSTALL_PK ON bpmdb_owner.LSW_INSTALLATION("INSTALLATION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_INSTALL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_INSTALLATION ADD CONSTRAINT LSWC_INSTALL_PK
+    PRIMARY KEY("INSTALLATION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_RELEASE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_RELEASE_PK ON bpmdb_owner.LSW_RELEASE("RELEASE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_RELEASE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_RELEASE ADD CONSTRAINT LSWC_RELEASE_PK
+    PRIMARY KEY("RELEASE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_USER_FAV_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_USER_FAV_PK ON bpmdb_owner.LSW_USER_FAVORITE("FAVORITE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_USER_FAV_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_USER_FAVORITE ADD CONSTRAINT LSWC_USER_FAV_PK
+    PRIMARY KEY("FAVORITE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SF_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SF_PK ON bpmdb_owner.LSW_SMART_FOLDER("SMART_FOLDER_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_SF_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_SMART_FOLDER ADD CONSTRAINT LSWC_SF_PK
+    PRIMARY KEY("SMART_FOLDER_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TEMPLATE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TEMPLATE_PK ON bpmdb_owner.LSW_CA_TEMPLATE("ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TEMPLATE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_CA_TEMPLATE ADD CONSTRAINT LSWC_TEMPLATE_PK
+    PRIMARY KEY("ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_LAUNCHER_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_LAUNCHER_PK ON bpmdb_owner.LSW_LAUNCHER("LAUNCHER_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_LAUNCHER_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_LAUNCHER ADD CONSTRAINT LSWC_LAUNCHER_PK
+    PRIMARY KEY("LAUNCHER_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BRKPNT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BRKPNT_PK ON bpmdb_owner.LSW_BREAKPOINT("BREAKPOINT_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_BRKPNT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BREAKPOINT ADD CONSTRAINT LSWC_BRKPNT_PK
+    PRIMARY KEY("BREAKPOINT_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_OSLC_PROVIDER') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_OSLC_PROVIDER ON bpmdb_owner.BPM_OSLC_PROVIDER("PROVIDER_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_OSLC_PROVIDER') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_OSLC_PROVIDER ADD CONSTRAINT LSWC_OSLC_PROVIDER
+    PRIMARY KEY("PROVIDER_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_INSTALLATION_MESSAGE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSW_INSTALLATION_MESSAGE_PK ON bpmdb_owner.LSW_INSTALLATION_MESSAGE("MESSAGE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSW_INSTALLATION_MESSAGE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_INSTALLATION_MESSAGE ADD CONSTRAINT LSW_INSTALLATION_MESSAGE_PK
+    PRIMARY KEY("MESSAGE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_MIGRATION_POLICY_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSW_MIGRATION_POLICY_PK ON bpmdb_owner.LSW_MIGRATION_POLICY("MIGRATION_POLICY_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSW_MIGRATION_POLICY_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_MIGRATION_POLICY ADD CONSTRAINT LSW_MIGRATION_POLICY_PK
+    PRIMARY KEY("MIGRATION_POLICY_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_CLASS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_CLASS_PK ON bpmdb_owner.LSW_CLASS("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_CLASS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_CLASS ADD CONSTRAINT LSWC_CLASS_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_LAYOUT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_LAYOUT_PK ON bpmdb_owner.LSW_LAYOUT("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_LAYOUT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_LAYOUT ADD CONSTRAINT LSWC_LAYOUT_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_LOUT_PRM_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_LOUT_PRM_PK ON bpmdb_owner.LSW_LAYOUT_PARAM("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_LOUT_PRM_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_LAYOUT_PARAM ADD CONSTRAINT LSWC_LOUT_PRM_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PRJ_DFTS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_PRJ_DFTS_PK ON bpmdb_owner.LSW_PROJECT_DEFAULTS("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_PRJ_DFTS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_PROJECT_DEFAULTS ADD CONSTRAINT LSWC_PRJ_DFTS_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_RBGROUP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_RBGROUP_PK ON bpmdb_owner.LSW_RESOURCE_BUNDLE_GROUP("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_RBGROUP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_RESOURCE_BUNDLE_GROUP ADD CONSTRAINT LSWC_RBGROUP_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_RBUNDLE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_RBUNDLE_PK ON bpmdb_owner.LSW_RESOURCE_BUNDLE("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_RBUNDLE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_RESOURCE_BUNDLE ADD CONSTRAINT LSWC_RBUNDLE_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_RBKEY_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_RBKEY_PK ON bpmdb_owner.LSW_RESOURCE_BUNDLE_KEY("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_RBKEY_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_RESOURCE_BUNDLE_KEY ADD CONSTRAINT LSWC_RBKEY_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SCRIPT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SCRIPT_PK ON bpmdb_owner.LSW_SCRIPT("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_SCRIPT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_SCRIPT ADD CONSTRAINT LSWC_SCRIPT_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_TWCLASS_EXTENSION_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_TWCLASS_EXTENSION_PK ON bpmdb_owner.BPM_TWCLASS_EXTENSION("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_TWCLASS_EXTENSION_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_TWCLASS_EXTENSION ADD CONSTRAINT BPM_TWCLASS_EXTENSION_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_APP_CONTRIBUTOR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_APP_CONTRIBUTOR_PK ON bpmdb_owner.LSW_APP_CONTRIBUTOR("NAME")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_APP_CONTRIBUTOR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_APP_CONTRIBUTOR ADD CONSTRAINT LSWC_APP_CONTRIBUTOR_PK
+    PRIMARY KEY("NAME")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_COMMENT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSW_COMMENT_PK ON bpmdb_owner.LSW_COMMENT("COMMENT_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSW_COMMENT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_COMMENT ADD CONSTRAINT LSW_COMMENT_PK
+    PRIMARY KEY("COMMENT_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SERVER_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SERVER_PK ON bpmdb_owner.LSW_SERVER("SERVER_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_SERVER_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_SERVER ADD CONSTRAINT LSWC_SERVER_PK
+    PRIMARY KEY("SERVER_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_DEPLOYMENT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_DEPLOYMENT_PK ON bpmdb_owner.LSW_DEPLOYMENT("DEPLOYMENT_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_DEPLOYMENT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_DEPLOYMENT ADD CONSTRAINT LSWC_DEPLOYMENT_PK
+    PRIMARY KEY("DEPLOYMENT_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SVRCAP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SVRCAP_PK ON bpmdb_owner.LSW_SERVER_CAPABILITY("SERVER_CAPABILITY_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_SVRCAP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_SERVER_CAPABILITY ADD CONSTRAINT LSWC_SVRCAP_PK
+    PRIMARY KEY("SERVER_CAPABILITY_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_CAP_TYPE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_CAP_TYPE_PK ON bpmdb_owner.LSW_CAPABILITY_TYPE("CAPABILITY_TYPE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_CAP_TYPE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_CAPABILITY_TYPE ADD CONSTRAINT LSWC_CAP_TYPE_PK
+    PRIMARY KEY("CAPABILITY_TYPE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_REGISTRATION_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_REGISTRATION_PK ON bpmdb_owner.BPM_REGISTRATION("REG_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_REGISTRATION_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_REGISTRATION ADD CONSTRAINT BPM_REGISTRATION_PK
+    PRIMARY KEY("REG_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_REPOSITORY_LOG_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_REPOSITORY_LOG_PK ON bpmdb_owner.BPM_REPOSITORY_LOG("REPOSITORY_LOG_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_REPOSITORY_LOG_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_REPOSITORY_LOG ADD CONSTRAINT BPM_REPOSITORY_LOG_PK
+    PRIMARY KEY("REPOSITORY_LOG_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_SHARED_TK_USAGES_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_SHARED_TK_USAGES_PK ON bpmdb_owner.BPM_SHARED_TK_USAGES("SHARED_TK_USAGE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_SHARED_TK_USAGES_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_SHARED_TK_USAGES ADD CONSTRAINT BPM_SHARED_TK_USAGES_PK
+    PRIMARY KEY("SHARED_TK_USAGE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_SNAPSHOT_STATUS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_SNAPSHOT_STATUS_PK ON bpmdb_owner.BPM_SNAPSHOT_STATUS("STATUS_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_SNAPSHOT_STATUS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_SNAPSHOT_STATUS ADD CONSTRAINT BPM_SNAPSHOT_STATUS_PK
+    PRIMARY KEY("STATUS_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_PROJECT_SUBSCRIPTION_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_PROJECT_SUBSCRIPTION_PK ON bpmdb_owner.BPM_PROJECT_SUBSCRIPTION("PROJECT_SUBSCRIPTION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_PROJECT_SUBSCRIPTION_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_PROJECT_SUBSCRIPTION ADD CONSTRAINT BPM_PROJECT_SUBSCRIPTION_PK
+    PRIMARY KEY("PROJECT_SUBSCRIPTION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_PROJECT_SUBSCRIBED_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_PROJECT_SUBSCRIBED_PK ON bpmdb_owner.BPM_PROJECT_SUBSCRIBED("PROJECT_SUBSCRIBED_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_PROJECT_SUBSCRIBED_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_PROJECT_SUBSCRIBED ADD CONSTRAINT BPM_PROJECT_SUBSCRIBED_PK
+    PRIMARY KEY("PROJECT_SUBSCRIBED_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_PC_IDX_ACTION_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_PC_IDX_ACTION_PK ON bpmdb_owner.BPM_PC_IDX_ACTION("ACTION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_PC_IDX_ACTION_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_PC_IDX_ACTION ADD CONSTRAINT BPM_PC_IDX_ACTION_PK
+    PRIMARY KEY("ACTION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_PC_INDEXER_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_PC_INDEXER_PK ON bpmdb_owner.BPM_PC_INDEXER("INDEXER_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_PC_INDEXER_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_PC_INDEXER ADD CONSTRAINT BPM_PC_INDEXER_PK
+    PRIMARY KEY("INDEXER_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_GOVERNANCE_ASSIGNMENT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_GOVERNANCE_ASSIGNMENT_PK ON bpmdb_owner.BPM_GOVERNANCE_ASSIGNMENT("ASSIGNMENT_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_GOVERNANCE_ASSIGNMENT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_GOVERNANCE_ASSIGNMENT ADD CONSTRAINT BPM_GOVERNANCE_ASSIGNMENT_PK
+    PRIMARY KEY("ASSIGNMENT_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_GOV_DEFAULTS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_GOV_DEFAULTS_PK ON bpmdb_owner.BPM_GOVERNANCE_EVENT("EVENT_TYPE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_GOV_DEFAULTS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_GOVERNANCE_EVENT ADD CONSTRAINT BPM_GOV_DEFAULTS_PK
+    PRIMARY KEY("EVENT_TYPE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PD_TRANS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_PD_TRANS_PK ON bpmdb_owner.LSW_PERF_DATA_TRANSFER("PERF_DATA_TRANSFER_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_PD_TRANS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_PERF_DATA_TRANSFER ADD CONSTRAINT LSWC_PD_TRANS_PK
+    PRIMARY KEY("PERF_DATA_TRANSFER_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TRCKN_GRP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TRCKN_GRP_PK ON bpmdb_owner.LSW_TRACKING_GROUP("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TRCKN_GRP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TRACKING_GROUP ADD CONSTRAINT LSWC_TRCKN_GRP_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TRCKD_VAR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TRCKD_VAR_PK ON bpmdb_owner.LSW_TRACKED_VARIABLE("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TRCKD_VAR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TRACKED_VARIABLE ADD CONSTRAINT LSWC_TRCKD_VAR_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TRCKN_PT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TRCKN_PT_PK ON bpmdb_owner.LSW_TRACKING_POINT("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TRCKN_PT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TRACKING_POINT ADD CONSTRAINT LSWC_TRCKN_PT_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TRCK_VARU_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TRCK_VARU_PK ON bpmdb_owner.LSW_TRACKED_VARIABLE_USE("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TRCK_VARU_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TRACKED_VARIABLE_USE ADD CONSTRAINT LSWC_TRCK_VARU_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TMNG_INT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TMNG_INT_PK ON bpmdb_owner.LSW_TIMING_INTERVAL("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TMNG_INT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TIMING_INTERVAL ADD CONSTRAINT LSWC_TMNG_INT_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TMNG_INTB_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TMNG_INTB_PK ON bpmdb_owner.LSW_TIMING_INTERVAL_BOUND("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TMNG_INTB_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TIMING_INTERVAL_BOUND ADD CONSTRAINT LSWC_TMNG_INTB_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPMC_ECNTR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPMC_ECNTR_PK ON bpmdb_owner.BPM_ECM_CONNECTOR("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPMC_ECNTR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_ECM_CONNECTOR ADD CONSTRAINT BPMC_ECNTR_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ILDT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_ILDT_PK ON bpmdb_owner.LSW_ILOG_DECISION("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_ILDT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_ILOG_DECISION ADD CONSTRAINT LSWC_ILDT_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SCNTR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SCNTR_PK ON bpmdb_owner.LSW_SCA_CONNECTOR("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_SCNTR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_SCA_CONNECTOR ADD CONSTRAINT LSWC_SCNTR_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_STEP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_STEP_PK ON bpmdb_owner.LSW_STEP("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_STEP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_STEP ADD CONSTRAINT LSWC_STEP_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_CONNECTOR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_CONNECTOR_PK ON bpmdb_owner.LSW_CONNECTOR("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_CONNECTOR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_CONNECTOR ADD CONSTRAINT LSWC_CONNECTOR_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_IC_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_IC_PK ON bpmdb_owner.LSW_IC("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_IC_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_IC ADD CONSTRAINT LSWC_IC_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_JCNTR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_JCNTR_PK ON bpmdb_owner.LSW_JAVA_CONNECTOR("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_JCNTR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_JAVA_CONNECTOR ADD CONSTRAINT LSWC_JCNTR_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_WSNTR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_WSNTR_PK ON bpmdb_owner.LSW_WS_CONNECTOR("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_WSNTR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_WS_CONNECTOR ADD CONSTRAINT LSWC_WSNTR_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ILNTR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_ILNTR_PK ON bpmdb_owner.LSW_ILOG_CONNECTOR("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_ILNTR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_ILOG_CONNECTOR ADD CONSTRAINT LSWC_ILNTR_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ICNTR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_ICNTR_PK ON bpmdb_owner.LSW_ICMCASE_CONNECTOR("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_ICNTR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_ICMCASE_CONNECTOR ADD CONSTRAINT LSWC_ICNTR_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EPV_PR_LK_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_EPV_PR_LK_PK ON bpmdb_owner.LSW_EPV_PROCESS_LINK("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_EPV_PR_LK_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_EPV_PROCESS_LINK ADD CONSTRAINT LSWC_EPV_PR_LK_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_RES_PR_LK_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_RES_PR_LK_PK ON bpmdb_owner.LSW_RESOURCE_PROCESS_LINK("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_RES_PR_LK_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_RESOURCE_PROCESS_LINK ADD CONSTRAINT LSWC_RES_PR_LK_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EXCEPTION_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_EXCEPTION_PK ON bpmdb_owner.LSW_EXCEPTION("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_EXCEPTION_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_EXCEPTION ADD CONSTRAINT LSWC_EXCEPTION_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EXIT_POINT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_EXIT_POINT_PK ON bpmdb_owner.LSW_EXIT_POINT("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_EXIT_POINT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_EXIT_POINT ADD CONSTRAINT LSWC_EXIT_POINT_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TS_FILE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TS_FILE_PK ON bpmdb_owner.LSW_TASK_SENDER_FILE("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TS_FILE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TASK_SENDER_FILE ADD CONSTRAINT LSWC_TS_FILE_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TS_ADDR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TS_ADDR_PK ON bpmdb_owner.LSW_TASK_SENDER_ADDR("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TS_ADDR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TASK_SENDER_ADDR ADD CONSTRAINT LSWC_TS_ADDR_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PIPP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_PIPP_PK ON bpmdb_owner.LSW_PROCESS_ITEM_PRE_POST("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_PIPP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_PROCESS_ITEM_PRE_POST ADD CONSTRAINT LSWC_PIPP_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PROC_LINK_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_PROC_LINK_PK ON bpmdb_owner.LSW_PROCESS_LINK("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_PROC_LINK_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_PROCESS_LINK ADD CONSTRAINT LSWC_PROC_LINK_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_FILE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_FILE_PK ON bpmdb_owner.LSW_FILE("FILE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_FILE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_FILE ADD CONSTRAINT LSWC_FILE_PK
+    PRIMARY KEY("FILE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_IC_INPUT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_IC_INPUT_PK ON bpmdb_owner.LSW_IC_INPUT_PROPERTY("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_IC_INPUT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_IC_INPUT_PROPERTY ADD CONSTRAINT LSWC_IC_INPUT_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_IC_OUTPUT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_IC_OUTPUT_PK ON bpmdb_owner.LSW_IC_OUTPUT_PROPERTY("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_IC_OUTPUT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_IC_OUTPUT_PROPERTY ADD CONSTRAINT LSWC_IC_OUTPUT_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PARAM_MAP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_PARAM_MAP_PK ON bpmdb_owner.LSW_PARAMETER_MAPPING("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_PARAM_MAP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_PARAMETER_MAPPING ADD CONSTRAINT LSWC_PARAM_MAP_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_PRIORITY_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSW_PRIORITY_PK ON bpmdb_owner.LSW_PRIORITY("PRIORITY_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSW_PRIORITY_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_PRIORITY ADD CONSTRAINT LSW_PRIORITY_PK
+    PRIMARY KEY("PRIORITY_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PROCESS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_PROCESS_PK ON bpmdb_owner.LSW_PROCESS("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_PROCESS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_PROCESS ADD CONSTRAINT LSWC_PROCESS_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PROC_ITEM_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_PROC_ITEM_PK ON bpmdb_owner.LSW_PROCESS_ITEM("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_PROC_ITEM_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_PROCESS_ITEM ADD CONSTRAINT LSWC_PROC_ITEM_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SUBPROCESS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SUBPROCESS_PK ON bpmdb_owner.LSW_SUBPROCESS("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_SUBPROCESS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_SUBPROCESS ADD CONSTRAINT LSWC_SUBPROCESS_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PROC_LABEL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_PROC_LABEL_PK ON bpmdb_owner.LSW_PROCESS_LABEL("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_PROC_LABEL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_PROCESS_LABEL ADD CONSTRAINT LSWC_PROC_LABEL_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PROC_VAR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_PROC_VAR_PK ON bpmdb_owner.LSW_PROCESS_VARIABLE("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_PROC_VAR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_PROCESS_VARIABLE ADD CONSTRAINT LSWC_PROC_VAR_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PRO_PARM_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_PRO_PARM_PK ON bpmdb_owner.LSW_PROCESS_PARAMETER("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_PRO_PARM_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_PROCESS_PARAMETER ADD CONSTRAINT LSWC_PRO_PARM_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SWITCH_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SWITCH_PK ON bpmdb_owner.LSW_SWITCH("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_SWITCH_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_SWITCH ADD CONSTRAINT LSWC_SWITCH_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SWITCH_CON_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SWITCH_CON_PK ON bpmdb_owner.LSW_SWITCH_CONDITION("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_SWITCH_CON_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_SWITCH_CONDITION ADD CONSTRAINT LSWC_SWITCH_CON_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TASK_SEND_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TASK_SEND_PK ON bpmdb_owner.LSW_TASK_SENDER("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TASK_SEND_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TASK_SENDER ADD CONSTRAINT LSWC_TASK_SEND_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TS_EXVAR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TS_EXVAR_PK ON bpmdb_owner.LSW_TASK_SENDER_EXVAR("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TS_EXVAR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TASK_SENDER_EXVAR ADD CONSTRAINT LSWC_TS_EXVAR_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPMC_ESNTR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPMC_ESNTR_PK ON bpmdb_owner.BPM_ES_CONNECTOR("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPMC_ESNTR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_ES_CONNECTOR ADD CONSTRAINT BPMC_ESNTR_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPMC_SKELNTR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPMC_SKELNTR_PK ON bpmdb_owner.BPM_SKEL_CONNECTOR("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPMC_SKELNTR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_SKEL_CONNECTOR ADD CONSTRAINT BPMC_SKELNTR_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_REP_PK ON bpmdb_owner.LSW_REPORT("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_REP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_REPORT ADD CONSTRAINT LSWC_REP_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_EPV_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_REP_EPV_PK ON bpmdb_owner.LSW_REPORT_EPV_LINK("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_REP_EPV_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_REPORT_EPV_LINK ADD CONSTRAINT LSWC_REP_EPV_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_RBG_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_REP_RBG_PK ON bpmdb_owner.LSW_REPORT_RBG_LINK("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_REP_RBG_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_REPORT_RBG_LINK ADD CONSTRAINT LSWC_REP_RBG_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_DS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_REP_DS_PK ON bpmdb_owner.LSW_REPORT_DATASOURCE("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_REP_DS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_REPORT_DATASOURCE ADD CONSTRAINT LSWC_REP_DS_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_TG_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_REP_TG_PK ON bpmdb_owner.LSW_REPORT_TG_LINK("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_REP_TG_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_REPORT_TG_LINK ADD CONSTRAINT LSWC_REP_TG_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_PAGE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_REP_PAGE_PK ON bpmdb_owner.LSW_REPORT_PAGE("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_REP_PAGE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_REPORT_PAGE ADD CONSTRAINT LSWC_REP_PAGE_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_CHRT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_REP_CHRT_PK ON bpmdb_owner.LSW_REPORT_CHART("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_REP_CHRT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_REPORT_CHART ADD CONSTRAINT LSWC_REP_CHRT_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_VAR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_REP_VAR_PK ON bpmdb_owner.LSW_REPORT_VARIABLES("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_REP_VAR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_REPORT_VARIABLES ADD CONSTRAINT LSWC_REP_VAR_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_DSL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_REP_DSL_PK ON bpmdb_owner.LSW_REPORT_DATASOURCE_IC_LINK("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_REP_DSL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_REPORT_DATASOURCE_IC_LINK ADD CONSTRAINT LSWC_REP_DSL_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_DSSL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_REP_DSSL_PK ON bpmdb_owner.LSW_REPORT_DATASOURCE_SRV_LINK("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_REP_DSSL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_REPORT_DATASOURCE_SRV_LINK ADD CONSTRAINT LSWC_REP_DSSL_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_DSLL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_REP_DSLL_PK ON bpmdb_owner.LSW_REPORT_DS_LAYOUT_LINK("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_REP_DSLL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_REPORT_DS_LAYOUT_LINK ADD CONSTRAINT LSWC_REP_DSLL_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SCBD_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SCBD_PK ON bpmdb_owner.LSW_SCBD("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_SCBD_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_SCBD ADD CONSTRAINT LSWC_SCBD_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SD_RPT_LK_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SD_RPT_LK_PK ON bpmdb_owner.LSW_SCBD_RPT_LINK("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_SD_RPT_LK_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_SCBD_RPT_LINK ADD CONSTRAINT LSWC_SD_RPT_LK_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BLACKCAL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BLACKCAL_PK ON bpmdb_owner.LSW_BLACKOUT_CALENDAR("CALENDAR_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_BLACKCAL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BLACKOUT_CALENDAR ADD CONSTRAINT LSWC_BLACKCAL_PK
+    PRIMARY KEY("CALENDAR_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_HOLIDAY_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_HOLIDAY_PK ON bpmdb_owner.LSW_HOLIDAY_SCHEDULE("HOLIDAY_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_HOLIDAY_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_HOLIDAY_SCHEDULE ADD CONSTRAINT LSWC_HOLIDAY_PK
+    PRIMARY KEY("HOLIDAY_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TMPERIOD_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TMPERIOD_PK ON bpmdb_owner.LSW_TIME_PERIOD("PERIOD_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TMPERIOD_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TIME_PERIOD ADD CONSTRAINT LSWC_TMPERIOD_PK
+    PRIMARY KEY("PERIOD_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TMSCHEDULE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TMSCHEDULE_PK ON bpmdb_owner.LSW_TIME_SCHEDULE("SCHEDULE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TMSCHEDULE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TIME_SCHEDULE ADD CONSTRAINT LSWC_TMSCHEDULE_PK
+    PRIMARY KEY("SCHEDULE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SCHPER_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SCHPER_PK ON bpmdb_owner.LSW_TIME_SCHEDULE_PERIOD("SCHEDULE_ID","PERIOD_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_SCHPER_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TIME_SCHEDULE_PERIOD ADD CONSTRAINT LSWC_SCHPER_PK
+    PRIMARY KEY("SCHEDULE_ID","PERIOD_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('TASK_MEASURES_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.TASK_MEASURES_PK ON bpmdb_owner.BPM_TASK_ACTIVITY_MEASURES("TASK_MEASURES_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('TASK_MEASURES_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_TASK_ACTIVITY_MEASURES ADD CONSTRAINT TASK_MEASURES_PK
+    PRIMARY KEY("TASK_MEASURES_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPMC_TASK_MARKERS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPMC_TASK_MARKERS ON bpmdb_owner.BPM_TASK_MARKERS("MARKER_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPMC_TASK_MARKERS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_TASK_MARKERS ADD CONSTRAINT BPMC_TASK_MARKERS
+    PRIMARY KEY("MARKER_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_DOC_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BPD_DOC_PK2 ON bpmdb_owner.LSW_BPD_DOCUMENTS("DOC_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_BPD_DOC_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BPD_DOCUMENTS ADD CONSTRAINT LSWC_BPD_DOC_PK2
+    PRIMARY KEY("DOC_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPD_INST_VARS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPD_INST_VARS_PK ON bpmdb_owner.LSW_BPD_INSTANCE_VARIABLES("BPD_INST_VARS_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPD_INST_VARS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BPD_INSTANCE_VARIABLES ADD CONSTRAINT BPD_INST_VARS_PK
+    PRIMARY KEY("BPD_INST_VARS_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_INST_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BPD_INST_PK ON bpmdb_owner.LSW_BPD_INSTANCE("BPD_INSTANCE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_BPD_INST_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BPD_INSTANCE ADD CONSTRAINT LSWC_BPD_INST_PK
+    PRIMARY KEY("BPD_INSTANCE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_NTFY_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BPD_NTFY_PK ON bpmdb_owner.LSW_BPD_NOTIFICATION("BPD_NOTIFICATION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_BPD_NTFY_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BPD_NOTIFICATION ADD CONSTRAINT LSWC_BPD_NTFY_PK
+    PRIMARY KEY("BPD_NOTIFICATION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_CMT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BPD_CMT_PK ON bpmdb_owner.LSW_BPD_INSTANCE_COMMENT("COMMENT_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_BPD_CMT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BPD_INSTANCE_COMMENT ADD CONSTRAINT LSWC_BPD_CMT_PK
+    PRIMARY KEY("COMMENT_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_DOC_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BPD_DOC_PK ON bpmdb_owner.LSW_BPD_INSTANCE_DOCUMENTS("DOC_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_BPD_DOC_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BPD_INSTANCE_DOCUMENTS ADD CONSTRAINT LSWC_BPD_DOC_PK
+    PRIMARY KEY("DOC_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_COD_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BPD_COD_PK ON bpmdb_owner.LSW_BPD_STATUS_CODES("STATUS_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_BPD_COD_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BPD_STATUS_CODES ADD CONSTRAINT LSWC_BPD_COD_PK
+    PRIMARY KEY("STATUS_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_FIL_TYP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_FIL_TYP_PK ON bpmdb_owner.LSW_FILE_TYPES("FILETYPE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_FIL_TYP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_FILE_TYPES ADD CONSTRAINT LSWC_FIL_TYP_PK
+    PRIMARY KEY("FILETYPE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_MSG_INCL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_MSG_INCL_PK ON bpmdb_owner.LSW_INST_MSG_INCL("ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_MSG_INCL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_INST_MSG_INCL ADD CONSTRAINT LSWC_MSG_INCL_PK
+    PRIMARY KEY("ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_MSG_EXCL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_MSG_EXCL_PK ON bpmdb_owner.LSW_INST_MSG_EXCL("ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_MSG_EXCL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_INST_MSG_EXCL ADD CONSTRAINT LSWC_MSG_EXCL_PK
+    PRIMARY KEY("ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ERROR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_ERROR_PK ON bpmdb_owner.LSW_RUNTIME_ERROR("ERROR_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_ERROR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_RUNTIME_ERROR ADD CONSTRAINT LSWC_ERROR_PK
+    PRIMARY KEY("ERROR_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_STORED_SYMBOL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_STORED_SYMBOL_PK ON bpmdb_owner.LSW_STORED_SYMBOL_TABLE("SYMBOL_TABLE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_STORED_SYMBOL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_STORED_SYMBOL_TABLE ADD CONSTRAINT LSWC_STORED_SYMBOL_PK
+    PRIMARY KEY("SYMBOL_TABLE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TASK_COD_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TASK_COD_PK ON bpmdb_owner.LSW_TASK_STATUS_CODES("STATUS_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TASK_COD_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TASK_STATUS_CODES ADD CONSTRAINT LSWC_TASK_COD_PK
+    PRIMARY KEY("STATUS_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TASKEXACD_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TASKEXACD_PK ON bpmdb_owner.LSW_TASK_EXTACT_DATA("TASK_EXTACT_DATA_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TASKEXACD_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TASK_EXTACT_DATA ADD CONSTRAINT LSWC_TASKEXACD_PK
+    PRIMARY KEY("TASK_EXTACT_DATA_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TASK_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TASK_PK ON bpmdb_owner.LSW_TASK("TASK_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TASK_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TASK ADD CONSTRAINT LSWC_TASK_PK
+    PRIMARY KEY("TASK_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TASKIPFD_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TASKIPFD_PK ON bpmdb_owner.LSW_TASK_IPF_DATA("TASK_INFOPATHFORM_DATA_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TASKIPFD_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TASK_IPF_DATA ADD CONSTRAINT LSWC_TASKIPFD_PK
+    PRIMARY KEY("TASK_INFOPATHFORM_DATA_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TASK_FILE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TASK_FILE_PK ON bpmdb_owner.LSW_TASK_FILE("TASK_ID","SEQ")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TASK_FILE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TASK_FILE ADD CONSTRAINT LSWC_TASK_FILE_PK
+    PRIMARY KEY("TASK_ID","SEQ")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TASK_ADDR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TASK_ADDR_PK ON bpmdb_owner.LSW_TASK_ADDR("TASK_ADDR_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TASK_ADDR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TASK_ADDR ADD CONSTRAINT LSWC_TASK_ADDR_PK
+    PRIMARY KEY("TASK_ADDR_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TASK_NARR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TASK_NARR_PK ON bpmdb_owner.LSW_TASK_NARR("TASK_NARR_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TASK_NARR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TASK_NARR ADD CONSTRAINT LSWC_TASK_NARR_PK
+    PRIMARY KEY("TASK_NARR_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TASK_ACTN_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TASK_ACTN_PK ON bpmdb_owner.LSW_TASK_ACTION("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TASK_ACTN_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TASK_ACTION ADD CONSTRAINT LSWC_TASK_ACTN_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TASK_EXEC_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TASK_EXEC_PK ON bpmdb_owner.LSW_TASK_EXECUTION_CONTEXT("TASK_EXECUTION_CONTEXT_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TASK_EXEC_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TASK_EXECUTION_CONTEXT ADD CONSTRAINT LSWC_TASK_EXEC_PK
+    PRIMARY KEY("TASK_EXECUTION_CONTEXT_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_MIGRATION_STATUS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_MIGRATION_STATUS_PK ON bpmdb_owner.BPM_MIGRATION_STATUS("EVENT")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_MIGRATION_STATUS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_MIGRATION_STATUS ADD CONSTRAINT LSWC_MIGRATION_STATUS_PK
+    PRIMARY KEY("EVENT")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPMC_BPD_INSTANCE_MEASURES_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPMC_BPD_INSTANCE_MEASURES_PK ON bpmdb_owner.BPM_BPD_INSTANCE_MEASURES("MEASURES_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPMC_BPD_INSTANCE_MEASURES_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_BPD_INSTANCE_MEASURES ADD CONSTRAINT BPMC_BPD_INSTANCE_MEASURES_PK
+    PRIMARY KEY("MEASURES_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPM_SYNCHRONIZE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BPM_SYNCHRONIZE_PK ON bpmdb_owner.BPM_SYNCHRONIZE("IDENTIFIER")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_BPM_SYNCHRONIZE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_SYNCHRONIZE ADD CONSTRAINT LSWC_BPM_SYNCHRONIZE_PK
+    PRIMARY KEY("IDENTIFIER")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_ACTIVITY_INSTANCE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BPD_ACTIVITY_INSTANCE_PK ON bpmdb_owner.LSW_BPD_ACTIVITY_INSTANCE("INSTANCE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_BPD_ACTIVITY_INSTANCE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BPD_ACTIVITY_INSTANCE ADD CONSTRAINT LSWC_BPD_ACTIVITY_INSTANCE_PK
+    PRIMARY KEY("INSTANCE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_INST_COR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BPD_INST_COR_PK ON bpmdb_owner.LSW_BPD_INSTANCE_CORRELATION("CORRELATION_PK")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_BPD_INST_COR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BPD_INSTANCE_CORRELATION ADD CONSTRAINT LSWC_BPD_INST_COR_PK
+    PRIMARY KEY("CORRELATION_PK")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_INST_EXT_DATA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BPD_INST_EXT_DATA_PK ON bpmdb_owner.LSW_BPD_INSTANCE_EXT_DATA("BPD_EXTENDED_DATA_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_BPD_INST_EXT_DATA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BPD_INSTANCE_EXT_DATA ADD CONSTRAINT LSWC_BPD_INST_EXT_DATA_PK
+    PRIMARY KEY("BPD_EXTENDED_DATA_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_RELATIONSHIP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_RELATIONSHIP_PK ON bpmdb_owner.BPM_RELATIONSHIP("INSTANCE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_RELATIONSHIP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_RELATIONSHIP ADD CONSTRAINT LSWC_RELATIONSHIP_PK
+    PRIMARY KEY("INSTANCE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TASK_CTX_HST_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TASK_CTX_HST_PK ON bpmdb_owner.LSW_TASK_CTX_HISTORY("TASK_ID","SEQ")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_TASK_CTX_HST_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TASK_CTX_HISTORY ADD CONSTRAINT LSWC_TASK_CTX_HST_PK
+    PRIMARY KEY("TASK_ID","SEQ")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PLAYBACK_INSTANCE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_PLAYBACK_INSTANCE_PK ON bpmdb_owner.BPM_HISTORICAL_DATA_PLAYBACK("BPD_INSTANCE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_PLAYBACK_INSTANCE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_HISTORICAL_DATA_PLAYBACK ADD CONSTRAINT LSWC_PLAYBACK_INSTANCE_PK
+    PRIMARY KEY("BPD_INSTANCE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('WLC_WLSTORE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.WLC_WLSTORE_PK ON bpmdb_owner.WL_WLSTORE("ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('WLC_WLSTORE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.WL_WLSTORE ADD CONSTRAINT WLC_WLSTORE_PK
+    PRIMARY KEY("ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PRI_KEY_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_PRI_KEY_PK ON bpmdb_owner.LSW_PRI_KEY("TABLE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_PRI_KEY_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_PRI_KEY ADD CONSTRAINT LSWC_PRI_KEY_PK
+    PRIMARY KEY("TABLE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SYSTEM_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SYSTEM_PK ON bpmdb_owner.LSW_SYSTEM("PROPKEY")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_SYSTEM_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_SYSTEM ADD CONSTRAINT LSWC_SYSTEM_PK
+    PRIMARY KEY("PROPKEY")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SYSSCHEMA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SYSSCHEMA_PK ON bpmdb_owner.LSW_SYSTEM_SCHEMA("PROPNAME")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_SYSSCHEMA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_SYSTEM_SCHEMA ADD CONSTRAINT LSWC_SYSSCHEMA_PK
+    PRIMARY KEY("PROPNAME")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_LEGACY_ID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_LEGACY_ID ON bpmdb_owner.LSW_LEGACY_ID("LEGACY_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_LEGACY_ID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_LEGACY_ID ADD CONSTRAINT LSWC_LEGACY_ID
+    PRIMARY KEY("LEGACY_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_LOCK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_LOCK ON bpmdb_owner.LSW_LOCK("LOCK_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_LOCK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_LOCK ADD CONSTRAINT LSWC_LOCK
+    PRIMARY KEY("LOCK_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPMC_ASYNC_OP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPMC_ASYNC_OP ON bpmdb_owner.BPM_ASYNC_OP("OP_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPMC_ASYNC_OP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_ASYNC_OP ADD CONSTRAINT BPMC_ASYNC_OP
+    PRIMARY KEY("OP_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('DBUPGRADE_PROGRESS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.DBUPGRADE_PROGRESS_PK ON bpmdb_owner.DBUPGRADE_PROGRESS("TRANSACTIONID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('DBUPGRADE_PROGRESS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.DBUPGRADE_PROGRESS ADD CONSTRAINT DBUPGRADE_PROGRESS_PK
+    PRIMARY KEY("TRANSACTIONID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_TASK_INDEX_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_TASK_INDEX_PK ON bpmdb_owner.BPM_TASK_INDEX("TASK_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_TASK_INDEX_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_TASK_INDEX ADD CONSTRAINT BPM_TASK_INDEX_PK
+    PRIMARY KEY("TASK_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_TASK_INDEX_JOB_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_TASK_INDEX_JOB_PK ON bpmdb_owner.BPM_TASK_INDEX_JOB("INDEX_ID","INDEX_START_TIME")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_TASK_INDEX_JOB_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_TASK_INDEX_JOB ADD CONSTRAINT BPM_TASK_INDEX_JOB_PK
+    PRIMARY KEY("INDEX_ID","INDEX_START_TIME")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_SRCH_INDEX_SCHEMA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_SRCH_INDEX_SCHEMA_PK ON bpmdb_owner.BPM_SRCH_INDEX_SCHEMA("BPDID","FIELD_NAME")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_SRCH_INDEX_SCHEMA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_SRCH_INDEX_SCHEMA ADD CONSTRAINT BPM_SRCH_INDEX_SCHEMA_PK
+    PRIMARY KEY("BPDID","FIELD_NAME")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_INSTANCE_INDEX_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_INSTANCE_INDEX_PK ON bpmdb_owner.BPM_INSTANCE_INDEX("INSTANCE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_INSTANCE_INDEX_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_INSTANCE_INDEX ADD CONSTRAINT BPM_INSTANCE_INDEX_PK
+    PRIMARY KEY("INSTANCE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_INV_UCA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_INV_UCA_PK ON bpmdb_owner.LSW_INVOKE_UCA("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_INV_UCA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_INVOKE_UCA ADD CONSTRAINT LSWC_INV_UCA_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_UCA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_UCA_PK ON bpmdb_owner.LSW_UCA("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_UCA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_UCA ADD CONSTRAINT LSWC_UCA_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_UCA_PARM_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_UCA_PARM_PK ON bpmdb_owner.LSW_UCA_PARM("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_UCA_PARM_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_UCA_PARM ADD CONSTRAINT LSWC_UCA_PARM_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_UCA_BO_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_UCA_BO_PK ON bpmdb_owner.LSW_UCA_BLACKOUT("BLACKOUT_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_UCA_BO_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_UCA_BLACKOUT ADD CONSTRAINT LSWC_UCA_BO_PK
+    PRIMARY KEY("BLACKOUT_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_UCA_EVENT_TYPE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_UCA_EVENT_TYPE_PK ON bpmdb_owner.BPM_UCA_EVENT_TYPE("UCA_EVENT_TYPE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_UCA_EVENT_TYPE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_UCA_EVENT_TYPE ADD CONSTRAINT LSWC_UCA_EVENT_TYPE_PK
+    PRIMARY KEY("UCA_EVENT_TYPE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_USR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_USR_PK ON bpmdb_owner.LSW_USR("USER_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_USR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_USR ADD CONSTRAINT LSWC_USR_PK
+    PRIMARY KEY("USER_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_UXREF_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_UXREF_PK ON bpmdb_owner.LSW_USR_XREF("USER_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_UXREF_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_USR_XREF ADD CONSTRAINT LSWC_UXREF_PK
+    PRIMARY KEY("USER_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_GXREF_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_GXREF_PK ON bpmdb_owner.LSW_USR_GRP_XREF("GROUP_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_GXREF_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_USR_GRP_XREF ADD CONSTRAINT LSWC_GXREF_PK
+    PRIMARY KEY("GROUP_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_UGXREF_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_UGXREF_PK ON bpmdb_owner.LSW_USR_GRP_MEM_XREF("GROUP_ID","USER_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_UGXREF_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_USR_GRP_MEM_XREF ADD CONSTRAINT LSWC_UGXREF_PK
+    PRIMARY KEY("GROUP_ID","USER_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_GGXREF_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_GGXREF_PK ON bpmdb_owner.LSW_GRP_GRP_MEM_XREF("GROUP_ID","CONTAINER_GROUP_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_GGXREF_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_GRP_GRP_MEM_XREF ADD CONSTRAINT LSWC_GGXREF_PK
+    PRIMARY KEY("GROUP_ID","CONTAINER_GROUP_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_UA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_UA_PK ON bpmdb_owner.LSW_USR_ASSUME("USR_ASSUME_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_UA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_USR_ASSUME ADD CONSTRAINT LSWC_UA_PK
+    PRIMARY KEY("USR_ASSUME_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ACCESS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_ACCESS_PK ON bpmdb_owner.LSW_ACCESS("ASSUMED_USER_ID","USER_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_ACCESS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_ACCESS ADD CONSTRAINT LSWC_ACCESS_PK
+    PRIMARY KEY("ASSUMED_USER_ID","USER_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_DGRP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSW_DGRP_PK ON bpmdb_owner.LSW_DYNAMIC_GROUP("DYNAMIC_GROUP_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSW_DGRP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_DYNAMIC_GROUP ADD CONSTRAINT LSW_DGRP_PK
+    PRIMARY KEY("DYNAMIC_GROUP_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_DGRPC_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSW_DGRPC_PK ON bpmdb_owner.LSW_DYNAMIC_GROUP_CONSTRAINT("DYNAMIC_GROUP_CONSTRAINT_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSW_DGRPC_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_DYNAMIC_GROUP_CONSTRAINT ADD CONSTRAINT LSW_DGRPC_PK
+    PRIMARY KEY("DYNAMIC_GROUP_CONSTRAINT_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_DGDEP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSW_DGDEP_PK ON bpmdb_owner.LSW_DYNAMIC_GROUP_DEPENDENCY("PARENT_GROUP_ID","CHILD_GROUP_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSW_DGDEP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_DYNAMIC_GROUP_DEPENDENCY ADD CONSTRAINT LSW_DGDEP_PK
+    PRIMARY KEY("PARENT_GROUP_ID","CHILD_GROUP_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_USR_ATTR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_USR_ATTR_PK ON bpmdb_owner.LSW_USR_ATTR("USER_ATTR_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_USR_ATTR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_USR_ATTR ADD CONSTRAINT LSWC_USR_ATTR_PK
+    PRIMARY KEY("USER_ATTR_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('U_ATTR_DEF_VAL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.U_ATTR_DEF_VAL_PK ON bpmdb_owner.LSW_USER_ATTR_DEF_VALUES("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('U_ATTR_DEF_VAL_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_USER_ATTR_DEF_VALUES ADD CONSTRAINT U_ATTR_DEF_VAL_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_USRATTRD_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_USRATTRD_PK ON bpmdb_owner.LSW_USER_ATTRIBUTE_DEF("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_USRATTRD_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_USER_ATTRIBUTE_DEF ADD CONSTRAINT LSWC_USRATTRD_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PARTCP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_PARTCP_PK ON bpmdb_owner.LSW_PARTICIPANT("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_PARTCP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_PARTICIPANT ADD CONSTRAINT LSWC_PARTCP_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ACL_ENTRY_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_ACL_ENTRY_PK ON bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_ACL_ENTRY_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_ACL_ENTRY ADD CONSTRAINT LSWC_ACL_ENTRY_PK
+    PRIMARY KEY("ACL_ENTRY_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_FAV_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_FAV_PK ON bpmdb_owner.LSW_FAVORITE("FAVORITE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_FAV_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_FAVORITE ADD CONSTRAINT LSWC_FAV_PK
+    PRIMARY KEY("FAVORITE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_FAV_DETAILS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_FAV_DETAILS_PK ON bpmdb_owner.LSW_FAVORITE_ADDITIONAL_INFO("FAV_ADDITIONAL_INFO_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_FAV_DETAILS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_FAVORITE_ADDITIONAL_INFO ADD CONSTRAINT LSWC_FAV_DETAILS_PK
+    PRIMARY KEY("FAV_ADDITIONAL_INFO_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_USR_AVATAR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_USR_AVATAR_PK ON bpmdb_owner.BPM_USR_AVATAR("USER_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_USR_AVATAR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_USR_AVATAR ADD CONSTRAINT LSWC_USR_AVATAR_PK
+    PRIMARY KEY("USER_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_USR_RT_PRPS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_USR_RT_PRPS_PK ON bpmdb_owner.BPM_USR_RUNTIME_PROPS("USER_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_USR_RT_PRPS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_USR_RUNTIME_PROPS ADD CONSTRAINT BPM_USR_RT_PRPS_PK
+    PRIMARY KEY("USER_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SNAPSHOT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SNAPSHOT_PK ON bpmdb_owner.LSW_SNAPSHOT("SNAPSHOT_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_SNAPSHOT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_SNAPSHOT ADD CONSTRAINT LSWC_SNAPSHOT_PK
+    PRIMARY KEY("SNAPSHOT_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BRANCH_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BRANCH_PK ON bpmdb_owner.LSW_BRANCH("BRANCH_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_BRANCH_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BRANCH ADD CONSTRAINT LSWC_BRANCH_PK
+    PRIMARY KEY("BRANCH_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PROJECT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_PROJECT_PK ON bpmdb_owner.LSW_PROJECT("PROJECT_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_PROJECT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_PROJECT ADD CONSTRAINT LSWC_PROJECT_PK
+    PRIMARY KEY("PROJECT_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PO_VERSIONS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_PO_VERSIONS ON bpmdb_owner.LSW_PO_VERSIONS("PO_VERSION_ID","BRANCH_ID","VERSION_SUMMARY_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_PO_VERSIONS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_PO_VERSIONS ADD CONSTRAINT LSWC_PO_VERSIONS
+    PRIMARY KEY("PO_VERSION_ID","BRANCH_ID","VERSION_SUMMARY_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PROJ_DEP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_PROJ_DEP_PK ON bpmdb_owner.LSW_PROJECT_DEPENDENCY("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_PROJ_DEP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_PROJECT_DEPENDENCY ADD CONSTRAINT LSWC_PROJ_DEP_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_DEP_PATH') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_DEP_PATH ON bpmdb_owner.LSW_DEP_PATH("DEP_PATH_ID","IDX")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_DEP_PATH') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_DEP_PATH ADD CONSTRAINT LSWC_DEP_PATH
+    PRIMARY KEY("DEP_PATH_ID","IDX")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PO_REFERENCE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_PO_REFERENCE ON bpmdb_owner.LSW_PO_REFERENCE("REFERENCE_ID","BRANCH_ID","START_SEQ_NUM")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_PO_REFERENCE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_PO_REFERENCE ADD CONSTRAINT LSWC_PO_REFERENCE
+    PRIMARY KEY("REFERENCE_ID","BRANCH_ID","START_SEQ_NUM")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PO_DEPENDENCY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_PO_DEPENDENCY ON bpmdb_owner.LSW_PO_DEPENDENCY("BRANCH_ID","START_SEQ_NUM","SOURCE_ID","SOURCE_LOCATION")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_PO_DEPENDENCY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_PO_DEPENDENCY ADD CONSTRAINT LSWC_PO_DEPENDENCY
+    PRIMARY KEY("BRANCH_ID","START_SEQ_NUM","SOURCE_ID","SOURCE_LOCATION")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_RT_REFERENCE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_RT_REFERENCE ON bpmdb_owner.LSW_RT_REFERENCE("REFERENCE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_RT_REFERENCE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_RT_REFERENCE ADD CONSTRAINT LSWC_RT_REFERENCE
+    PRIMARY KEY("REFERENCE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_WEB_SRV_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_WEB_SRV_PK ON bpmdb_owner.LSW_WEB_SERVICE("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_WEB_SRV_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_WEB_SERVICE ADD CONSTRAINT LSWC_WEB_SRV_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_WEBSRV_OP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_WEBSRV_OP_PK ON bpmdb_owner.LSW_WEB_SERVICE_OP("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_WEBSRV_OP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_WEB_SERVICE_OP ADD CONSTRAINT LSWC_WEBSRV_OP_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_CACHE_STS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_ASSET_CACHE_STS_PK ON bpmdb_owner.BPM_ASSET_CACHE_STATUS("CONTAINER_ID","ASSET_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_ASSET_CACHE_STS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_ASSET_CACHE_STATUS ADD CONSTRAINT BPM_ASSET_CACHE_STS_PK
+    PRIMARY KEY("CONTAINER_ID","ASSET_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_SAVE_INSTR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_ASSET_SAVE_INSTR_PK ON bpmdb_owner.BPM_ASSET_CACHE_SAVE_INSTR("CONTAINER_ID","ASSET_ID","BATCH_NO","DATA_SEQ")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_ASSET_SAVE_INSTR_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_ASSET_CACHE_SAVE_INSTR ADD CONSTRAINT BPM_ASSET_SAVE_INSTR_PK
+    PRIMARY KEY("CONTAINER_ID","ASSET_ID","BATCH_NO","DATA_SEQ")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_INSTR_DIS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_ASSET_INSTR_DIS_PK ON bpmdb_owner.BPM_ASSET_CACHE_INSTR_DISCARD("CONTAINER_ID","ASSET_ID","BATCH_NO","DATA_SEQ")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_ASSET_INSTR_DIS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_ASSET_CACHE_INSTR_DISCARD ADD CONSTRAINT BPM_ASSET_INSTR_DIS_PK
+    PRIMARY KEY("CONTAINER_ID","ASSET_ID","BATCH_NO","DATA_SEQ")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_SAVE_LOCK_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_ASSET_SAVE_LOCK_PK ON bpmdb_owner.BPM_ASSET_CACHE_SAVE_LOCK("CONTAINER_ID","ASSET_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_ASSET_SAVE_LOCK_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_ASSET_CACHE_SAVE_LOCK ADD CONSTRAINT BPM_ASSET_SAVE_LOCK_PK
+    PRIMARY KEY("CONTAINER_ID","ASSET_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_REPO_LOCK_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_ASSET_REPO_LOCK_PK ON bpmdb_owner.BPM_ASSET_CACHE_REPO_LOCK("CONTAINER_ID","ASSET_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_ASSET_REPO_LOCK_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_ASSET_CACHE_REPO_LOCK ADD CONSTRAINT BPM_ASSET_REPO_LOCK_PK
+    PRIMARY KEY("CONTAINER_ID","ASSET_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_ASSET_PK ON bpmdb_owner.BPM_ASSET("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_ASSET_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_ASSET ADD CONSTRAINT BPM_ASSET_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_CONTENT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_ASSET_CONTENT_PK ON bpmdb_owner.BPM_ASSET_CACHE_CONTENT("VERSION_CONTEXT","CACHE_KEY","DATA_TYPE")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_ASSET_CONTENT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_ASSET_CACHE_CONTENT ADD CONSTRAINT BPM_ASSET_CONTENT_PK
+    PRIMARY KEY("VERSION_CONTEXT","CACHE_KEY","DATA_TYPE")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_CACHE_E_MSG_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_ASSET_CACHE_E_MSG_PK ON bpmdb_owner.BPM_ASSET_CACHE_EVENT_MSG("CONTAINER_ID","SNAPSHOT_SEQ")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_ASSET_CACHE_E_MSG_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_ASSET_CACHE_EVENT_MSG ADD CONSTRAINT BPM_ASSET_CACHE_E_MSG_PK
+    PRIMARY KEY("CONTAINER_ID","SNAPSHOT_SEQ")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_WEBPD_CS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSW_WEBPD_CS_PK ON bpmdb_owner.LSW_WEBPD_CLIENT_STATE("CLIENT_ID","USER_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSW_WEBPD_CS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_WEBPD_CLIENT_STATE ADD CONSTRAINT LSW_WEBPD_CS_PK
+    PRIMARY KEY("CLIENT_ID","USER_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EXTENDED_PROPERTYS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_EXTENDED_PROPERTYS_PK ON bpmdb_owner.LSW_EXTENDED_PROPERTY_SET("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_EXTENDED_PROPERTYS_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_EXTENDED_PROPERTY_SET ADD CONSTRAINT LSWC_EXTENDED_PROPERTYS_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EXTENDED_PROPERTY_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_EXTENDED_PROPERTY_PK ON bpmdb_owner.LSW_EXTENDED_PROPERTY("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_EXTENDED_PROPERTY_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_EXTENDED_PROPERTY ADD CONSTRAINT LSWC_EXTENDED_PROPERTY_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SAP_CONNECTION_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SAP_CONNECTION_PK ON bpmdb_owner.LSW_SAP_CONNECTION("SAP_CONNECTION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSWC_SAP_CONNECTION_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_SAP_CONNECTION ADD CONSTRAINT LSWC_SAP_CONNECTION_PK
+    PRIMARY KEY("SAP_CONNECTION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_CASEPROP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_CASEPROP_PK ON bpmdb_owner.BPM_CASE_PROPERTY("PROP_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_CASEPROP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_CASE_PROPERTY ADD CONSTRAINT BPM_CASEPROP_PK
+    PRIMARY KEY("PROP_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ECM_OBJECT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_ECM_OBJECT_PK ON bpmdb_owner.BPM_ECM_OBJECT("ECM_OBJECT_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_ECM_OBJECT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_ECM_OBJECT ADD CONSTRAINT BPM_ECM_OBJECT_PK
+    PRIMARY KEY("ECM_OBJECT_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('REF_PO_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.REF_PO_PK ON bpmdb_owner.BPM_REF_PO("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('REF_PO_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_REF_PO ADD CONSTRAINT REF_PO_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_EESREF_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_EESREF_PK ON bpmdb_owner.BPM_ES_ES_ART_REF("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('BPM_EESREF_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_ES_ES_ART_REF ADD CONSTRAINT BPM_EESREF_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('ES_NPRP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.ES_NPRP_PK ON bpmdb_owner.BPM_ES_ARTIFACT("VERSION_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('ES_NPRP_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_ES_ARTIFACT ADD CONSTRAINT ES_NPRP_PK
+    PRIMARY KEY("VERSION_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('ES_ART_DATA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.ES_ART_DATA_PK ON bpmdb_owner.BPM_ES_ART_DATA("ES_ART_DATA_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('ES_ART_DATA_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_ES_ART_DATA ADD CONSTRAINT ES_ART_DATA_PK
+    PRIMARY KEY("ES_ART_DATA_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_CONTENT_OBJECT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSW_CONTENT_OBJECT_PK ON bpmdb_owner.LSW_CONTENT_OBJECT("CONTENT_OBJECT_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSW_CONTENT_OBJECT_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_CONTENT_OBJECT ADD CONSTRAINT LSW_CONTENT_OBJECT_PK
+    PRIMARY KEY("CONTENT_OBJECT_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_CONTENT_OBJ_INSTANCE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSW_CONTENT_OBJ_INSTANCE_PK ON bpmdb_owner.LSW_CONTENT_OBJECT_INSTANCE("CONTENT_OBJECT_INSTANCE_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSW_CONTENT_OBJ_INSTANCE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_CONTENT_OBJECT_INSTANCE ADD CONSTRAINT LSW_CONTENT_OBJ_INSTANCE_PK
+    PRIMARY KEY("CONTENT_OBJECT_INSTANCE_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_BPD_INST_CONTENT_USE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSW_BPD_INST_CONTENT_USE_PK ON bpmdb_owner.LSW_BPD_INSTANCE_CONTENT_USAGE("BPD_INSTANCE_ID","CONTENT_OBJECT_ID")';		
+   	END IF ;
+  END ;
+END ;      
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;       
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name = UPPER('LSW_BPD_INST_CONTENT_USE_PK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BPD_INSTANCE_CONTENT_USAGE ADD CONSTRAINT LSW_BPD_INST_CONTENT_USE_PK
+    PRIMARY KEY("BPD_INSTANCE_ID","CONTENT_OBJECT_ID")';		 
+   	END IF ;
+  END ;
+END ;        
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_METRIC_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_METRIC_PK3 ON bpmdb_owner.LSW_METRIC(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_METRIC') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_METRIC ON bpmdb_owner.LSW_METRIC("METRIC_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_METRIC2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_METRIC2 ON bpmdb_owner.LSW_METRIC("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SLA_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_SLA_PK3 ON bpmdb_owner.LSW_SLA(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SIM_SCEN_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_SIM_SCEN_PK3 ON bpmdb_owner.LSW_SIM_SCENARIO(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_HIST_SCEN_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_HIST_SCEN_PK3 ON bpmdb_owner.LSW_HIST_SCENARIO(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_HISTSC1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_HISTSC1 ON bpmdb_owner.LSW_HIST_SCENARIO("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_HISTSC2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_HISTSC2 ON bpmdb_owner.LSW_HIST_SCENARIO("SCENARIO_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_EVENT_SUBSCRIPTION_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_EVENT_SUBSCRIPTION_PK3 ON bpmdb_owner.BPM_EVENT_SUBSCRIPTION(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_EVENT_SUBSCRIPTION_IDX1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_EVENT_SUBSCRIPTION_IDX1 ON bpmdb_owner.BPM_EVENT_SUBSCRIPTION("EVENT_SUBSCRIPTION_TYPE_ID","EVENT_TYPE","OBJECT_TYPE_ID","INCLUDE_SUB_TYPE")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_STAY_ON_PAGE_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_STAY_ON_PAGE_PK3 ON bpmdb_owner.LSW_STAY_ON_PAGE(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_PAREF_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_PAREF_PK2 ON bpmdb_owner.BPM_PROC_ARTIFACT_REF(PROCESS_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_PAREF_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_PAREF_PK3 ON bpmdb_owner.BPM_PROC_ARTIFACT_REF(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_PAREF_NUQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_PAREF_NUQ ON bpmdb_owner.BPM_PROC_ARTIFACT_REF("PROCESS_ID","ARTIFACT_ID","VERSION_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_CAREF_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_CAREF_PK2 ON bpmdb_owner.BPM_CLS_ARTIFACT_REF(CLASS_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_CAREF_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_CAREF_PK3 ON bpmdb_owner.BPM_CLS_ARTIFACT_REF(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_CAREF_NUQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_CAREF_NUQ ON bpmdb_owner.BPM_CLS_ARTIFACT_REF("CLASS_ID","ARTIFACT_ID","VERSION_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_BAREF_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_BAREF_PK2 ON bpmdb_owner.BPM_BPD_ARTIFACT_REF(BPD_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_BAREF_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_BAREF_PK3 ON bpmdb_owner.BPM_BPD_ARTIFACT_REF(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_BAREF_NUQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_BAREF_NUQ ON bpmdb_owner.BPM_BPD_ARTIFACT_REF("BPD_ID","ARTIFACT_ID","VERSION_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_BPD_PK3 ON bpmdb_owner.LSW_BPD(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IX_BPD_BI_VI') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.IX_BPD_BI_VI ON bpmdb_owner.LSW_BPD("BPD_ID","VERSION_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_IDX1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_BPD_IDX1 ON bpmdb_owner.LSW_BPD("RWF_STATUS")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_EVNT_NUQ2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_BPD_EVNT_NUQ2 ON bpmdb_owner.LSW_BPD_EVENT("BPD_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_EVNT_NUQ3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_BPD_EVNT_NUQ3 ON bpmdb_owner.LSW_BPD_EVENT("CORRELATION_PARAMETER_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_EVNT_NUQ4') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_BPD_EVNT_NUQ4 ON bpmdb_owner.LSW_BPD_EVENT("BPD_EVENT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_EVNT_NUQ5') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_BPD_EVNT_NUQ5 ON bpmdb_owner.LSW_BPD_EVENT("BPD_FLOW_OBJECT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_EVNT_NUQ6') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_BPD_EVNT_NUQ6 ON bpmdb_owner.LSW_BPD_EVENT("BPD_OBJECT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_PARM_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_BPD_PARM_PK3 ON bpmdb_owner.LSW_BPD_PARAMETER(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_BPD_PARM') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_BPD_PARM ON bpmdb_owner.LSW_BPD_PARAMETER("BPD_ID","SEQ")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX2_BPD_PARM') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX2_BPD_PARM ON bpmdb_owner.LSW_BPD_PARAMETER("SEQ","VERSION_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX3_BPD_PARM') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX3_BPD_PARM ON bpmdb_owner.LSW_BPD_PARAMETER("BPD_PARAMETER_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPM_BPD_EVENT_NUQ1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_BPM_BPD_EVENT_NUQ1 ON bpmdb_owner.BPM_BPD_EVENT("BPM_EVENT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPM_BPD_EVENT_NUQ2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_BPM_BPD_EVENT_NUQ2 ON bpmdb_owner.BPM_BPD_EVENT("BPD_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPM_BPD_EVENT_NUQ3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_BPM_BPD_EVENT_NUQ3 ON bpmdb_owner.BPM_BPD_EVENT("BPD_FLOW_OBJECT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_BPD_RES_LK_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_BPD_RES_LK_PK2 ON bpmdb_owner.BPM_BPD_RESOURCE_LINK(BPD_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_BPD_RES_LK_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_BPD_RES_LK_PK3 ON bpmdb_owner.BPM_BPD_RESOURCE_LINK(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_SHAREDOBJ_DEFID_BID_TID_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_SHAREDOBJ_DEFID_BID_TID_UQ ON bpmdb_owner.BPM_SHARED_OBJECT("DEFINITION_VERSION_ID","BPD_INSTANCE_ID","TASK_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_SHARED_OBJECT_IDX1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_SHARED_OBJECT_IDX1 ON bpmdb_owner.BPM_SHARED_OBJECT("TASK_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_SHARED_OBJECT_IDX2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_SHARED_OBJECT_IDX2 ON bpmdb_owner.BPM_SHARED_OBJECT("BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_SHARED_OBJECT_INSTANCE_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_SHARED_OBJECT_INSTANCE_PK2 ON bpmdb_owner.BPM_SHARED_OBJECT_INSTANCE(DEFINITION_VERSION_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='BPM_SHARED_OBJECT_INSTANCE_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_SHARED_OBJECT_INSTANCE ADD CONSTRAINT BPM_SHARED_OBJECT_INSTANCE_FK
+	FOREIGN KEY("DEFINITION_VERSION_ID")
+	REFERENCES bpmdb_owner.BPM_SHARED_OBJECT("DEFINITION_VERSION_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_SHARED_OBJECT_INSTANCE_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_SHARED_OBJECT_INSTANCE_UQ ON bpmdb_owner.BPM_SHARED_OBJECT_INSTANCE("DEFINITION_VERSION_ID","INSTANCE_VERSION")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_BPD_INST_SHARED_USAGE_IDX1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_BPD_INST_SHARED_USAGE_IDX1 ON bpmdb_owner.LSW_BPD_INSTANCE_SHARED_USAGE("BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_BPD_INST_SHARED_USAGE_IDX2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_BPD_INST_SHARED_USAGE_IDX2 ON bpmdb_owner.LSW_BPD_INSTANCE_SHARED_USAGE("SHARED_OBJECT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='BPM_SHARED_OBJECT_INVALID_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_SHARED_OBJECT_INVALID ADD CONSTRAINT BPM_SHARED_OBJECT_INVALID_FK
+	FOREIGN KEY("SHARED_OBJECT_ID")
+	REFERENCES bpmdb_owner.BPM_SHARED_OBJECT("DEFINITION_VERSION_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_SHARED_OBJECT_INVALID_IDX1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_SHARED_OBJECT_INVALID_IDX1 ON bpmdb_owner.BPM_SHARED_OBJECT_INVALID("SHARED_OBJECT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_UITHEME_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_UITHEME_PK3 ON bpmdb_owner.BPM_UITHEME(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_CH_VIEW_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_CH_VIEW_PK3 ON bpmdb_owner.BPM_COACH_VIEW(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_VIEW_LOC_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_VIEW_LOC_PK2 ON bpmdb_owner.BPM_COACH_VIEW_LOCAL_RES(COACH_VIEW_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_VIEW_LOC_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_VIEW_LOC_PK3 ON bpmdb_owner.BPM_COACH_VIEW_LOCAL_RES(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_VIEW_BIND_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_VIEW_BIND_PK2 ON bpmdb_owner.BPM_COACH_VIEW_BINDING_TYPE(COACH_VIEW_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_VIEW_BIND_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_VIEW_BIND_PK3 ON bpmdb_owner.BPM_COACH_VIEW_BINDING_TYPE(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_VIEW_BIND') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_VIEW_BIND ON bpmdb_owner.BPM_COACH_VIEW_BINDING_TYPE("SEQ")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_VIEW_CONFIG_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_VIEW_CONFIG_PK2 ON bpmdb_owner.BPM_COACH_VIEW_CONFIG_OPTION(COACH_VIEW_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_VIEW_CONFIG_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_VIEW_CONFIG_PK3 ON bpmdb_owner.BPM_COACH_VIEW_CONFIG_OPTION(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_VIEW_CONFIG') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_VIEW_CONFIG ON bpmdb_owner.BPM_COACH_VIEW_CONFIG_OPTION("SEQ")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_VIEW_RES_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_VIEW_RES_PK2 ON bpmdb_owner.BPM_COACH_VIEW_RESOURCE(COACH_VIEW_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_VIEW_RES_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_VIEW_RES_PK3 ON bpmdb_owner.BPM_COACH_VIEW_RESOURCE(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_VIEW_RES') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_VIEW_RES ON bpmdb_owner.BPM_COACH_VIEW_RESOURCE("SEQ")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_VIEW_DYNSTL_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_VIEW_DYNSTL_PK2 ON bpmdb_owner.BPM_COACH_VIEW_DYNAMIC_STYLE(COACH_VIEW_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_VIEW_DYNSTL_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_VIEW_DYNSTL_PK3 ON bpmdb_owner.BPM_COACH_VIEW_DYNAMIC_STYLE(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_VIEW_DYNSTYLE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_VIEW_DYNSTYLE ON bpmdb_owner.BPM_COACH_VIEW_DYNAMIC_STYLE("SEQ")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_VIEW_SCRIPT_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_VIEW_SCRIPT_PK2 ON bpmdb_owner.BPM_COACH_VIEW_INLINE_SCRIPT(COACH_VIEW_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_VIEW_SCRIPT_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_VIEW_SCRIPT_PK3 ON bpmdb_owner.BPM_COACH_VIEW_INLINE_SCRIPT(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_VIEW_SCRIPT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_VIEW_SCRIPT ON bpmdb_owner.BPM_COACH_VIEW_INLINE_SCRIPT("SEQ")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_VIEW_AMD_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_VIEW_AMD_PK2 ON bpmdb_owner.BPM_COACH_VIEW_AMD_DEP(COACH_VIEW_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_VIEW_AMD_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_VIEW_AMD_PK3 ON bpmdb_owner.BPM_COACH_VIEW_AMD_DEP(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_VIEW_AMD') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_VIEW_AMD ON bpmdb_owner.BPM_COACH_VIEW_AMD_DEP("SEQ")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_COACHNG_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_COACHNG_PK3 ON bpmdb_owner.BPM_COACHNG(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_COACHNG_BE_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_COACHNG_BE_PK3 ON bpmdb_owner.BPM_COACHNG_BOUNDARY_EVENT(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_COACHNG_BE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_COACHNG_BE ON bpmdb_owner.BPM_COACHNG_BOUNDARY_EVENT("COACHNG_ID","SEQ")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_COACH_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_COACH_PK3 ON bpmdb_owner.LSW_COACH(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_COACH_BTN_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_COACH_BTN_PK3 ON bpmdb_owner.LSW_COACH_BUTTON(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_COACH_BTN') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_COACH_BTN ON bpmdb_owner.LSW_COACH_BUTTON("COACH_ID","SEQ")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_COACH_RES_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_COACH_RES_PK3 ON bpmdb_owner.LSW_COACH_RESOURCE(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_COACH_RES') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_COACH_RES ON bpmdb_owner.LSW_COACH_RESOURCE("COACH_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_INFOPATHF_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_INFOPATHF_PK3 ON bpmdb_owner.LSW_INFOPATH_FORM(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_INFOPATHF') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_INFOPATHF ON bpmdb_owner.LSW_INFOPATH_FORM("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EM_TASK_LOAD') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_EM_TASK_LOAD ON bpmdb_owner.LSW_EM_TASK("QUEUE_ID","SCHEDULED_TIME","DISCRIMINATOR")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('UQ_EMTA_QTOSTID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.UQ_EMTA_QTOSTID ON bpmdb_owner.LSW_EM_TASK("QUEUE_ID","TASK_OWNER","SCHEDULED_TIME","TASK_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('UQ_EMTA_TIDTO') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.UQ_EMTA_TIDTO ON bpmdb_owner.LSW_EM_TASK("TASK_ID","TASK_OWNER")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IX_EMTA_TO') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IX_EMTA_TO ON bpmdb_owner.LSW_EM_TASK("TASK_OWNER")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EM_KEYWORDS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_EM_KEYWORDS ON bpmdb_owner.LSW_EM_TASK_KEYWORDS("KEYWORD","TASK_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EM_INST_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_EM_INST_UQ ON bpmdb_owner.LSW_EM_INSTANCE("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SYNCQUEUE_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SYNCQUEUE_UQ ON bpmdb_owner.LSW_UCA_SYNC_QUEUE("DESCRIPTION")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_SYNCQUEUE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_SYNCQUEUE ON bpmdb_owner.LSW_UCA_SYNC_QUEUE("QUEUE_OWNER")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ENV_VARS_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_ENV_VARS_PK3 ON bpmdb_owner.LSW_ENV_VAR_SET(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_ENV_VARS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_ENV_VARS ON bpmdb_owner.LSW_ENV_VAR_SET("ENV_VAR_SET_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX2_ENV_VARS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX2_ENV_VARS ON bpmdb_owner.LSW_ENV_VAR_SET("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ENV_VAR_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_ENV_VAR_PK2 ON bpmdb_owner.LSW_ENV_VAR(ENV_VAR_SET_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ENV_VAR_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_ENV_VAR_PK3 ON bpmdb_owner.LSW_ENV_VAR(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_ENV_VAR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_ENV_VAR ON bpmdb_owner.LSW_ENV_VAR("ENV_VAR_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_E_VAR_VAL_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_ENV_VAR_VAL ADD CONSTRAINT LSWC_E_VAR_VAL_FK
+	FOREIGN KEY("SNAPSHOT_ID")
+	REFERENCES bpmdb_owner.LSW_SNAPSHOT("SNAPSHOT_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_EVV_SNAP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_EVV_SNAP ON bpmdb_owner.LSW_ENV_VAR_VAL("SNAPSHOT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ENV_DFLT_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_ENV_DFLT_PK2 ON bpmdb_owner.LSW_ENV_VAR_DEFAULT(ENV_VAR_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ENV_DFLT_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_ENV_DFLT_PK3 ON bpmdb_owner.LSW_ENV_VAR_DEFAULT(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_ENV_DFLT_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_ENV_VAR_DEFAULT ADD CONSTRAINT LSWC_ENV_DFLT_FK
+	FOREIGN KEY("ENV_TYPE_ID")
+	REFERENCES bpmdb_owner.LSW_ENV_TYPE("ENV_TYPE_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_ENVVARDEF') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_ENVVARDEF ON bpmdb_owner.LSW_ENV_VAR_DEFAULT("ENV_VAR_ID","ENV_TYPE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EPV_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_EPV_PK3 ON bpmdb_owner.LSW_EPV(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_EPV_FK1' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_EPV ADD CONSTRAINT LSWC_EPV_FK1
+	FOREIGN KEY("LAST_MODIFIED_BY_USER_ID")
+	REFERENCES bpmdb_owner.LSW_USR_XREF("USER_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EPV_VAR_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_EPV_VAR_PK3 ON bpmdb_owner.LSW_EPV_VAR(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_EPVV_SNAP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_EPVV_SNAP ON bpmdb_owner.LSW_EPV_VAR_VALUE("SNAPSHOT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EPV_IDX1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_EPV_IDX1 ON bpmdb_owner.LSW_EPV_VAR_VALUE("EFFECTIVE_ON","EPV_VAR_VALUE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EPV_IDX2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_EPV_IDX2 ON bpmdb_owner.LSW_EPV_VAR_VALUE("EFFECTIVE_ON","EPV_VAR_ID","SNAPSHOT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EPV_IDX3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_EPV_IDX3 ON bpmdb_owner.LSW_EPV_VAR_VALUE("EFFECTIVE_ON","EPV_VAR_ID","BRANCH_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPS_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_BPS_PK3 ON bpmdb_owner.LSW_BLUEPRINT_SUBSCRIPTION(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EA_PARAM_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_EA_PARAM_PK3 ON bpmdb_owner.LSW_EXTACT_PARAMETER(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EA_PROP_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_EA_PROP_PK3 ON bpmdb_owner.LSW_EXTACT_PROPERTY(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EXT_ACT_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_EXT_ACT_PK3 ON bpmdb_owner.LSW_EXTERNAL_ACTIVITY(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_EXT_ACT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_EXT_ACT ON bpmdb_owner.LSW_EXTERNAL_ACTIVITY("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_MGD_ASSET_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_MGD_ASSET_PK3 ON bpmdb_owner.LSW_MANAGED_ASSET(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX1_MGDASSET') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX1_MGDASSET ON bpmdb_owner.LSW_MANAGED_ASSET("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EA_AJAXSVC_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_EA_AJAXSVC_PK3 ON bpmdb_owner.LSW_EXTACT_AJAXSVC(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_NODE_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_NODE_PK3 ON bpmdb_owner.BPM_CONTRIBUTION(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_IDX_NODE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_IDX_NODE ON bpmdb_owner.BPM_CONTRIBUTION("CONTRIBUTION_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_IDX2_NODE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_IDX2_NODE ON bpmdb_owner.BPM_CONTRIBUTION("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_IDX3_NODE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_IDX3_NODE ON bpmdb_owner.BPM_CONTRIBUTION("FILENAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_CPRP_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_CPRP_PK2 ON bpmdb_owner.BPM_CTRB_PROPERTY(CONTRIBUTION_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_CPRP_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_CPRP_PK3 ON bpmdb_owner.BPM_CTRB_PROPERTY(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_CPRP_NUQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_CPRP_NUQ ON bpmdb_owner.BPM_CTRB_PROPERTY("CONTRIBUTION_ID","VERSION_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_IDX_CPRP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_IDX_CPRP ON bpmdb_owner.BPM_CTRB_PROPERTY("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_CDEP_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_CDEP_PK2 ON bpmdb_owner.BPM_CTRB_DEPENDENCY(CONTRIBUTION_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_CDEP_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_CDEP_PK3 ON bpmdb_owner.BPM_CTRB_DEPENDENCY(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_CDEP_NUQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_CDEP_NUQ ON bpmdb_owner.BPM_CTRB_DEPENDENCY("CONTRIBUTION_ID","VERSION_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_NPRP_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_NPRP_PK3 ON bpmdb_owner.BPM_ARTIFACT(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_IDX_ART') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_IDX_ART ON bpmdb_owner.BPM_ARTIFACT("ARTIFACT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_IDX2_ART') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_IDX2_ART ON bpmdb_owner.BPM_ARTIFACT("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_IDX3_ART') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_IDX3_ART ON bpmdb_owner.BPM_ARTIFACT("FULL_PATH")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_MMDATA_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_MMDATA_UQ ON bpmdb_owner.BPM_MON_MODEL_DATA("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX1_SAVED_SEARCHES') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX1_SAVED_SEARCHES ON bpmdb_owner.LSW_SAVED_SEARCHES("SEARCH_NAME","SEARCH_ID" DESC)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX2_SAVED_SEARCHES') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX2_SAVED_SEARCHES ON bpmdb_owner.LSW_SAVED_SEARCHES("SEARCH_NAME","SEARCH_TYPE","USER_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='BPM_SAV_SRCH_TEAM_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_SAVED_SEARCH_TEAM ADD CONSTRAINT BPM_SAV_SRCH_TEAM_FK
+	FOREIGN KEY("SEARCH_ID")
+	REFERENCES bpmdb_owner.LSW_SAVED_SEARCHES("SEARCH_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_SAV_SRCH_TEAM_IDX') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_SAV_SRCH_TEAM_IDX ON bpmdb_owner.BPM_SAVED_SEARCH_TEAM("SEARCH_ID","TEAM_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_USER_FAV') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.IDX_USER_FAV ON bpmdb_owner.LSW_USER_FAVORITE("USER_ID","PO_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_USERFAV1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_USERFAV1 ON bpmdb_owner.LSW_USER_FAVORITE("PO_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_SF_SS_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_SMART_FOLDER ADD CONSTRAINT LSWC_SF_SS_FK
+	FOREIGN KEY("SNAPSHOT_ID")
+	REFERENCES bpmdb_owner.LSW_SNAPSHOT("SNAPSHOT_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SF_NAME') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_SF_NAME ON bpmdb_owner.LSW_SMART_FOLDER("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_TEMPLATE_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_CA_TEMPLATE_DATA ADD CONSTRAINT LSWC_TEMPLATE_FK
+	FOREIGN KEY("ID")
+	REFERENCES bpmdb_owner.LSW_CA_TEMPLATE("ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_LAUNCHER_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_LAUNCHER ADD CONSTRAINT LSWC_LAUNCHER_FK
+	FOREIGN KEY("USER_ID")
+	REFERENCES bpmdb_owner.LSW_USR_XREF("USER_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_NAME_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_NAME_UQ ON bpmdb_owner.LSW_LAUNCHER("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_NAME_NUQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_NAME_NUQ ON bpmdb_owner.LSW_LAUNCHER("USER_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_BRKPNT_FK3' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BREAKPOINT ADD CONSTRAINT LSWC_BRKPNT_FK3
+	FOREIGN KEY("USER_ID")
+	REFERENCES bpmdb_owner.LSW_USR_XREF("USER_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_MP_SS_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_MIGRATION_POLICY ADD CONSTRAINT LSWC_MP_SS_FK
+	FOREIGN KEY("SOURCE_SNAPSHOT_ID")
+	REFERENCES bpmdb_owner.LSW_SNAPSHOT("SNAPSHOT_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_CLASS_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_CLASS_PK3 ON bpmdb_owner.LSW_CLASS(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_IDX_CLASS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_IDX_CLASS ON bpmdb_owner.LSW_CLASS("CLASS_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_IDX2_CLASS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_IDX2_CLASS ON bpmdb_owner.LSW_CLASS("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_IDX3_CLASS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_IDX3_CLASS ON bpmdb_owner.LSW_CLASS("VERSION_ID","EXTENSION_TYPE")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_LAYOUT_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_LAYOUT_PK3 ON bpmdb_owner.LSW_LAYOUT(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_IDX_LAYOUT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_IDX_LAYOUT ON bpmdb_owner.LSW_LAYOUT("LAYOUT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_IDX2_LAYOUT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_IDX2_LAYOUT ON bpmdb_owner.LSW_LAYOUT("DOCUMENT_TYPE")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_LOUT_PRM_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_LOUT_PRM_PK3 ON bpmdb_owner.LSW_LAYOUT_PARAM(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_LYTPM') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_LYTPM ON bpmdb_owner.LSW_LAYOUT_PARAM("LAYOUT_PARAM_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX2_LYTPM') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX2_LYTPM ON bpmdb_owner.LSW_LAYOUT_PARAM("VERSION_ID","SEQ")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PRJ_DFTS_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_PRJ_DFTS_PK3 ON bpmdb_owner.LSW_PROJECT_DEFAULTS(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_RBGROUP_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_RBGROUP_PK3 ON bpmdb_owner.LSW_RESOURCE_BUNDLE_GROUP(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_RBUNDLE_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_RBUNDLE_PK2 ON bpmdb_owner.LSW_RESOURCE_BUNDLE(RESOURCE_BUNDLE_GROUP_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_RBUNDLE_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_RBUNDLE_PK3 ON bpmdb_owner.LSW_RESOURCE_BUNDLE(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_RBKEY_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_RBKEY_PK2 ON bpmdb_owner.LSW_RESOURCE_BUNDLE_KEY(RESOURCE_BUNDLE_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_RBKEY_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_RBKEY_PK3 ON bpmdb_owner.LSW_RESOURCE_BUNDLE_KEY(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SCRIPT_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_SCRIPT_PK3 ON bpmdb_owner.LSW_SCRIPT(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_TWCLASS_EXTENSION_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_TWCLASS_EXTENSION_PK2 ON bpmdb_owner.BPM_TWCLASS_EXTENSION(CLASS_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_TWCLASS_EXTENSION_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_TWCLASS_EXTENSION_PK3 ON bpmdb_owner.BPM_TWCLASS_EXTENSION(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='COMMENT_PROJECT_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_COMMENT ADD CONSTRAINT COMMENT_PROJECT_FK
+	FOREIGN KEY("PROJECT_ID")
+	REFERENCES bpmdb_owner.LSW_PROJECT("PROJECT_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_INSTL_GRP_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_SERVER ADD CONSTRAINT LSWC_INSTL_GRP_FK
+	FOREIGN KEY("INSTALLER_GROUP_ID")
+	REFERENCES bpmdb_owner.LSW_USR_GRP_XREF("GROUP_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_DEP_SS_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_DEPLOYMENT ADD CONSTRAINT LSWC_DEP_SS_FK
+	FOREIGN KEY("SNAPSHOT_ID")
+	REFERENCES bpmdb_owner.LSW_SNAPSHOT("SNAPSHOT_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_DPL1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_DPL1 ON bpmdb_owner.LSW_DEPLOYMENT("SNAPSHOT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_DPL2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_DPL2 ON bpmdb_owner.LSW_DEPLOYMENT("SERVER_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_SVRCAP_FK1' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_SERVER_CAPABILITY ADD CONSTRAINT LSWC_SVRCAP_FK1
+	FOREIGN KEY("SERVER_ID")
+	REFERENCES bpmdb_owner.LSW_SERVER("SERVER_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_CAPCFG_ID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_CAPCFG_ID ON bpmdb_owner.LSW_CAPABILITY_TYPE("CAPABILITY_CONFIG_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_DPLPKG_FK1' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_DEPLOYMENT_PACKAGE ADD CONSTRAINT LSWC_DPLPKG_FK1
+	FOREIGN KEY("SNAPSHOT_ID")
+	REFERENCES bpmdb_owner.LSW_SNAPSHOT("SNAPSHOT_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_DPLPKG_FK2' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_DEPLOYMENT_PACKAGE ADD CONSTRAINT LSWC_DPLPKG_FK2
+	FOREIGN KEY("SERVER_ID")
+	REFERENCES bpmdb_owner.LSW_SERVER("SERVER_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_DPLPKG_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_DPLPKG_UQ ON bpmdb_owner.LSW_DEPLOYMENT_PACKAGE("SNAPSHOT_ID","SERVER_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_STU_SS_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_SHARED_TK_USAGES ADD CONSTRAINT LSWC_STU_SS_FK
+	FOREIGN KEY("SNAPSHOT_ID")
+	REFERENCES bpmdb_owner.LSW_SNAPSHOT("SNAPSHOT_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('PROJECT_ID_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.PROJECT_ID_UQ ON bpmdb_owner.BPM_PROJECT_SUBSCRIPTION("PROJECT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_PC_INDEXER_UC') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPM_PC_INDEXER_UC ON bpmdb_owner.BPM_PC_INDEXER("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='BPM_GOVERNANCE_ASSIGNMENT_FK1' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_GOVERNANCE_ASSIGNMENT ADD CONSTRAINT BPM_GOVERNANCE_ASSIGNMENT_FK1
+	FOREIGN KEY("PROJECT_ID")
+	REFERENCES bpmdb_owner.LSW_PROJECT("PROJECT_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='BPM_GOVERNANCE_ASSIGNMENT_FK2' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_GOVERNANCE_ASSIGNMENT ADD CONSTRAINT BPM_GOVERNANCE_ASSIGNMENT_FK2
+	FOREIGN KEY("GOV_SNAPSHOT_ID")
+	REFERENCES bpmdb_owner.LSW_SNAPSHOT("SNAPSHOT_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PXFER_OWNER') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_PXFER_OWNER ON bpmdb_owner.LSW_PERF_DATA_TRANSFER("CLAIMED_BY",1)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PXFER_TIME') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_PXFER_TIME ON bpmdb_owner.LSW_PERF_DATA_TRANSFER("TIME_CLAIMED")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TRCKN_GRP_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_TRCKN_GRP_PK3 ON bpmdb_owner.LSW_TRACKING_GROUP(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_TRKGROUP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_TRKGROUP ON bpmdb_owner.LSW_TRACKING_GROUP("TRACKING_GROUP_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX2_TRKGROUP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX2_TRKGROUP ON bpmdb_owner.LSW_TRACKING_GROUP("EXTERNAL_UNIQUE_ID","IS_ENABLED","LAST_MODIFIED")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TRCKD_VAR_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_TRCKD_VAR_PK3 ON bpmdb_owner.LSW_TRACKED_VARIABLE(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_TRKED_VAR_IDX1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_TRKED_VAR_IDX1 ON bpmdb_owner.LSW_TRACKED_VARIABLE("TRACKING_GROUP_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TRCKN_PT_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_TRCKN_PT_PK3 ON bpmdb_owner.LSW_TRACKING_POINT(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TRCK_VARU_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_TRCK_VARU_PK3 ON bpmdb_owner.LSW_TRACKED_VARIABLE_USE(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_TRCK_VARU') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_TRCK_VARU ON bpmdb_owner.LSW_TRACKED_VARIABLE_USE("TRACKING_POINT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TMNG_INT_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_TMNG_INT_PK3 ON bpmdb_owner.LSW_TIMING_INTERVAL(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TMNG_INTB_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_TMNG_INTB_PK3 ON bpmdb_owner.LSW_TIMING_INTERVAL_BOUND(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPMC_ECNTR_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPMC_ECNTR_PK3 ON bpmdb_owner.BPM_ECM_CONNECTOR(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ILDT_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_ILDT_PK3 ON bpmdb_owner.LSW_ILOG_DECISION(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SCNTR_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_SCNTR_PK3 ON bpmdb_owner.LSW_SCA_CONNECTOR(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_STEP_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_STEP_PK3 ON bpmdb_owner.LSW_STEP(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_CONNECTOR_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_CONNECTOR_PK3 ON bpmdb_owner.LSW_CONNECTOR(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_IDX_CONNECTOR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_IDX_CONNECTOR ON bpmdb_owner.LSW_CONNECTOR("CONNECTOR_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_IDX2_CONNECTOR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_IDX2_CONNECTOR ON bpmdb_owner.LSW_CONNECTOR("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_IC_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_IC_PK3 ON bpmdb_owner.LSW_IC(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_IC1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_IC1 ON bpmdb_owner.LSW_IC("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_JCNTR_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_JCNTR_PK3 ON bpmdb_owner.LSW_JAVA_CONNECTOR(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_WSNTR_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_WSNTR_PK3 ON bpmdb_owner.LSW_WS_CONNECTOR(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ILNTR_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_ILNTR_PK3 ON bpmdb_owner.LSW_ILOG_CONNECTOR(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ICNTR_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_ICNTR_PK3 ON bpmdb_owner.LSW_ICMCASE_CONNECTOR(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EPV_PR_LK_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_EPV_PR_LK_PK2 ON bpmdb_owner.LSW_EPV_PROCESS_LINK(PROCESS_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EPV_PR_LK_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_EPV_PR_LK_PK3 ON bpmdb_owner.LSW_EPV_PROCESS_LINK(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EPV_PR_LK_NQ0') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_EPV_PR_LK_NQ0 ON bpmdb_owner.LSW_EPV_PROCESS_LINK("EPV_ID","VERSION_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EPV_PR_LK_NQ1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_EPV_PR_LK_NQ1 ON bpmdb_owner.LSW_EPV_PROCESS_LINK("PROCESS_ID","EPV_PROCESS_LINK_ID","VERSION_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_RES_PR_LK_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_RES_PR_LK_PK2 ON bpmdb_owner.LSW_RESOURCE_PROCESS_LINK(PROCESS_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_RES_PR_LK_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_RES_PR_LK_PK3 ON bpmdb_owner.LSW_RESOURCE_PROCESS_LINK(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EXCEPTION_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_EXCEPTION_PK3 ON bpmdb_owner.LSW_EXCEPTION(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EXIT_POINT_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_EXIT_POINT_PK3 ON bpmdb_owner.LSW_EXIT_POINT(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TS_FILE_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_TS_FILE_PK2 ON bpmdb_owner.LSW_TASK_SENDER_FILE(TASK_SENDER_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TS_FILE_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_TS_FILE_PK3 ON bpmdb_owner.LSW_TASK_SENDER_FILE(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TS_ADDR_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_TS_ADDR_PK2 ON bpmdb_owner.LSW_TASK_SENDER_ADDR(TASK_SENDER_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TS_ADDR_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_TS_ADDR_PK3 ON bpmdb_owner.LSW_TASK_SENDER_ADDR(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PIPP_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_PIPP_PK2 ON bpmdb_owner.LSW_PROCESS_ITEM_PRE_POST(PROCESS_ITEM_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PIPP_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_PIPP_PK3 ON bpmdb_owner.LSW_PROCESS_ITEM_PRE_POST(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PROC_LINK_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_PROC_LINK_PK2 ON bpmdb_owner.LSW_PROCESS_LINK(PROCESS_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PROC_LINK_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_PROC_LINK_PK3 ON bpmdb_owner.LSW_PROCESS_LINK(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_FILE_FK1' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_FILE ADD CONSTRAINT LSWC_FILE_FK1
+	FOREIGN KEY("CREATED_BY")
+	REFERENCES bpmdb_owner.LSW_USR_XREF("USER_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_IC_INPUT_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_IC_INPUT_PK3 ON bpmdb_owner.LSW_IC_INPUT_PROPERTY(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_IDX_IC_INPUT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_IDX_IC_INPUT ON bpmdb_owner.LSW_IC_INPUT_PROPERTY("IC_ID","SEQ")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_IC_OUTPUT_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_IC_OUTPUT_PK3 ON bpmdb_owner.LSW_IC_OUTPUT_PROPERTY(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_IDX_IC_OUTPUT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_IDX_IC_OUTPUT ON bpmdb_owner.LSW_IC_OUTPUT_PROPERTY("IC_ID","SEQ")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PARAM_MAP_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_PARAM_MAP_PK3 ON bpmdb_owner.LSW_PARAMETER_MAPPING(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PARAM_MAP_NQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_PARAM_MAP_NQ ON bpmdb_owner.LSW_PARAMETER_MAPPING("PARENT_ID","PARENT_TYPE")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PARAM_MAP_NQ2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_PARAM_MAP_NQ2 ON bpmdb_owner.LSW_PARAMETER_MAPPING("PARENT_TYPE")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PROCESS_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_PROCESS_PK3 ON bpmdb_owner.LSW_PROCESS(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_IDX_PROCESS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_IDX_PROCESS ON bpmdb_owner.LSW_PROCESS("PROCESS_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_IDX2_PROCESS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_IDX2_PROCESS ON bpmdb_owner.LSW_PROCESS("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IX_PR_V_T') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IX_PR_V_T ON bpmdb_owner.LSW_PROCESS("VERSION_ID","PROCESS_TYPE")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PROC_ITEM_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_PROC_ITEM_PK2 ON bpmdb_owner.LSW_PROCESS_ITEM(PROCESS_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PROC_ITEM_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_PROC_ITEM_PK3 ON bpmdb_owner.LSW_PROCESS_ITEM(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_PROC_ITEM_ID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.IDX_PROC_ITEM_ID ON bpmdb_owner.LSW_PROCESS_ITEM("PROCESS_ITEM_ID","VERSION_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SUBPROCESS_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_SUBPROCESS_PK3 ON bpmdb_owner.LSW_SUBPROCESS(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PROC_LABEL_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_PROC_LABEL_PK2 ON bpmdb_owner.LSW_PROCESS_LABEL(PROCESS_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PROC_LABEL_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_PROC_LABEL_PK3 ON bpmdb_owner.LSW_PROCESS_LABEL(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PROC_VAR_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_PROC_VAR_PK2 ON bpmdb_owner.LSW_PROCESS_VARIABLE(PROCESS_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PROC_VAR_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_PROC_VAR_PK3 ON bpmdb_owner.LSW_PROCESS_VARIABLE(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_PROC_VAR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.IDX_PROC_VAR ON bpmdb_owner.LSW_PROCESS_VARIABLE("PROCESS_ID","SEQ","VERSION_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PRO_PARM_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_PRO_PARM_PK2 ON bpmdb_owner.LSW_PROCESS_PARAMETER(PROCESS_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PRO_PARM_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_PRO_PARM_PK3 ON bpmdb_owner.LSW_PROCESS_PARAMETER(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PROPAR_NUQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_PROPAR_NUQ ON bpmdb_owner.LSW_PROCESS_PARAMETER("PROCESS_ID","SEQ","VERSION_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SWITCH_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_SWITCH_PK3 ON bpmdb_owner.LSW_SWITCH(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SWITCH_CON_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_SWITCH_CON_PK2 ON bpmdb_owner.LSW_SWITCH_CONDITION(SWITCH_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SWITCH_CON_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_SWITCH_CON_PK3 ON bpmdb_owner.LSW_SWITCH_CONDITION(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TASK_SEND_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_TASK_SEND_PK3 ON bpmdb_owner.LSW_TASK_SENDER(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TS_EXVAR_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_TS_EXVAR_PK2 ON bpmdb_owner.LSW_TASK_SENDER_EXVAR(TASK_SENDER_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TS_EXVAR_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_TS_EXVAR_PK3 ON bpmdb_owner.LSW_TASK_SENDER_EXVAR(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPMC_ESNTR_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPMC_ESNTR_PK3 ON bpmdb_owner.BPM_ES_CONNECTOR(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPMC_SKELNTR_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPMC_SKELNTR_PK3 ON bpmdb_owner.BPM_SKEL_CONNECTOR(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_REP_PK3 ON bpmdb_owner.LSW_REPORT(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_EPV_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_REP_EPV_PK3 ON bpmdb_owner.LSW_REPORT_EPV_LINK(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_RBG_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_REP_RBG_PK3 ON bpmdb_owner.LSW_REPORT_RBG_LINK(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_DS_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_REP_DS_PK3 ON bpmdb_owner.LSW_REPORT_DATASOURCE(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_TG_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_REP_TG_PK3 ON bpmdb_owner.LSW_REPORT_TG_LINK(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_PAGE_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_REP_PAGE_PK3 ON bpmdb_owner.LSW_REPORT_PAGE(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_CHRT_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_REP_CHRT_PK3 ON bpmdb_owner.LSW_REPORT_CHART(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_VAR_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_REP_VAR_PK3 ON bpmdb_owner.LSW_REPORT_VARIABLES(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_DSL_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_REP_DSL_PK3 ON bpmdb_owner.LSW_REPORT_DATASOURCE_IC_LINK(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_REP_DSL') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_REP_DSL ON bpmdb_owner.LSW_REPORT_DATASOURCE_IC_LINK("POS")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_DSSL_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_REP_DSSL_PK3 ON bpmdb_owner.LSW_REPORT_DATASOURCE_SRV_LINK(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_REP_DSSL') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_REP_DSSL ON bpmdb_owner.LSW_REPORT_DATASOURCE_SRV_LINK("POS")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_REP_DSLL_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_REP_DSLL_PK3 ON bpmdb_owner.LSW_REPORT_DS_LAYOUT_LINK(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SCBD_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_SCBD_PK3 ON bpmdb_owner.LSW_SCBD(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SD_RPT_LK_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_SD_RPT_LK_PK3 ON bpmdb_owner.LSW_SCBD_RPT_LINK(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_HOLIDAY_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_HOLIDAY_UQ ON bpmdb_owner.LSW_HOLIDAY_SCHEDULE("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TMSCHEDULE_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TMSCHEDULE_UQ ON bpmdb_owner.LSW_TIME_SCHEDULE("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_SCHPER_FK1' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TIME_SCHEDULE_PERIOD ADD CONSTRAINT LSWC_SCHPER_FK1
+	FOREIGN KEY("SCHEDULE_ID")
+	REFERENCES bpmdb_owner.LSW_TIME_SCHEDULE("SCHEDULE_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_SCHPER_FK2' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TIME_SCHEDULE_PERIOD ADD CONSTRAINT LSWC_SCHPER_FK2
+	FOREIGN KEY("PERIOD_ID")
+	REFERENCES bpmdb_owner.LSW_TIME_PERIOD("PERIOD_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SCHPER_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SCHPER_UQ ON bpmdb_owner.LSW_TIME_SCHEDULE_PERIOD("PERIOD_ID","SCHEDULE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='BPMC_BPD_SOAP_FK0' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_BPD_SOAPHEADER ADD CONSTRAINT BPMC_BPD_SOAP_FK0
+	FOREIGN KEY("BPD_INSTANCE_ID")
+	REFERENCES bpmdb_owner.LSW_BPD_INSTANCE("BPD_INSTANCE_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPMC_BPD_SOAP_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPMC_BPD_SOAP_UQ ON bpmdb_owner.BPM_BPD_SOAPHEADER("BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('TASK_MEASURES_UC') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.TASK_MEASURES_UC ON bpmdb_owner.BPM_TASK_ACTIVITY_MEASURES("CREATED_BY_BPD_FLOW_OBJECT_ID","USER_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IX_TAM_USR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IX_TAM_USR ON bpmdb_owner.BPM_TASK_ACTIVITY_MEASURES("USER_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='BPMC_MARKER_TO_TASK_ID_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_TASK_MARKERS ADD CONSTRAINT BPMC_MARKER_TO_TASK_ID_FK
+	FOREIGN KEY("TASK_ID")
+	REFERENCES bpmdb_owner.LSW_TASK("TASK_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='BPMC_MARKER_TO_BPD_ID_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_TASK_MARKERS ADD CONSTRAINT BPMC_MARKER_TO_BPD_ID_FK
+	FOREIGN KEY("BPD_INSTANCE_ID")
+	REFERENCES bpmdb_owner.LSW_BPD_INSTANCE("BPD_INSTANCE_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX1_BPM_TASK_MARKERS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX1_BPM_TASK_MARKERS ON bpmdb_owner.BPM_TASK_MARKERS("TARGET_USER","MARKER_TYPE")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX2_BPM_TASK_MARKERS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX2_BPM_TASK_MARKERS ON bpmdb_owner.BPM_TASK_MARKERS("TASK_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('FK_BTMARKERS_BPDID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.FK_BTMARKERS_BPDID ON bpmdb_owner.BPM_TASK_MARKERS("BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSW_BPD_INST_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BPD_INSTANCE_VARIABLES ADD CONSTRAINT LSW_BPD_INST_FK
+	FOREIGN KEY("BPD_INSTANCE_ID")
+	REFERENCES bpmdb_owner.LSW_BPD_INSTANCE("BPD_INSTANCE_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWIDX_INST_ALS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWIDX_INST_ALS ON bpmdb_owner.LSW_BPD_INSTANCE_VARIABLES("BPD_INSTANCE_ID","ALIAS")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_BPD_INST_FK1' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BPD_INSTANCE ADD CONSTRAINT LSWC_BPD_INST_FK1
+	FOREIGN KEY("CACHED_BPD_VERSION_ID")
+	REFERENCES bpmdb_owner.LSW_BPD("VERSION_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_INST_STORE_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BPD_INST_STORE_UQ ON bpmdb_owner.LSW_BPD_INSTANCE("BPD_INSTANCE_ID","ATTACHMENT_STORE")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_INST_SBO_SYNC_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BPD_INST_SBO_SYNC_UQ ON bpmdb_owner.LSW_BPD_INSTANCE("BPD_INSTANCE_ID","EXECUTION_STATUS","SBO_SYNC_ENABLED")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_CASE_FOLDER_ID_NUQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_CASE_FOLDER_ID_NUQ ON bpmdb_owner.LSW_BPD_INSTANCE("CASE_FOLDER_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('INDEX1_LSW_BPD_INST') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.INDEX1_LSW_BPD_INST ON bpmdb_owner.LSW_BPD_INSTANCE("SNAPSHOT_ID","BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('INDEX2_LSW_BPD_INST') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.INDEX2_LSW_BPD_INST ON bpmdb_owner.LSW_BPD_INSTANCE("EXECUTION_STATUS","BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('INDEX3_LSW_BPD_INST') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.INDEX3_LSW_BPD_INST ON bpmdb_owner.LSW_BPD_INSTANCE("BPD_INSTANCE_ID","EXECUTION_STATUS","CACHED_BPD_VERSION_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('INDEX4_LSW_BPD_INST') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.INDEX4_LSW_BPD_INST ON bpmdb_owner.LSW_BPD_INSTANCE("PROJECT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('INDEX5_LSW_BPD_INST') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.INDEX5_LSW_BPD_INST ON bpmdb_owner.LSW_BPD_INSTANCE("LAST_MODIFIED_DATETIME","GROUP_ID","EXECUTION_STATUS","BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('FK_BPDINST_CBPDVID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.FK_BPDINST_CBPDVID ON bpmdb_owner.LSW_BPD_INSTANCE("CACHED_BPD_VERSION_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_BPDI_EXST_SNAP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_BPDI_EXST_SNAP ON bpmdb_owner.LSW_BPD_INSTANCE("EXECUTION_STATUS","SNAPSHOT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IX_BPDI_CBVI_SN_ES') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IX_BPDI_CBVI_SN_ES ON bpmdb_owner.LSW_BPD_INSTANCE("CACHED_BPD_VERSION_ID","SNAPSHOT_ID","EXECUTION_STATUS")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IX_BPDI_T_ES_SN_CBVI') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IX_BPDI_T_ES_SN_CBVI ON bpmdb_owner.LSW_BPD_INSTANCE("TIP","EXECUTION_STATUS","SNAPSHOT_ID","CACHED_BPD_VERSION_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IX_BPDI_PA_I') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IX_BPDI_PA_I ON bpmdb_owner.LSW_BPD_INSTANCE("PARENT_ACTIVITY_ID","BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IX_BPDI_PC_I') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IX_BPDI_PC_I ON bpmdb_owner.LSW_BPD_INSTANCE("PARENT_CASE_ID","BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_BPD_INS_D_FK0' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BPD_INSTANCE_DATA ADD CONSTRAINT LSWC_BPD_INS_D_FK0
+	FOREIGN KEY("BPD_INSTANCE_ID")
+	REFERENCES bpmdb_owner.LSW_BPD_INSTANCE("BPD_INSTANCE_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_INS_D_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BPD_INS_D_UQ ON bpmdb_owner.LSW_BPD_INSTANCE_DATA("BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX1_BPDNOT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX1_BPDNOT ON bpmdb_owner.LSW_BPD_NOTIFICATION("BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_DOC_MIG_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BPD_DOC_MIG_UQ ON bpmdb_owner.LSW_BPD_INSTANCE_DOCUMENTS("BPD_INSTANCE_ID","MIGRATION_STATE","DOC_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_DOC_ID_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_BPD_INSTANCE_DOC_PROPS ADD CONSTRAINT LSWC_DOC_ID_FK
+	FOREIGN KEY("DOC_ID")
+	REFERENCES bpmdb_owner.LSW_BPD_INSTANCE_DOCUMENTS("DOC_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_DOC_PROP_NUQ1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_DOC_PROP_NUQ1 ON bpmdb_owner.LSW_BPD_INSTANCE_DOC_PROPS("DOC_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IX_BPDSC_NAME') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IX_BPDSC_NAME ON bpmdb_owner.LSW_BPD_STATUS_CODES(UPPER(NAME))';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_DMR_NUQ1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_DMR_NUQ1 ON bpmdb_owner.LSW_DUR_MSG_RECEIVED("UCA_ID","CORRELATION_TYPE","CORRELATION_KEY")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_MSG_INCL_NUQ1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_MSG_INCL_NUQ1 ON bpmdb_owner.LSW_INST_MSG_INCL("CORRELATION_KEY","UCA_ID","BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_MSG_INCL_NUQ2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_MSG_INCL_NUQ2 ON bpmdb_owner.LSW_INST_MSG_INCL("BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_MSG_EXCL_NUQ1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_MSG_EXCL_NUQ1 ON bpmdb_owner.LSW_INST_MSG_EXCL("BPD_INSTANCE_ID","EVENT_ID","SUB_EVENT_ID","MSG_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_MSG_EXCL_NUQ2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_MSG_EXCL_NUQ2 ON bpmdb_owner.LSW_INST_MSG_EXCL("BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IX_RUNERR_BPDID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IX_RUNERR_BPDID ON bpmdb_owner.LSW_RUNTIME_ERROR("BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SLA_PROC_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SLA_PROC_UQ ON bpmdb_owner.LSW_SLA_PROCESSING("SLA_GUID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_T_SYM_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_STORED_SYMBOL_TABLE ADD CONSTRAINT LSWC_T_SYM_FK
+	FOREIGN KEY("TASK_ID")
+	REFERENCES bpmdb_owner.LSW_TASK("TASK_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_T_SYM_TASK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_T_SYM_TASK ON bpmdb_owner.LSW_STORED_SYMBOL_TABLE("TASK_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TASK_STATUS_INDEX2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_TASK_STATUS_INDEX2 ON bpmdb_owner.LSW_TASK_STATUS_CODES("STATUS_VALUE")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IX_TASTCO_NAVAL') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IX_TASTCO_NAVAL ON bpmdb_owner.LSW_TASK_STATUS_CODES(UPPER(NAME),"STATUS_VALUE")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TASKEXACD_UK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TASKEXACD_UK ON bpmdb_owner.LSW_TASK_EXTACT_DATA("TASK_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_TASK_P_FK3' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TASK ADD CONSTRAINT LSWC_TASK_P_FK3
+	FOREIGN KEY("RCVD_FROM")
+	REFERENCES bpmdb_owner.LSW_USR_XREF("USER_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_TASK_P_FK4' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TASK ADD CONSTRAINT LSWC_TASK_P_FK4
+	FOREIGN KEY("CLOSE_BY")
+	REFERENCES bpmdb_owner.LSW_USR_XREF("USER_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TASK_BPDI') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_TASK_BPDI ON bpmdb_owner.LSW_TASK("BPD_INSTANCE_ID","CREATED_BY_BPD_FLOW_OBJECT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX5_LSW_TASK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX5_LSW_TASK ON bpmdb_owner.LSW_TASK("STATUS")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX10_LSW_TASK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX10_LSW_TASK ON bpmdb_owner.LSW_TASK("BPD_INSTANCE_ID","STATUS")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX11_LSW_TASK_CC') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX11_LSW_TASK_CC ON bpmdb_owner.LSW_TASK("CLOSE_BY","CLOSE_DATETIME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX12_LSW_TASK_OC') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX12_LSW_TASK_OC ON bpmdb_owner.LSW_TASK("USER_ID","STATUS","BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX14_LSW_TASK_U_GRP_TID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX14_LSW_TASK_U_GRP_TID ON bpmdb_owner.LSW_TASK("USER_ID","GROUP_ID","TASK_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX15_LSW_TASK_U_TID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX15_LSW_TASK_U_TID ON bpmdb_owner.LSW_TASK("USER_ID","TASK_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX16_LSW_TASK_G_U_TID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX16_LSW_TASK_G_U_TID ON bpmdb_owner.LSW_TASK("GROUP_ID","USER_ID","TASK_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX17_LSW_TASK_TID_U') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX17_LSW_TASK_TID_U ON bpmdb_owner.LSW_TASK("TASK_ID","USER_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX18_LSW_TASK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX18_LSW_TASK ON bpmdb_owner.LSW_TASK("BPD_INSTANCE_ID","TASK_ID","CREATED_BY_BPD_FLOW_OBJECT_ID","STATUS","ACTIVITY_TASK_TYPE")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('FK_TASK_RFROM') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.FK_TASK_RFROM ON bpmdb_owner.LSW_TASK("RCVD_FROM")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('FK_TASK_CBY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.FK_TASK_CBY ON bpmdb_owner.LSW_TASK("CLOSE_BY")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IX_TASK_BIID_ST_SN') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IX_TASK_BIID_ST_SN ON bpmdb_owner.LSW_TASK("BPD_INSTANCE_ID","STATUS","SNAPSHOT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IX_TSK_GRP_ST_BPDI') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IX_TSK_GRP_ST_BPDI ON bpmdb_owner.LSW_TASK("GROUP_ID","STATUS","BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IX_TSK_CPV_ST_TID_BPI') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IX_TSK_CPV_ST_TID_BPI ON bpmdb_owner.LSW_TASK("CACHED_PROCESS_VERSION_ID","STATUS","TASK_ID","BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TASKIPFD_UK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_TASKIPFD_UK ON bpmdb_owner.LSW_TASK_IPF_DATA("TASK_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_T_FILE_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TASK_FILE ADD CONSTRAINT LSWC_T_FILE_FK
+	FOREIGN KEY("TASK_ID")
+	REFERENCES bpmdb_owner.LSW_TASK("TASK_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_TASKFILE1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_TASKFILE1 ON bpmdb_owner.LSW_TASK_FILE("FILE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TASK_FILE_NU') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_TASK_FILE_NU ON bpmdb_owner.LSW_TASK_FILE("TASK_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_T_ADDR_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TASK_ADDR ADD CONSTRAINT LSWC_T_ADDR_FK
+	FOREIGN KEY("TASK_ID")
+	REFERENCES bpmdb_owner.LSW_TASK("TASK_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_TASK_ADDR_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSW_TASK_ADDR_UQ ON bpmdb_owner.LSW_TASK_ADDR("TASK_ID","SEQ")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TASK_ADDR_NU') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_TASK_ADDR_NU ON bpmdb_owner.LSW_TASK_ADDR("TASK_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_T_NARR_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TASK_NARR ADD CONSTRAINT LSWC_T_NARR_FK
+	FOREIGN KEY("TASK_ID")
+	REFERENCES bpmdb_owner.LSW_TASK("TASK_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_TASK_NARR_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSW_TASK_NARR_UQ ON bpmdb_owner.LSW_TASK_NARR("TASK_ID","SEQ")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TASK_NARR_NU') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_TASK_NARR_NU ON bpmdb_owner.LSW_TASK_NARR("TASK_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_TASK_ACTN_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_TASK_ACTN_PK3 ON bpmdb_owner.LSW_TASK_ACTION(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_T_EXEC_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_TASK_EXECUTION_CONTEXT ADD CONSTRAINT LSWC_T_EXEC_FK
+	FOREIGN KEY("TASK_ID")
+	REFERENCES bpmdb_owner.LSW_TASK("TASK_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_T_EXEC_UK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_T_EXEC_UK ON bpmdb_owner.LSW_TASK_EXECUTION_CONTEXT("TASK_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPMC_BPD_INSTANCE_MEASURES_UK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPMC_BPD_INSTANCE_MEASURES_UK ON bpmdb_owner.BPM_BPD_INSTANCE_MEASURES("SNAPSHOT_ID","BPD_REF","BPD_FLOW_OBJECT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX01_BPD_ACTIVITY_INST') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX01_BPD_ACTIVITY_INST ON bpmdb_owner.LSW_BPD_ACTIVITY_INSTANCE("BPD_INSTANCE_ID","OPTION_TYPE","REQUIRED","PARENT_NODE_ID","EXECUTION_STATE")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IX_BPDAI_P') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IX_BPDAI_P ON bpmdb_owner.LSW_BPD_ACTIVITY_INSTANCE("PARENT_NODE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_INST_COR_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_BPD_INST_COR_UQ ON bpmdb_owner.LSW_BPD_INSTANCE_CORRELATION("BPD_ID","CORRELATION_TYPE","CORRELATION_NAME","HASH_CODE")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_BPD_INST_EXT_DATA_NU') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_BPD_INST_EXT_DATA_NU ON bpmdb_owner.LSW_BPD_INSTANCE_EXT_DATA("BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IX_REL_SOLI_SIT_T') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IX_REL_SOLI_SIT_T ON bpmdb_owner.BPM_RELATIONSHIP("SOURCE_OBJECT_LOCAL_ID","SOURCE_ID_TYPE","TYPE")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IX_REL_TOLI_TIT_T') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IX_REL_TOLI_TIT_T ON bpmdb_owner.BPM_RELATIONSHIP("TARGET_OBJECT_LOCAL_ID","TARGET_ID_TYPE","TYPE")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='BPMC_RWF_INS_D_FK1' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_RWF_INSTANCE_DATA ADD CONSTRAINT BPMC_RWF_INS_D_FK1
+	FOREIGN KEY("BPD_INSTANCE_ID")
+	REFERENCES bpmdb_owner.LSW_BPD_INSTANCE("BPD_INSTANCE_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPMC_RWF_INS_D_UQ1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.BPMC_RWF_INS_D_UQ1 ON bpmdb_owner.BPM_RWF_INSTANCE_DATA("BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPMC_RWF_INS_D_IDX1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPMC_RWF_INS_D_IDX1 ON bpmdb_owner.BPM_RWF_INSTANCE_DATA("EXECUTION_STATUS")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_PLAYBACK_INSTANCE_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_HISTORICAL_DATA_PLAYBACK ADD CONSTRAINT LSWC_PLAYBACK_INSTANCE_FK
+	FOREIGN KEY("BPD_INSTANCE_ID")
+	REFERENCES bpmdb_owner.LSW_BPD_INSTANCE("BPD_INSTANCE_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+
+
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_LEGACY_ID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.IDX_LEGACY_ID ON bpmdb_owner.LSW_LEGACY_ID("PO_TYPE","UUID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_TASK_INDEX_IDX') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_TASK_INDEX_IDX ON bpmdb_owner.BPM_TASK_INDEX("MAJOR_EVENT_DATETIME","TASK_ID","INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_TASK_INDEX_IDX2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_TASK_INDEX_IDX2 ON bpmdb_owner.BPM_TASK_INDEX("INSTANCE_ID","MAJOR_EVENT_DATETIME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_TASK_INDEX_IDX3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_TASK_INDEX_IDX3 ON bpmdb_owner.BPM_TASK_INDEX("DELETED_DATETIME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_TASK_INDEX_JOB_IDX') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_TASK_INDEX_JOB_IDX ON bpmdb_owner.BPM_TASK_INDEX_JOB("INDEX_ID","INDEX_END_TIME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_TASK_INDEX_JOB_IDX2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_TASK_INDEX_JOB_IDX2 ON bpmdb_owner.BPM_TASK_INDEX_JOB("INDEX_ID","INDEX_START_TIME","INDEX_LAST_PURGE_TIME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_SRCH_INDEX_SCHEMA_IDX') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_SRCH_INDEX_SCHEMA_IDX ON bpmdb_owner.BPM_SRCH_INDEX_SCHEMA("LAST_UPDATED")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_INSTANCE_INDEX_IDX') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_INSTANCE_INDEX_IDX ON bpmdb_owner.BPM_INSTANCE_INDEX("MAJOR_EVENT_DATETIME","INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_INSTANCE_INDEX_IDX2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_INSTANCE_INDEX_IDX2 ON bpmdb_owner.BPM_INSTANCE_INDEX("INSTANCE_ID","MAJOR_EVENT_DATETIME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_INSTANCE_INDEX_IDX3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_INSTANCE_INDEX_IDX3 ON bpmdb_owner.BPM_INSTANCE_INDEX("DELETED_DATETIME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_INV_UCA_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_INV_UCA_PK3 ON bpmdb_owner.LSW_INVOKE_UCA(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_UCA_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_UCA_PK3 ON bpmdb_owner.LSW_UCA(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_UCA_NUQ3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_UCA_NUQ3 ON bpmdb_owner.LSW_UCA("SCHED_EVENT_NAME","VERSION_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_UCA_NUQ4') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_UCA_NUQ4 ON bpmdb_owner.LSW_UCA("UCA_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_UCA_PARM_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_UCA_PARM_PK3 ON bpmdb_owner.LSW_UCA_PARM(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('UQ_USR_NAME') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.UQ_USR_NAME ON bpmdb_owner.LSW_USR("USER_NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_UXREF_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_UXREF_UQ ON bpmdb_owner.LSW_USR_XREF("USER_NAME","PROVIDER")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_UXREF_UQ2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_UXREF_UQ2 ON bpmdb_owner.LSW_USR_XREF("USER_ID","USER_NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('UQ_UXREF_PUID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.UQ_UXREF_PUID ON bpmdb_owner.LSW_USR_XREF("PROVIDER","USER_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IX_UXREF_UN') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IX_UXREF_UN ON bpmdb_owner.LSW_USR_XREF(UPPER(USER_NAME))';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_GXREF_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_GXREF_UQ ON bpmdb_owner.LSW_USR_GRP_XREF("GROUP_NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_GXREF_NU1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_GXREF_NU1 ON bpmdb_owner.LSW_USR_GRP_XREF("PARENT_GROUP_ID","PARTICIPANT_ID","GROUP_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_GXREF_NU2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_GXREF_NU2 ON bpmdb_owner.LSW_USR_GRP_XREF("GROUP_TYPE","GROUP_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_UGXREF_FK1' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_USR_GRP_MEM_XREF ADD CONSTRAINT LSWC_UGXREF_FK1
+	FOREIGN KEY("USER_ID")
+	REFERENCES bpmdb_owner.LSW_USR_XREF("USER_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_UGXREF_FK2' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_USR_GRP_MEM_XREF ADD CONSTRAINT LSWC_UGXREF_FK2
+	FOREIGN KEY("GROUP_ID")
+	REFERENCES bpmdb_owner.LSW_USR_GRP_XREF("GROUP_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_UGXREF_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_UGXREF_UQ ON bpmdb_owner.LSW_USR_GRP_MEM_XREF("USER_ID","GROUP_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('FK_UGMEM_GID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.FK_UGMEM_GID ON bpmdb_owner.LSW_USR_GRP_MEM_XREF("GROUP_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_GGXREF_FK1' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_GRP_GRP_MEM_XREF ADD CONSTRAINT LSWC_GGXREF_FK1
+	FOREIGN KEY("GROUP_ID")
+	REFERENCES bpmdb_owner.LSW_USR_GRP_XREF("GROUP_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_GGXREF_FK2' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_GRP_GRP_MEM_XREF ADD CONSTRAINT LSWC_GGXREF_FK2
+	FOREIGN KEY("CONTAINER_GROUP_ID")
+	REFERENCES bpmdb_owner.LSW_USR_GRP_XREF("GROUP_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_GGMXREF_NU1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_GGMXREF_NU1 ON bpmdb_owner.LSW_GRP_GRP_MEM_XREF("CONTAINER_GROUP_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_GGXXREF_FK1' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_GRP_GRP_MEM_EXPLODED_XREF ADD CONSTRAINT LSWC_GGXXREF_FK1
+	FOREIGN KEY("GROUP_ID")
+	REFERENCES bpmdb_owner.LSW_USR_GRP_XREF("GROUP_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_GGXXREF_FK2' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_GRP_GRP_MEM_EXPLODED_XREF ADD CONSTRAINT LSWC_GGXXREF_FK2
+	FOREIGN KEY("CONTAINER_GROUP_ID")
+	REFERENCES bpmdb_owner.LSW_USR_GRP_XREF("GROUP_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_GGXXREF_NU1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_GGXXREF_NU1 ON bpmdb_owner.LSW_GRP_GRP_MEM_EXPLODED_XREF("GROUP_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX3_GGMX') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX3_GGMX ON bpmdb_owner.LSW_GRP_GRP_MEM_EXPLODED_XREF("CONTAINER_GROUP_ID","GROUP_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_UA_FK1' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_USR_ASSUME ADD CONSTRAINT LSWC_UA_FK1
+	FOREIGN KEY("USER_ID")
+	REFERENCES bpmdb_owner.LSW_USR_XREF("USER_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_UA_FK2' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_USR_ASSUME ADD CONSTRAINT LSWC_UA_FK2
+	FOREIGN KEY("ASSUMED_USER_ID")
+	REFERENCES bpmdb_owner.LSW_USR_XREF("USER_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_UA_UK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_UA_UK ON bpmdb_owner.LSW_USR_ASSUME("ASSUMED_USER_ID","USER_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_UA_CK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_USR_ASSUME ADD CONSTRAINT LSWC_UA_CK
+	CHECK(USER_ID <> ASSUMED_USER_ID)';	
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_UA_NUQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_UA_NUQ ON bpmdb_owner.LSW_USR_ASSUME("USER_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_ACCESS_FK1' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_ACCESS ADD CONSTRAINT LSWC_ACCESS_FK1
+	FOREIGN KEY("USER_ID")
+	REFERENCES bpmdb_owner.LSW_USR_XREF("USER_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_ACCESS_FK2' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_ACCESS ADD CONSTRAINT LSWC_ACCESS_FK2
+	FOREIGN KEY("ASSUMED_USER_ID")
+	REFERENCES bpmdb_owner.LSW_USR_XREF("USER_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_ACCESS_CK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_ACCESS ADD CONSTRAINT LSWC_ACCESS_CK
+	CHECK(USER_ID <> ASSUMED_USER_ID)';	
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ACCESS_NUQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_ACCESS_NUQ ON bpmdb_owner.LSW_ACCESS("USER_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_DGRP_TRK_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_DYNAMIC_GROUP ADD CONSTRAINT LSWC_DGRP_TRK_FK
+	FOREIGN KEY("BRANCH_ID")
+	REFERENCES bpmdb_owner.LSW_BRANCH("BRANCH_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_DGRP_SS_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_DYNAMIC_GROUP ADD CONSTRAINT LSWC_DGRP_SS_FK
+	FOREIGN KEY("SNAPSHOT_ID")
+	REFERENCES bpmdb_owner.LSW_SNAPSHOT("SNAPSHOT_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_DGRP_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSW_DGRP_UQ ON bpmdb_owner.LSW_DYNAMIC_GROUP("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('FK_DYNGRP_BRAID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.FK_DYNGRP_BRAID ON bpmdb_owner.LSW_DYNAMIC_GROUP("BRANCH_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('FK_DYNGRP_SNAID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.FK_DYNGRP_SNAID ON bpmdb_owner.LSW_DYNAMIC_GROUP("SNAPSHOT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSW_DGRPC_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_DYNAMIC_GROUP_CONSTRAINT ADD CONSTRAINT LSW_DGRPC_FK
+	FOREIGN KEY("DYNAMIC_GROUP_ID")
+	REFERENCES bpmdb_owner.LSW_DYNAMIC_GROUP("DYNAMIC_GROUP_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_DGRPC_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_DGRPC_UQ ON bpmdb_owner.LSW_DYNAMIC_GROUP_CONSTRAINT("DYNAMIC_GROUP_CONSTRAINT_ID","DYNAMIC_GROUP_ID","MATCH_TYPE","CONSTRAINT_TYPE","LIBRARY_ELEMENT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_DGRP_DEP_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_DYNAMIC_GROUP_DEPENDENCY ADD CONSTRAINT LSWC_DGRP_DEP_FK
+	FOREIGN KEY("PARENT_GROUP_ID")
+	REFERENCES bpmdb_owner.LSW_DYNAMIC_GROUP("DYNAMIC_GROUP_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_USR_ATTR_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_USR_ATTR ADD CONSTRAINT LSWC_USR_ATTR_FK
+	FOREIGN KEY("USER_ID")
+	REFERENCES bpmdb_owner.LSW_USR_XREF("USER_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('FK_USRATTR_UID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.FK_USRATTR_UID ON bpmdb_owner.LSW_USR_ATTR("USER_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('U_ATTR_DEF_VAL_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.U_ATTR_DEF_VAL_PK3 ON bpmdb_owner.LSW_USER_ATTR_DEF_VALUES(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_USRATTRD_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_USRATTRD_PK3 ON bpmdb_owner.LSW_USER_ATTRIBUTE_DEF(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_RT_UAD_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_RT_USER_ATTRIBUTE_DEF ADD CONSTRAINT LSWC_RT_UAD_FK
+	FOREIGN KEY("SNAPSHOT_ID")
+	REFERENCES bpmdb_owner.LSW_SNAPSHOT("SNAPSHOT_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_RT_UAD_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_RT_UAD_UQ ON bpmdb_owner.LSW_RT_USER_ATTRIBUTE_DEF("USER_ATTRIBUTE_ID","SNAPSHOT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_PART_GRP_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_PARTICIPANT_GROUP ADD CONSTRAINT LSWC_PART_GRP_FK
+	FOREIGN KEY("GROUP_ID")
+	REFERENCES bpmdb_owner.LSW_USR_GRP_XREF("GROUP_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PART_GRP_UQ1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_PART_GRP_UQ1 ON bpmdb_owner.LSW_PARTICIPANT_GROUP("PARTICIPANT_ID","SNAPSHOT_ID","BRANCH_ID","TIP","GROUP_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PART_GRP_UQ2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_PART_GRP_UQ2 ON bpmdb_owner.LSW_PARTICIPANT_GROUP("GROUP_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_PART_GRP_CPVID_GRPID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_PART_GRP_CPVID_GRPID ON bpmdb_owner.LSW_PARTICIPANT_GROUP("CACHED_PART_VERSION_ID","GROUP_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_PARTCP_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_PARTCP_PK3 ON bpmdb_owner.LSW_PARTICIPANT(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_IDX_PARTCP2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_IDX_PARTCP2 ON bpmdb_owner.LSW_PARTICIPANT("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ACL_ENTRY_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_ACL_ENTRY_UQ ON bpmdb_owner.LSW_ACL_ENTRY("USER_ID","GROUP_ID","PO_TYPE","PO_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ACL_ENTRY_USR') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_ACL_ENTRY_USR ON bpmdb_owner.LSW_ACL_ENTRY("USER_ID","PO_TYPE","PO_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_ACL_ENTRY_GRP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_ACL_ENTRY_GRP ON bpmdb_owner.LSW_ACL_ENTRY("GROUP_ID","PO_TYPE","PO_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_FAV_GRP_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_FAVORITE ADD CONSTRAINT LSWC_FAV_GRP_FK
+	FOREIGN KEY("GROUP_ID")
+	REFERENCES bpmdb_owner.LSW_USR_GRP_XREF("GROUP_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_FAV_TRK_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_FAVORITE ADD CONSTRAINT LSWC_FAV_TRK_FK
+	FOREIGN KEY("BRANCH_ID")
+	REFERENCES bpmdb_owner.LSW_BRANCH("BRANCH_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_FAV_NUQ1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_FAV_NUQ1 ON bpmdb_owner.LSW_FAVORITE("GROUP_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_FAV_NUQ2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_FAV_NUQ2 ON bpmdb_owner.LSW_FAVORITE("SNAPSHOT_ID","GROUP_ID","BRANCH_ID","CACHED_PROCESS_VERSION_ID","EXPOSED_SERVICE_TYPE","TIP","ENABLED","STARTABLE_BPD_NO_NONE_START")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_FAV_NUQ3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_FAV_NUQ3 ON bpmdb_owner.LSW_FAVORITE("ITEM_TYPE","ITEM_ID","STARTABLE_BPD_NO_NONE_START")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_FAV_DETAILS_FK1' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_FAVORITE_ADDITIONAL_INFO ADD CONSTRAINT LSWC_FAV_DETAILS_FK1
+	FOREIGN KEY("FAVORITE_ID")
+	REFERENCES bpmdb_owner.LSW_FAVORITE("FAVORITE_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_FAV_DETAILS_NUQ1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_FAV_DETAILS_NUQ1 ON bpmdb_owner.LSW_FAVORITE_ADDITIONAL_INFO("INFO_TYPE","EVENT_SOURCE_ID","INFO","INCLUDE_SUB_TYPES")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSWC_USR_AVATAR_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_USR_AVATAR ADD CONSTRAINT LSWC_USR_AVATAR_FK
+	FOREIGN KEY("USER_ID")
+	REFERENCES bpmdb_owner.LSW_USR_XREF("USER_ID")
+	';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='BPM_USR_RT_PRPS_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.BPM_USR_RUNTIME_PROPS ADD CONSTRAINT BPM_USR_RT_PRPS_FK
+	FOREIGN KEY("USER_ID")
+	REFERENCES bpmdb_owner.LSW_USR_XREF("USER_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX5_SNAPSHOT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.IDX5_SNAPSHOT ON bpmdb_owner.LSW_SNAPSHOT("PROJECT_ID","ACRONYM")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IX_SNAP_SNID_NAM_PRJID') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.IX_SNAP_SNID_NAM_PRJID ON bpmdb_owner.LSW_SNAPSHOT("SNAPSHOT_ID","NAME","PROJECT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_SNAPSHOT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_SNAPSHOT ON bpmdb_owner.LSW_SNAPSHOT("SEQ_NUM","NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX2_SNAPSHOT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX2_SNAPSHOT ON bpmdb_owner.LSW_SNAPSHOT("BRANCH_ID","SEQ_NUM")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX3_SNAPSHOT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX3_SNAPSHOT ON bpmdb_owner.LSW_SNAPSHOT("IS_ARCHIVED")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX4_SNAPSHOT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX4_SNAPSHOT ON bpmdb_owner.LSW_SNAPSHOT("CREATED_ON")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX6_SNAPSHOT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX6_SNAPSHOT ON bpmdb_owner.LSW_SNAPSHOT("BRANCH_ID","IS_ARCHIVED","CREATED_ON")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_SNAPSHOT_PROJ_SNAP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_SNAPSHOT_PROJ_SNAP ON bpmdb_owner.LSW_SNAPSHOT("PROJECT_ID","SNAPSHOT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX7_SNAPSHOT') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX7_SNAPSHOT ON bpmdb_owner.LSW_SNAPSHOT("SNAPSHOT_ID","IS_ACTIVE","IS_ARCHIVED")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX3_BRANCH') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.IDX3_BRANCH ON bpmdb_owner.LSW_BRANCH("PROJECT_ID","ACRONYM")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_BRANCH') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_BRANCH ON bpmdb_owner.LSW_BRANCH("PROJECT_ID","LAST_MODIFIED")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX2_BRANCH') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX2_BRANCH ON bpmdb_owner.LSW_BRANCH("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_SHORT_NAME') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.IDX_SHORT_NAME ON bpmdb_owner.LSW_PROJECT("SHORT_NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IX_PRJ_PRJID_SNAM') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.IX_PRJ_PRJID_SNAM ON bpmdb_owner.LSW_PROJECT("PROJECT_ID","SHORT_NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_PRJ1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_PRJ1 ON bpmdb_owner.LSW_PROJECT("CREATED_ON")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IX_PRJ_PRID_TK') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IX_PRJ_PRID_TK ON bpmdb_owner.LSW_PROJECT("PROJECT_ID","IS_TOOLKIT")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_PO_VERSIONS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_PO_VERSIONS ON bpmdb_owner.LSW_PO_VERSIONS("PO_TYPE","BRANCH_ID","START_SEQ_NUM","END_SEQ_NUM","PO_VERSION_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX2_PO_VERSIONS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX2_PO_VERSIONS ON bpmdb_owner.LSW_PO_VERSIONS("BRANCH_ID","END_SEQ_NUM")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX3_PO_VERSIONS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX3_PO_VERSIONS ON bpmdb_owner.LSW_PO_VERSIONS("PO_ROOT_ID","PO_TYPE","BRANCH_ID","START_SEQ_NUM","END_SEQ_NUM","PO_VERSION_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX4_PO_VERSIONS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX4_PO_VERSIONS ON bpmdb_owner.LSW_PO_VERSIONS("BRANCH_ID","PO_TYPE","START_SEQ_NUM","END_SEQ_NUM","EXTERNAL_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX5_PO_VERSIONS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX5_PO_VERSIONS ON bpmdb_owner.LSW_PO_VERSIONS("BRANCH_ID","END_SEQ_NUM","PO_TYPE","PO_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_PO_METADATA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_PO_METADATA ON bpmdb_owner.LSW_PO_METADATA("BRANCH_ID","END_SEQ_NUM","START_SEQ_NUM")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX2_PO_METADATA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX2_PO_METADATA ON bpmdb_owner.LSW_PO_METADATA("END_SEQ_NUM","BRANCH_ID","PO_TYPE","PO_ID","META_KEY")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX3_PO_METADATA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX3_PO_METADATA ON bpmdb_owner.LSW_PO_METADATA("START_SEQ_NUM")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX4_PO_METADATA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX4_PO_METADATA ON bpmdb_owner.LSW_PO_METADATA("PO_TYPE")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX5_PO_METADATA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX5_PO_METADATA ON bpmdb_owner.LSW_PO_METADATA("PO_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX6_PO_METADATA') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX6_PO_METADATA ON bpmdb_owner.LSW_PO_METADATA("META_KEY")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX0_PROJ_DEP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX0_PROJ_DEP ON bpmdb_owner.LSW_PROJECT_DEPENDENCY("VERSION_ID","IS_ACTIVE")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_DEP_PATH') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_DEP_PATH ON bpmdb_owner.LSW_DEP_PATH("HASH")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX2_DEP_PATH') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX2_DEP_PATH ON bpmdb_owner.LSW_DEP_PATH("COUNT")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_PO_REFERENCE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_PO_REFERENCE ON bpmdb_owner.LSW_PO_REFERENCE("BRANCH_ID","END_SEQ_NUM","START_SEQ_NUM","TARGET_TYPE")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX2_PO_REFERENCE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX2_PO_REFERENCE ON bpmdb_owner.LSW_PO_REFERENCE("START_SEQ_NUM")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX3_PO_REFERENCE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX3_PO_REFERENCE ON bpmdb_owner.LSW_PO_REFERENCE("END_SEQ_NUM")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX2_PO_DEPENDENCY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX2_PO_DEPENDENCY ON bpmdb_owner.LSW_PO_DEPENDENCY("START_SEQ_NUM")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX3_PO_DEPENDENCY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX3_PO_DEPENDENCY ON bpmdb_owner.LSW_PO_DEPENDENCY("END_SEQ_NUM")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX4_PO_DEPENDENCY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX4_PO_DEPENDENCY ON bpmdb_owner.LSW_PO_DEPENDENCY("SOURCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX5_PO_DEPENDENCY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX5_PO_DEPENDENCY ON bpmdb_owner.LSW_PO_DEPENDENCY("SOURCE_LOCATION")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_RT_REFERENCE') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_RT_REFERENCE ON bpmdb_owner.LSW_RT_REFERENCE("PO_TYPE")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_WEB_SRV_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_WEB_SRV_PK3 ON bpmdb_owner.LSW_WEB_SERVICE(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_WEBSRV_OP_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_WEBSRV_OP_PK3 ON bpmdb_owner.LSW_WEB_SERVICE_OP(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_WEBSRV_OP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_WEBSRV_OP ON bpmdb_owner.LSW_WEB_SERVICE_OP("WEB_SERVICE_ID","SEQ")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_CACHE_STS_IDX1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_ASSET_CACHE_STS_IDX1 ON bpmdb_owner.BPM_ASSET_CACHE_STATUS("CLIENT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_CACHE_STS_IDX2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_ASSET_CACHE_STS_IDX2 ON bpmdb_owner.BPM_ASSET_CACHE_STATUS("CONTAINER_ID","L_RN_TAG_BATCH_NO","L_RN_TAG_BATCH_NO_IN_SS","COMMITTED_MODEL_BATCH_NO","L_MODEL_BATCH_NO_IN_SS")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_SAVE_INSTR_IDX1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_ASSET_SAVE_INSTR_IDX1 ON bpmdb_owner.BPM_ASSET_CACHE_SAVE_INSTR("CONTAINER_ID","ROOT_ID","COMMIT_SEQ","ASSET_ID","BATCH_NO","DATA_SEQ")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_SAVE_INSTR_IDX2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_ASSET_SAVE_INSTR_IDX2 ON bpmdb_owner.BPM_ASSET_CACHE_SAVE_INSTR("MODIFIED_ON")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_SAVE_INSTR_IDX3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_ASSET_SAVE_INSTR_IDX3 ON bpmdb_owner.BPM_ASSET_CACHE_SAVE_INSTR("CONTAINER_ID","PENDING_SUMMARY","COMMIT_SEQ","ASSET_ID","BATCH_NO","DATA_SEQ","SNAPSHOT_SEQ")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_SAVE_INSTR_IDX4') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_ASSET_SAVE_INSTR_IDX4 ON bpmdb_owner.BPM_ASSET_CACHE_SAVE_INSTR("CONTAINER_ID","ROOT_ID","CLIENT_ID","BASE_BATCH_NO")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_INSTR_DIS_IDX1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_ASSET_INSTR_DIS_IDX1 ON bpmdb_owner.BPM_ASSET_CACHE_INSTR_DISCARD("CONTAINER_ID","ROOT_ID","BATCH_NO")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_INSTR_DIS_IDX2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_ASSET_INSTR_DIS_IDX2 ON bpmdb_owner.BPM_ASSET_CACHE_INSTR_DISCARD("MODIFIED_ON")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_INSTR_DIS_IDX3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_ASSET_INSTR_DIS_IDX3 ON bpmdb_owner.BPM_ASSET_CACHE_INSTR_DISCARD("DISCARD_GUID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_SAVE_IN_BK_IDX1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_ASSET_SAVE_IN_BK_IDX1 ON bpmdb_owner.BPM_ASSET_CACHE_SAVE_INSTR_BK("MODIFIED_ON")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_REPO_LOCK_IDX1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_ASSET_REPO_LOCK_IDX1 ON bpmdb_owner.BPM_ASSET_CACHE_REPO_LOCK("LOCK_STATUS","LOCKED_ON")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_ASSET_PK3 ON bpmdb_owner.BPM_ASSET(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_IDX1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_ASSET_IDX1 ON bpmdb_owner.BPM_ASSET("ASSET_TYPE")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_CACHE_E_MSG_IDX1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_ASSET_CACHE_E_MSG_IDX1 ON bpmdb_owner.BPM_ASSET_CACHE_EVENT_MSG("CONTAINER_ID","STATUS")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ASSET_CACHE_E_MSG_IDX2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_ASSET_CACHE_E_MSG_IDX2 ON bpmdb_owner.BPM_ASSET_CACHE_EVENT_MSG("CACHED_ON")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EXTENDED_PROPERTYS_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_EXTENDED_PROPERTYS_PK3 ON bpmdb_owner.LSW_EXTENDED_PROPERTY_SET(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_EXTENDED_PROPERTYS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_EXTENDED_PROPERTYS ON bpmdb_owner.LSW_EXTENDED_PROPERTY_SET("EXTENDED_PROPERTY_SET_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX2_EXTENDED_PROPERTYS') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX2_EXTENDED_PROPERTYS ON bpmdb_owner.LSW_EXTENDED_PROPERTY_SET("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EXTENDED_PROPERTY_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_EXTENDED_PROPERTY_PK2 ON bpmdb_owner.LSW_EXTENDED_PROPERTY(EXTENDED_PROPERTY_SET_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_EXTENDED_PROPERTY_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSWC_EXTENDED_PROPERTY_PK3 ON bpmdb_owner.LSW_EXTENDED_PROPERTY(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('IDX_EXTENDED_PROPERTY') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.IDX_EXTENDED_PROPERTY ON bpmdb_owner.LSW_EXTENDED_PROPERTY("EXTENDED_PROPERTY_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSWC_SAP_CONNECTION_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSWC_SAP_CONNECTION_UQ ON bpmdb_owner.LSW_SAP_CONNECTION("SYSNAME","CREATED_BY_USER_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_SAP_CONNECTION_IDX1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_SAP_CONNECTION_IDX1 ON bpmdb_owner.LSW_SAP_CONNECTION("MODIFIED_ON")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_SAP_CONNECTION_IDX2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_SAP_CONNECTION_IDX2 ON bpmdb_owner.LSW_SAP_CONNECTION("CREATED_ON")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_SAP_CONNECTION_IDX3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_SAP_CONNECTION_IDX3 ON bpmdb_owner.LSW_SAP_CONNECTION("SYSNAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_SAP_CONNECTION_IDX4') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_SAP_CONNECTION_IDX4 ON bpmdb_owner.LSW_SAP_CONNECTION("IS_DEFAULT")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_IDX_CASEPROP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_IDX_CASEPROP ON bpmdb_owner.BPM_CASE_PROPERTY("PROJECT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_IDX2_CASEPROP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_IDX2_CASEPROP ON bpmdb_owner.BPM_CASE_PROPERTY("BRANCH_ID","IS_TIP")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_IDX3_CASEPROP') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_IDX3_CASEPROP ON bpmdb_owner.BPM_CASE_PROPERTY("SNAPSHOT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ECM_OBJECT_IDX1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_ECM_OBJECT_IDX1 ON bpmdb_owner.BPM_ECM_OBJECT("PARENT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ECM_OBJECT_IDX2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_ECM_OBJECT_IDX2 ON bpmdb_owner.BPM_ECM_OBJECT("BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_ECM_OBJECT_IDX3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_ECM_OBJECT_IDX3 ON bpmdb_owner.BPM_ECM_OBJECT("EVENT_SOURCE_ID","OBJECT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('REF_PO_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.REF_PO_PK3 ON bpmdb_owner.BPM_REF_PO(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_EESREF_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_EESREF_PK2 ON bpmdb_owner.BPM_ES_ES_ART_REF(ES_ARTIFACT_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_EESREF_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_EESREF_PK3 ON bpmdb_owner.BPM_ES_ES_ART_REF(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('BPM_EESREF_NUQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.BPM_EESREF_NUQ ON bpmdb_owner.BPM_ES_ES_ART_REF("ES_ARTIFACT_ID","TESARTIFACT_ID","VERSION_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('ES_NPRP_PK3') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.ES_NPRP_PK3 ON bpmdb_owner.BPM_ES_ARTIFACT(GUID)';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('ES_IDX_ART') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.ES_IDX_ART ON bpmdb_owner.BPM_ES_ARTIFACT("ES_ARTIFACT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('ES_IDX2_ART') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.ES_IDX2_ART ON bpmdb_owner.BPM_ES_ARTIFACT("NAME")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_CONTENT_OBJ_INSTANCE_PK2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_CONTENT_OBJ_INSTANCE_PK2 ON bpmdb_owner.LSW_CONTENT_OBJECT_INSTANCE(CONTENT_OBJECT_ID)';
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_constraints where constraint_name='LSW_CONTENT_OBJ_INSTANCE_FK' AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );
+    IF (v_table_count = 0) THEN
+      EXECUTE IMMEDIATE  'ALTER TABLE bpmdb_owner.LSW_CONTENT_OBJECT_INSTANCE ADD CONSTRAINT LSW_CONTENT_OBJ_INSTANCE_FK
+	FOREIGN KEY("CONTENT_OBJECT_ID")
+	REFERENCES bpmdb_owner.LSW_CONTENT_OBJECT("CONTENT_OBJECT_ID")
+	ON DELETE CASCADE';
+   	END IF ;
+  END ;
+END ;	
+
+/
+
+    
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_CONTENT_OBJ_INSTANCE_UQ') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE UNIQUE INDEX bpmdb_owner.LSW_CONTENT_OBJ_INSTANCE_UQ ON bpmdb_owner.LSW_CONTENT_OBJECT_INSTANCE("CONTENT_OBJECT_ID","SEQUENCE_NUMBER")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_BPD_INST_CONTENT_USE_IDX1') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_BPD_INST_CONTENT_USE_IDX1 ON bpmdb_owner.LSW_BPD_INSTANCE_CONTENT_USAGE("BPD_INSTANCE_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+ 
+BEGIN
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+    select count(*) into v_table_count from all_objects where object_type='INDEX' and object_name = UPPER('LSW_BPD_INST_CONT_USE_IDX2') AND ( owner='bpmdb_owner' OR owner=UPPER('bpmdb_owner') );     
+    IF (v_table_count = 0) THEN 
+    	EXECUTE IMMEDIATE  'CREATE INDEX bpmdb_owner.LSW_BPD_INST_CONT_USE_IDX2 ON bpmdb_owner.LSW_BPD_INSTANCE_CONTENT_USAGE("CONTENT_OBJECT_ID")';	
+   	END IF ;
+  END ;
+END ;    	
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PRI_KEY WHERE TABLE_ID = 'LSW_USR' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PRI_KEY("TABLE_ID",
+ "HIGH_KEY") 
+VALUES ('LSW_USR' ,
+ 1000) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PRI_KEY WHERE TABLE_ID = 'LSW_USR_XREF' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PRI_KEY("TABLE_ID",
+ "HIGH_KEY") 
+VALUES ('LSW_USR_XREF' ,
+ 1000) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PRI_KEY WHERE TABLE_ID = 'LSW_USR_GRP_XREF' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PRI_KEY("TABLE_ID",
+ "HIGH_KEY") 
+VALUES ('LSW_USR_GRP_XREF' ,
+ 1000) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PRI_KEY WHERE TABLE_ID = 'EXECUTION_CONTEXT_ID' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PRI_KEY("TABLE_ID",
+ "HIGH_KEY") 
+VALUES ('EXECUTION_CONTEXT_ID' ,
+ 1) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PRI_KEY WHERE TABLE_ID = 'LSW_UCA_SYNC_QUEUE' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PRI_KEY("TABLE_ID",
+ "HIGH_KEY") 
+VALUES ('LSW_UCA_SYNC_QUEUE' ,
+ 1000) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PRI_KEY WHERE TABLE_ID = 'LSW_EM_INSTANCE' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PRI_KEY("TABLE_ID",
+ "HIGH_KEY") 
+VALUES ('LSW_EM_INSTANCE' ,
+ 1000) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PRI_KEY WHERE TABLE_ID = 'LSW_EM_TASK' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PRI_KEY("TABLE_ID",
+ "HIGH_KEY") 
+VALUES ('LSW_EM_TASK' ,
+ 1000) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PRI_KEY WHERE TABLE_ID = 'LSW_SAVED_SEARCHES' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PRI_KEY("TABLE_ID",
+ "HIGH_KEY") 
+VALUES ('LSW_SAVED_SEARCHES' ,
+ 1000) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PRI_KEY WHERE TABLE_ID = 'LSW_TIME_PERIOD' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PRI_KEY("TABLE_ID",
+ "HIGH_KEY") 
+VALUES ('LSW_TIME_PERIOD' ,
+ 1000) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PRI_KEY WHERE TABLE_ID = 'LSW_TIME_SCHEDULE' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PRI_KEY("TABLE_ID",
+ "HIGH_KEY") 
+VALUES ('LSW_TIME_SCHEDULE' ,
+ 1000) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PRI_KEY WHERE TABLE_ID = 'LSW_HOLIDAY_SCHEDULE' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PRI_KEY("TABLE_ID",
+ "HIGH_KEY") 
+VALUES ('LSW_HOLIDAY_SCHEDULE' ,
+ 1000) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PRI_KEY WHERE TABLE_ID = 'LSW_ACL_ENTRY' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PRI_KEY("TABLE_ID",
+ "HIGH_KEY") 
+VALUES ('LSW_ACL_ENTRY' ,
+ 1000) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PRI_KEY WHERE TABLE_ID = 'LSW_PRIORITY' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PRI_KEY("TABLE_ID",
+ "HIGH_KEY") 
+VALUES ('LSW_PRIORITY' ,
+ 1000) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PRI_KEY WHERE TABLE_ID = 'LSW_CA_TEMPLATE' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PRI_KEY("TABLE_ID",
+ "HIGH_KEY") 
+VALUES ('LSW_CA_TEMPLATE' ,
+ 1) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_USR_GRP_XREF WHERE GROUP_ID = 2 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_USR_GRP_XREF("GROUP_ID",
+ "GROUP_NAME",
+ "DISPLAY_NAME",
+ "GROUP_TYPE",
+ "DESCRIPTION",
+ "GROUP_STATE") 
+VALUES (2 ,
+ 'Debug' ,
+ 'Debug' ,
+ 3 ,
+ 'Group for people with access to debug feature.' ,
+ 0) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_USR_GRP_XREF WHERE GROUP_ID = 3 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_USR_GRP_XREF("GROUP_ID",
+ "GROUP_NAME",
+ "DISPLAY_NAME",
+ "GROUP_TYPE",
+ "DESCRIPTION",
+ "GROUP_STATE") 
+VALUES (3 ,
+ 'tw_admins' ,
+ 'tw_admins' ,
+ 3 ,
+ 'Group for people with full access to Teamworks.' ,
+ 0) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_USR_GRP_XREF WHERE GROUP_ID = 4 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_USR_GRP_XREF("GROUP_ID",
+ "GROUP_NAME",
+ "DISPLAY_NAME",
+ "GROUP_TYPE",
+ "DESCRIPTION",
+ "GROUP_STATE") 
+VALUES (4 ,
+ 'tw_authors' ,
+ 'tw_authors' ,
+ 3 ,
+ 'Group for people with Authoring access to Teamworks.' ,
+ 0) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_USR_GRP_XREF WHERE GROUP_ID = 6 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_USR_GRP_XREF("GROUP_ID",
+ "GROUP_NAME",
+ "DISPLAY_NAME",
+ "GROUP_TYPE",
+ "DESCRIPTION",
+ "GROUP_STATE") 
+VALUES (6 ,
+ 'twem' ,
+ 'twem' ,
+ 3 ,
+ 'Group for people with Event Manager access.' ,
+ 0) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_USR_GRP_XREF WHERE GROUP_ID = 11 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_USR_GRP_XREF("GROUP_ID",
+ "GROUP_NAME",
+ "DISPLAY_NAME",
+ "GROUP_TYPE",
+ "DESCRIPTION",
+ "GROUP_STATE") 
+VALUES (11 ,
+ 'tw_portal_admins' ,
+ 'tw_portal_admins' ,
+ 3 ,
+ 'Group for people with full access to Teamworks Portal.' ,
+ 0) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_USR_GRP_XREF WHERE GROUP_ID = 15 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_USR_GRP_XREF("GROUP_ID",
+ "GROUP_NAME",
+ "DISPLAY_NAME",
+ "GROUP_TYPE",
+ "DESCRIPTION",
+ "GROUP_STATE") 
+VALUES (15 ,
+ 'tw_process_owners' ,
+ 'tw_process_owners' ,
+ 3 ,
+ 'Group for people with full access to critical path' ,
+ 0) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_USR_GRP_XREF WHERE GROUP_ID = 16 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_USR_GRP_XREF("GROUP_ID",
+ "GROUP_NAME",
+ "DISPLAY_NAME",
+ "GROUP_TYPE",
+ "DESCRIPTION",
+ "GROUP_STATE") 
+VALUES (16 ,
+ 'tw_allusers' ,
+ 'tw_allusers' ,
+ 3 ,
+ 'Group for all people.' ,
+ 0) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_USR_GRP_XREF WHERE GROUP_ID = 17 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_USR_GRP_XREF("GROUP_ID",
+ "GROUP_NAME",
+ "DISPLAY_NAME",
+ "GROUP_TYPE",
+ "DESCRIPTION",
+ "GROUP_STATE") 
+VALUES (17 ,
+ 'tw_managers' ,
+ 'tw_managers' ,
+ 3 ,
+ 'Group for people considered managers with full access to the team performance dashboard' ,
+ 0) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_USR_GRP_XREF WHERE GROUP_ID = 18 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_USR_GRP_XREF("GROUP_ID",
+ "GROUP_NAME",
+ "DISPLAY_NAME",
+ "GROUP_TYPE",
+ "DESCRIPTION",
+ "GROUP_STATE") 
+VALUES (18 ,
+ 'tw_allusers_managers' ,
+ 'tw_allusers_managers' ,
+ 3 ,
+ 'Group for people considered managers of all users' ,
+ 0) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_GRP_GRP_MEM_XREF WHERE GROUP_ID = 16 AND CONTAINER_GROUP_ID = 17 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_GRP_GRP_MEM_XREF("GROUP_ID",
+ "CONTAINER_GROUP_ID") 
+VALUES (16 ,
+ 17) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_GRP_GRP_MEM_XREF WHERE GROUP_ID = 3 AND CONTAINER_GROUP_ID = 18 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_GRP_GRP_MEM_XREF("GROUP_ID",
+ "CONTAINER_GROUP_ID") 
+VALUES (3 ,
+ 18) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_GRP_GRP_MEM_EXPLODED_XREF WHERE GROUP_ID = 16 AND CONTAINER_GROUP_ID = 17 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_GRP_GRP_MEM_EXPLODED_XREF("GROUP_ID",
+ "CONTAINER_GROUP_ID",
+ "MEM_PATH") 
+VALUES (16 ,
+ 17 ,
+ '#17#16#') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_GRP_GRP_MEM_EXPLODED_XREF WHERE GROUP_ID = 3 AND CONTAINER_GROUP_ID = 18 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_GRP_GRP_MEM_EXPLODED_XREF("GROUP_ID",
+ "CONTAINER_GROUP_ID",
+ "MEM_PATH") 
+VALUES (3 ,
+ 18 ,
+ '#18#3#') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PRIORITY WHERE PRIORITY_ID = 10 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PRIORITY("PRIORITY_ID",
+ "NAME",
+ "DESCRIPTION",
+ "LEGACY_GUID",
+ "RANKING",
+ "IS_DEFAULT") 
+VALUES (10 ,
+ 'Highest' ,
+ 'Highest' ,
+ 'guid:0dfd96132cfb3049:57f3e3:f914ea0b73:-7fff' ,
+ 10 ,
+ 'F') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PRIORITY WHERE PRIORITY_ID = 20 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PRIORITY("PRIORITY_ID",
+ "NAME",
+ "DESCRIPTION",
+ "LEGACY_GUID",
+ "RANKING",
+ "IS_DEFAULT") 
+VALUES (20 ,
+ 'High' ,
+ 'High' ,
+ 'guid:0dfd96132cfb3049:57f3e3:f914ea0b73:-7ffe' ,
+ 20 ,
+ 'F') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PRIORITY WHERE PRIORITY_ID = 30 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PRIORITY("PRIORITY_ID",
+ "NAME",
+ "DESCRIPTION",
+ "LEGACY_GUID",
+ "RANKING",
+ "IS_DEFAULT") 
+VALUES (30 ,
+ 'Normal' ,
+ 'Normal' ,
+ 'guid:0dfd96132cfb3049:57f3e3:f914ea0b73:-7ff7' ,
+ 30 ,
+ 'T') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PRIORITY WHERE PRIORITY_ID = 40 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PRIORITY("PRIORITY_ID",
+ "NAME",
+ "DESCRIPTION",
+ "LEGACY_GUID",
+ "RANKING",
+ "IS_DEFAULT") 
+VALUES (40 ,
+ 'Low' ,
+ 'Low' ,
+ 'guid:0dfd96132cfb3049:57f3e3:f914ea0b73:-7ffd' ,
+ 40 ,
+ 'F') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PRIORITY WHERE PRIORITY_ID = 50 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PRIORITY("PRIORITY_ID",
+ "NAME",
+ "DESCRIPTION",
+ "LEGACY_GUID",
+ "RANKING",
+ "IS_DEFAULT") 
+VALUES (50 ,
+ 'Lowest' ,
+ 'Lowest' ,
+ 'guid:0dfd96132cfb3049:57f3e3:f914ea0b73:-7ffc' ,
+ 50 ,
+ 'F') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_UCA_SYNC_QUEUE WHERE SYNC_QUEUE_ID = 1 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_UCA_SYNC_QUEUE("SYNC_QUEUE_ID",
+ "DESCRIPTION") 
+VALUES (1 ,
+ 'SYNC_QUEUE_1') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_UCA_SYNC_QUEUE WHERE SYNC_QUEUE_ID = 2 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_UCA_SYNC_QUEUE("SYNC_QUEUE_ID",
+ "DESCRIPTION") 
+VALUES (2 ,
+ 'SYNC_QUEUE_2') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_UCA_SYNC_QUEUE WHERE SYNC_QUEUE_ID = 3 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_UCA_SYNC_QUEUE("SYNC_QUEUE_ID",
+ "DESCRIPTION") 
+VALUES (3 ,
+ 'SYNC_QUEUE_3') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_BLACKOUT_CALENDAR WHERE CALENDAR_ID = 1 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_BLACKOUT_CALENDAR("CALENDAR_ID",
+ "IS_BLACKED_OUT") 
+VALUES (1 ,
+ 0) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_SAVED_SEARCHES WHERE SEARCH_ID = 1 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_SAVED_SEARCHES("SEARCH_ID",
+ "SEARCH_NAME",
+ "QUERY") 
+VALUES (1 ,
+ 'portal.savedsearch.inbox' ,
+ '<?xml version="1.0" encoding="UTF-8"?><query organization="byInstance"> <constraints><constraint column="taskStatus" operator="Equals" value="New_or_Received"/></constraints> <instance-results> <column name="instanceName"/> <column name="bpdName"/> <column name="instanceDueDate"/> </instance-results> <task-results> <column name="taskSubject"/> <column name="taskPriority"/> <column name="taskDueDate"/> </task-results> <business-data-results/> </query>') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_SAVED_SEARCHES WHERE SEARCH_ID = 2 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_SAVED_SEARCHES("SEARCH_ID",
+ "SEARCH_NAME",
+ "QUERY") 
+VALUES (2 ,
+ 'portal.savedsearch.history' ,
+ '<?xml version="1.0" encoding="UTF-8"?><query organization="byInstance"> <constraints> <constraint column="taskStatus" operator="Equals" value="Closed"/> </constraints> <instance-results> <column name="instanceName"/> <column name="bpdName"/> <column name="instanceStatus"/> </instance-results> <task-results> <column name="taskSubject"/> <column name="taskPriority"/> <column name="taskDueDate"/> </task-results> <business-data-results/> </query>') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_SAVED_SEARCHES WHERE SEARCH_ID = 3 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_SAVED_SEARCHES("SEARCH_ID",
+ "SEARCH_NAME",
+ "QUERY") 
+VALUES (3 ,
+ 'portal.savedsearch.help_reqs' ,
+ '<?xml version="1.0" encoding="UTF-8"?><query organization="byInstance" first-sort="" second-sort=""><constraints><constraint column="taskStatus" operator="Equals" value="Help_Request"/></constraints><instance-results> <column name="instanceName"/> <column name="bpdName"/> <column name="instanceDueDate"/> </instance-results> <task-results> <column name="taskSubject"/> <column name="taskPriority"/> <column name="taskDueDate"/> </task-results> <business-data-results/></query>') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_SAVED_SEARCHES WHERE SEARCH_ID = 4 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_SAVED_SEARCHES("SEARCH_ID",
+ "SEARCH_NAME",
+ "QUERY") 
+VALUES (4 ,
+ 'portal.savedsearch.alerts' ,
+ '<?xml version="1.0" encoding="UTF-8"?><query organization="byTask" first-sort="" second-sort=""><constraints><constraint column="taskStatus" operator="Equals" value="Alert"/></constraints><instance-results> <column name="instanceName"/> <column name="bpdName"/> <column name="instanceDueDate"/> </instance-results> <task-results> <column name="taskSubject"/> <column name="taskPriority"/> <column name="taskDueDate"/> </task-results> <business-data-results/></query>') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_SAVED_SEARCHES WHERE SEARCH_ID = 5 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_SAVED_SEARCHES("SEARCH_ID",
+ "SEARCH_NAME",
+ "QUERY") 
+VALUES (5 ,
+ 'IBM.DEFAULTALLTASKSLIST_75' ,
+ '<?xml version="1.0" encoding="UTF-8"?><query organization="byTask" first-sort="" second-sort=""> <constraints /> <results> <column name="taskSubject" column-type="task"/> <column name="taskNarrative" column-type="task"/> <column name="taskDueDate" column-type="task"/> <column name="taskReceivedDate" column-type="task"/> <column name="taskPriority" column-type="task"/> <column name="taskStatus" column-type="task"/> <column name="taskReceivedFrom" column-type="task"/> <column name="taskClosedDate" column-type="task"/> <column name="assignedToUser" column-type="task"/> <column name="assignedToRoleDisplayName" column-type="task"/> <column name="taskActivityName" column-type="task"/> <column name="taskId" column-type="task"/> <column name="taskAtRiskTime" column-type="task"/> <column name="taskIsAtRisk" column-type="task"/> <column name="instanceId" column-type="instance"/> <column name="instanceName" column-type="instance"/> <column name="bpdId" column-type="instance"/> <column name="instanceProcessApp" column-type="instance"/> <column name="instanceSnapshot" column-type="instance"/> <column name="instanceSnapshotId" column-type="instance"/> <column name="parentCaseId" column-type="instance"/> <column name="parentActivityId" column-type="instance"/> <column name="workflowApplication" column-type="instance"/> </results> </query>') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_SAVED_SEARCHES WHERE SEARCH_ID = 6 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_SAVED_SEARCHES("SEARCH_ID",
+ "SEARCH_NAME",
+ "QUERY") 
+VALUES (6 ,
+ 'IBM.DEFAULTALLPROCESSLIST_75' ,
+ '<?xml version="1.0" encoding="UTF-8"?><query organization="byInstance" first-sort="" second-sort=""> <constraints /> <results> <column name="instanceName" column-type="instance"/> <column name="instanceStatus" column-type="instance"/> <column name="bpdName" column-type="instance"/> <column name="instanceId" column-type="instance"/> <column name="bpdId" column-type="instance"/> <column name="instanceProcessApp" column-type="instance"/> <column name="instanceSnapshot" column-type="instance"/> <column name="instanceSnapshotId" column-type="instance"/> </results> </query>') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TASK_STATUS_CODES WHERE STATUS_ID = 1 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TASK_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "STATUS_VALUE") 
+VALUES (1 ,
+ 'New' ,
+ '11') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TASK_STATUS_CODES WHERE STATUS_ID = 2 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TASK_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "STATUS_VALUE") 
+VALUES (2 ,
+ 'Received' ,
+ '12') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TASK_STATUS_CODES WHERE STATUS_ID = 3 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TASK_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "STATUS_VALUE") 
+VALUES (3 ,
+ 'Replied' ,
+ '13') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TASK_STATUS_CODES WHERE STATUS_ID = 4 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TASK_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "STATUS_VALUE") 
+VALUES (4 ,
+ 'Forwarded' ,
+ '14') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TASK_STATUS_CODES WHERE STATUS_ID = 5 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TASK_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "STATUS_VALUE") 
+VALUES (5 ,
+ 'Sent' ,
+ '21') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TASK_STATUS_CODES WHERE STATUS_ID = 6 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TASK_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "STATUS_VALUE") 
+VALUES (6 ,
+ 'Actioned' ,
+ '31') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TASK_STATUS_CODES WHERE STATUS_ID = 7 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TASK_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "STATUS_VALUE") 
+VALUES (7 ,
+ 'Closed' ,
+ '32') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TASK_STATUS_CODES WHERE STATUS_ID = 8 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TASK_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "STATUS_VALUE") 
+VALUES (8 ,
+ 'Special' ,
+ '41') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TASK_STATUS_CODES WHERE STATUS_ID = 9 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TASK_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "STATUS_VALUE") 
+VALUES (9 ,
+ 'Deleted' ,
+ '91') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TASK_STATUS_CODES WHERE STATUS_ID = 10 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TASK_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "STATUS_VALUE") 
+VALUES (10 ,
+ 'Alert' ,
+ '61') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TASK_STATUS_CODES WHERE STATUS_ID = 11 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TASK_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "STATUS_VALUE") 
+VALUES (11 ,
+ 'Help_Request' ,
+ '62') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TASK_STATUS_CODES WHERE STATUS_ID = 12 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TASK_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "STATUS_VALUE") 
+VALUES (12 ,
+ 'Comment' ,
+ '63') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TASK_STATUS_CODES WHERE STATUS_ID = 13 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TASK_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "STATUS_VALUE") 
+VALUES (13 ,
+ 'Answered_Help_Request' ,
+ '65') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TASK_STATUS_CODES WHERE STATUS_ID = 14 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TASK_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "STATUS_VALUE") 
+VALUES (14 ,
+ 'Ignored_Help_Request' ,
+ '66') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TASK_STATUS_CODES WHERE STATUS_ID = 15 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TASK_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "STATUS_VALUE") 
+VALUES (15 ,
+ 'Followed' ,
+ '70') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TASK_STATUS_CODES WHERE STATUS_ID = 16 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TASK_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "STATUS_VALUE") 
+VALUES (16 ,
+ 'Tagged' ,
+ '71') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TASK_STATUS_CODES WHERE STATUS_ID = 17 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TASK_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "STATUS_VALUE") 
+VALUES (17 ,
+ 'Collaboration' ,
+ '72') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_BPD_STATUS_CODES WHERE STATUS_ID = 1 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_BPD_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "CONST_VALUE") 
+VALUES (1 ,
+ 'Active' ,
+ 'EXECUTION_STATUS_ACTIVE') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_BPD_STATUS_CODES WHERE STATUS_ID = 2 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_BPD_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "CONST_VALUE") 
+VALUES (2 ,
+ 'Completed' ,
+ 'EXECUTION_STATUS_COMPLETED') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_BPD_STATUS_CODES WHERE STATUS_ID = 3 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_BPD_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "CONST_VALUE") 
+VALUES (3 ,
+ 'Failed' ,
+ 'EXECUTION_STATUS_FAILED') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_BPD_STATUS_CODES WHERE STATUS_ID = 4 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_BPD_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "CONST_VALUE") 
+VALUES (4 ,
+ 'Terminated' ,
+ 'EXECUTION_STATUS_TERMINATED') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_BPD_STATUS_CODES WHERE STATUS_ID = 5 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_BPD_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "CONST_VALUE") 
+VALUES (5 ,
+ 'Did_not_Start' ,
+ 'EXECUTION_STATUS_DID_NOT_START') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_BPD_STATUS_CODES WHERE STATUS_ID = 6 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_BPD_STATUS_CODES("STATUS_ID",
+ "NAME",
+ "CONST_VALUE") 
+VALUES (6 ,
+ 'Suspended' ,
+ 'EXECUTION_STATUS_SUSPENDED') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_FILE_TYPES WHERE FILETYPE_ID = 1 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_FILE_TYPES("FILETYPE_ID",
+ "EXT",
+ "FILETYPE") 
+VALUES (1 ,
+ 'DOC' ,
+ 'Word Document') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_FILE_TYPES WHERE FILETYPE_ID = 2 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_FILE_TYPES("FILETYPE_ID",
+ "EXT",
+ "FILETYPE") 
+VALUES (2 ,
+ 'XLS' ,
+ 'Excel Workbook') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_FILE_TYPES WHERE FILETYPE_ID = 3 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_FILE_TYPES("FILETYPE_ID",
+ "EXT",
+ "FILETYPE") 
+VALUES (3 ,
+ 'PPT' ,
+ 'Power Point Presentation') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_FILE_TYPES WHERE FILETYPE_ID = 4 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_FILE_TYPES("FILETYPE_ID",
+ "EXT",
+ "FILETYPE") 
+VALUES (4 ,
+ 'JPG' ,
+ 'JPEG Image') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_FILE_TYPES WHERE FILETYPE_ID = 5 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_FILE_TYPES("FILETYPE_ID",
+ "EXT",
+ "FILETYPE") 
+VALUES (5 ,
+ 'GIF' ,
+ 'GIF Image') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_FILE_TYPES WHERE FILETYPE_ID = 6 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_FILE_TYPES("FILETYPE_ID",
+ "EXT",
+ "FILETYPE") 
+VALUES (6 ,
+ 'PNG' ,
+ 'PNG Image') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_FILE_TYPES WHERE FILETYPE_ID = 7 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_FILE_TYPES("FILETYPE_ID",
+ "EXT",
+ "FILETYPE") 
+VALUES (7 ,
+ 'TXT' ,
+ 'Text') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_FILE_TYPES WHERE FILETYPE_ID = 8 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_FILE_TYPES("FILETYPE_ID",
+ "EXT",
+ "FILETYPE") 
+VALUES (8 ,
+ 'HTML' ,
+ 'HTML File') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_SYSTEM_SCHEMA WHERE PROPNAME = 'DatabaseSchemaVersion' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_SYSTEM_SCHEMA("PROPNAME",
+ "PROPVALUE") 
+VALUES ('DatabaseSchemaVersion' ,
+ '1.3.0') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_SYSTEM_SCHEMA WHERE PROPNAME = 'DatabaseSchemaFormat' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_SYSTEM_SCHEMA("PROPNAME",
+ "PROPVALUE") 
+VALUES ('DatabaseSchemaFormat' ,
+ 'DatabaseVersionOnly') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PROJECT WHERE PROJECT_ID = '1b351583-e5cb-43b7-baee-340a63130ea7' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PROJECT("PROJECT_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID",
+ "NAME",
+ "DESCRIPTION",
+ "SHORT_NAME",
+ "IS_TOOLKIT",
+ "IS_BRANCHING_ENABLED",
+ "IS_HIDDEN") 
+VALUES ('1b351583-e5cb-43b7-baee-340a63130ea7' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1 ,
+ 'System Data' ,
+ 'Teamworks System Data' ,
+ 'TWSYS' ,
+ 'T' ,
+ 'F' ,
+ 'F') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PROJECT WHERE PROJECT_ID = 'dbecd816-afed-47b0-ba92-c13256fcb566' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PROJECT("PROJECT_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID",
+ "NAME",
+ "DESCRIPTION",
+ "SHORT_NAME",
+ "IS_TOOLKIT",
+ "IS_BRANCHING_ENABLED",
+ "IS_HIDDEN") 
+VALUES ('dbecd816-afed-47b0-ba92-c13256fcb566' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1 ,
+ 'System Governance' ,
+ 'IBM BPM Governance Data and Services' ,
+ 'TWSYSG' ,
+ 'T' ,
+ 'F' ,
+ 'F') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PROJECT WHERE PROJECT_ID = 'b691179d-e7a4-4a27-b89b-f2263d0280e7' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PROJECT("PROJECT_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID",
+ "NAME",
+ "DESCRIPTION",
+ "SHORT_NAME",
+ "IS_TOOLKIT",
+ "IS_BRANCHING_ENABLED",
+ "IS_HIDDEN") 
+VALUES ('b691179d-e7a4-4a27-b89b-f2263d0280e7' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1 ,
+ 'Coaches' ,
+ 'IBM BPM System Coaches' ,
+ 'SYSC' ,
+ 'T' ,
+ 'F' ,
+ 'F') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PROJECT WHERE PROJECT_ID = 'aa12f1cb-4661-3bd0-a351-45649d179885' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PROJECT("PROJECT_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID",
+ "NAME",
+ "DESCRIPTION",
+ "SHORT_NAME",
+ "IS_TOOLKIT",
+ "IS_BRANCHING_ENABLED",
+ "IS_HIDDEN") 
+VALUES ('aa12f1cb-4661-3bd0-a351-45649d179885' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1 ,
+ 'Responsive Coaches' ,
+ 'IBM BPM System Responsive Coaches' ,
+ 'SYSRC' ,
+ 'T' ,
+ 'F' ,
+ 'F') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PROJECT WHERE PROJECT_ID = '4b3882d9-e886-4f08-9d0c-078ebda719b9' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PROJECT("PROJECT_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID",
+ "NAME",
+ "DESCRIPTION",
+ "SHORT_NAME",
+ "IS_TOOLKIT",
+ "IS_BRANCHING_ENABLED",
+ "IS_HIDDEN") 
+VALUES ('4b3882d9-e886-4f08-9d0c-078ebda719b9' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1 ,
+ 'Content Management' ,
+ 'IBM BPM Content Management Data, Services and Coach views.' ,
+ 'SYSCM' ,
+ 'T' ,
+ 'F' ,
+ 'F') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PROJECT WHERE PROJECT_ID = 'bdf91468-0d01-4ae2-bb53-054b3b591f94' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PROJECT("PROJECT_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID",
+ "NAME",
+ "DESCRIPTION",
+ "SHORT_NAME",
+ "IS_TOOLKIT",
+ "IS_BRANCHING_ENABLED",
+ "IS_HIDDEN") 
+VALUES ('bdf91468-0d01-4ae2-bb53-054b3b591f94' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1 ,
+ 'Ad-hoc Reports' ,
+ 'Teamworks Ad-hoc Reports' ,
+ 'ADHOC' ,
+ 'F' ,
+ 'F' ,
+ 'T') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PROJECT WHERE PROJECT_ID = '54ab5985-73a7-4ff6-a443-3efd4193a711' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PROJECT("PROJECT_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID",
+ "NAME",
+ "DESCRIPTION",
+ "SHORT_NAME",
+ "IS_TOOLKIT",
+ "IS_BRANCHING_ENABLED",
+ "IS_HIDDEN") 
+VALUES ('54ab5985-73a7-4ff6-a443-3efd4193a711' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1 ,
+ 'Dashboards' ,
+ 'IBM BPM System Dashboards' ,
+ 'SYSD' ,
+ 'T' ,
+ 'F' ,
+ 'F') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PROJECT WHERE PROJECT_ID = '56a4e5e8-4da1-429c-8d9b-b5be67e881d2' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PROJECT("PROJECT_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID",
+ "NAME",
+ "DESCRIPTION",
+ "SHORT_NAME",
+ "IS_TOOLKIT",
+ "IS_BRANCHING_ENABLED",
+ "IS_HIDDEN") 
+VALUES ('56a4e5e8-4da1-429c-8d9b-b5be67e881d2' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1 ,
+ 'SAP Guided Workflow (deprecated)' ,
+ 'Toolkit of SAP Guided Workflow' ,
+ 'SGW' ,
+ 'T' ,
+ 'F' ,
+ 'F') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_PROJECT WHERE PROJECT_ID = 'ec5973da-aebe-40f6-aa02-a77962288f52' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_PROJECT("PROJECT_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID",
+ "NAME",
+ "DESCRIPTION",
+ "SHORT_NAME",
+ "IS_TOOLKIT",
+ "IS_BRANCHING_ENABLED",
+ "IS_HIDDEN") 
+VALUES ('ec5973da-aebe-40f6-aa02-a77962288f52' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1 ,
+ 'BPM UI' ,
+ 'IBM BPM System BPM UI Toolkit' ,
+ 'SYSBPMUI' ,
+ 'T' ,
+ 'F' ,
+ 'F') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_BRANCH WHERE BRANCH_ID = '0798815e-0346-4ef4-8946-ab4301c9f340' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_BRANCH("BRANCH_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID",
+ "NAME",
+ "ACRONYM",
+ "DESCRIPTION",
+ "TIP_SNAPSHOT_ID",
+ "TIP_SEQ_NUM",
+ "PROJECT_ID",
+ "IS_DEFAULT") 
+VALUES ('0798815e-0346-4ef4-8946-ab4301c9f340' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1 ,
+ 'Main' ,
+ 'Main' ,
+ 'The main branch of the TWSYS project' ,
+ 'd14c71c9-454c-4576-b108-b441c5877c7f' ,
+ 256 ,
+ '1b351583-e5cb-43b7-baee-340a63130ea7' ,
+ 'T') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_BRANCH WHERE BRANCH_ID = 'f757be35-ebca-4e58-a85c-6b34f3c15149' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_BRANCH("BRANCH_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID",
+ "NAME",
+ "ACRONYM",
+ "DESCRIPTION",
+ "TIP_SNAPSHOT_ID",
+ "TIP_SEQ_NUM",
+ "PROJECT_ID",
+ "IS_DEFAULT") 
+VALUES ('f757be35-ebca-4e58-a85c-6b34f3c15149' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1 ,
+ 'Main' ,
+ 'Main' ,
+ 'The main branch of the TWSYSG project' ,
+ '2b73dd6a-31dc-4b32-b1af-a858743e1370' ,
+ 256 ,
+ 'dbecd816-afed-47b0-ba92-c13256fcb566' ,
+ 'T') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_BRANCH WHERE BRANCH_ID = '50f91713-f1c4-4859-897f-89720db5dc3e' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_BRANCH("BRANCH_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID",
+ "NAME",
+ "ACRONYM",
+ "DESCRIPTION",
+ "TIP_SNAPSHOT_ID",
+ "TIP_SEQ_NUM",
+ "PROJECT_ID",
+ "IS_DEFAULT") 
+VALUES ('50f91713-f1c4-4859-897f-89720db5dc3e' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1 ,
+ 'Main' ,
+ 'Main' ,
+ 'The main branch of the SYSC project' ,
+ 'e01d46a5-6dc9-4545-9940-7e843777321d' ,
+ 256 ,
+ 'b691179d-e7a4-4a27-b89b-f2263d0280e7' ,
+ 'T') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_BRANCH WHERE BRANCH_ID = '7e0d6e21-f74c-3542-9f77-1472b63c22f1' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_BRANCH("BRANCH_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID",
+ "NAME",
+ "ACRONYM",
+ "DESCRIPTION",
+ "TIP_SNAPSHOT_ID",
+ "TIP_SEQ_NUM",
+ "PROJECT_ID",
+ "IS_DEFAULT") 
+VALUES ('7e0d6e21-f74c-3542-9f77-1472b63c22f1' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1 ,
+ 'Main' ,
+ 'Main' ,
+ 'The main branch of the SYSRC project' ,
+ '091c559c-c82f-4309-8050-1b66d98f6100' ,
+ 256 ,
+ 'aa12f1cb-4661-3bd0-a351-45649d179885' ,
+ 'T') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_BRANCH WHERE BRANCH_ID = '4961c615-3524-4196-90da-93c49d237009' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_BRANCH("BRANCH_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID",
+ "NAME",
+ "ACRONYM",
+ "DESCRIPTION",
+ "TIP_SNAPSHOT_ID",
+ "TIP_SEQ_NUM",
+ "PROJECT_ID",
+ "IS_DEFAULT") 
+VALUES ('4961c615-3524-4196-90da-93c49d237009' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1 ,
+ 'Main' ,
+ 'Main' ,
+ 'The main branch of the SYSCM project' ,
+ '29dbc7ff-aace-481a-ba72-be56c0180448' ,
+ 256 ,
+ '4b3882d9-e886-4f08-9d0c-078ebda719b9' ,
+ 'T') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_BRANCH WHERE BRANCH_ID = '32b9b971-a5b4-46ff-81a4-b0a75925e811' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_BRANCH("BRANCH_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID",
+ "NAME",
+ "ACRONYM",
+ "DESCRIPTION",
+ "TIP_SNAPSHOT_ID",
+ "TIP_SEQ_NUM",
+ "PROJECT_ID",
+ "IS_DEFAULT") 
+VALUES ('32b9b971-a5b4-46ff-81a4-b0a75925e811' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1 ,
+ 'Main' ,
+ 'Main' ,
+ 'The main branch of the ADHOC project' ,
+ '17903f18-237b-45c2-8897-235e99ae7989' ,
+ 256 ,
+ 'bdf91468-0d01-4ae2-bb53-054b3b591f94' ,
+ 'T') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_BRANCH WHERE BRANCH_ID = '7d491984-182d-45ce-ad8f-9561c773848c' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_BRANCH("BRANCH_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID",
+ "NAME",
+ "ACRONYM",
+ "DESCRIPTION",
+ "TIP_SNAPSHOT_ID",
+ "TIP_SEQ_NUM",
+ "PROJECT_ID",
+ "IS_DEFAULT") 
+VALUES ('7d491984-182d-45ce-ad8f-9561c773848c' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1 ,
+ 'Main' ,
+ 'Main' ,
+ 'The main branch of the SYSD project' ,
+ '24d7efbe-2444-43d4-9c26-7938f5a1c101' ,
+ 256 ,
+ '54ab5985-73a7-4ff6-a443-3efd4193a711' ,
+ 'T') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_BRANCH WHERE BRANCH_ID = '739cc732-eb97-4b1c-bf9b-f684df222f1c' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_BRANCH("BRANCH_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID",
+ "NAME",
+ "ACRONYM",
+ "DESCRIPTION",
+ "TIP_SNAPSHOT_ID",
+ "TIP_SEQ_NUM",
+ "PROJECT_ID",
+ "IS_DEFAULT") 
+VALUES ('739cc732-eb97-4b1c-bf9b-f684df222f1c' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1 ,
+ 'Main' ,
+ 'Main' ,
+ 'The main branch of the SGW project' ,
+ 'a6a5cd8c-64ca-484e-b3ad-13ff55317cbc' ,
+ 256 ,
+ '56a4e5e8-4da1-429c-8d9b-b5be67e881d2' ,
+ 'T') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_BRANCH WHERE BRANCH_ID = '83ee2bb2-72b4-4a4d-b8ae-37ecd983c05e' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_BRANCH("BRANCH_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID",
+ "NAME",
+ "ACRONYM",
+ "DESCRIPTION",
+ "TIP_SNAPSHOT_ID",
+ "TIP_SEQ_NUM",
+ "PROJECT_ID",
+ "IS_DEFAULT") 
+VALUES ('83ee2bb2-72b4-4a4d-b8ae-37ecd983c05e' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1 ,
+ 'Main' ,
+ 'Main' ,
+ 'The main branch of the SYSBUI project' ,
+ 'c3230282-22ff-4728-8d68-be2aec89484d' ,
+ 256 ,
+ 'ec5973da-aebe-40f6-aa02-a77962288f52' ,
+ 'T') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_SNAPSHOT WHERE SNAPSHOT_ID = 'd14c71c9-454c-4576-b108-b441c5877c7f' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_SNAPSHOT("SNAPSHOT_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "ACRONYM",
+ "BRANCH_ID",
+ "PROJECT_ID",
+ "SEQ_NUM",
+ "ORIG_CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID") 
+VALUES ('d14c71c9-454c-4576-b108-b441c5877c7f' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 'd14c71c9-454c-4576-b108-b441c5877c7f' ,
+ '0798815e-0346-4ef4-8946-ab4301c9f340' ,
+ '1b351583-e5cb-43b7-baee-340a63130ea7' ,
+ 256 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_SNAPSHOT WHERE SNAPSHOT_ID = '2b73dd6a-31dc-4b32-b1af-a858743e1370' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_SNAPSHOT("SNAPSHOT_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "ACRONYM",
+ "BRANCH_ID",
+ "PROJECT_ID",
+ "SEQ_NUM",
+ "ORIG_CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID") 
+VALUES ('2b73dd6a-31dc-4b32-b1af-a858743e1370' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ '2b73dd6a-31dc-4b32-b1af-a858743e1370' ,
+ 'f757be35-ebca-4e58-a85c-6b34f3c15149' ,
+ 'dbecd816-afed-47b0-ba92-c13256fcb566' ,
+ 256 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_SNAPSHOT WHERE SNAPSHOT_ID = 'e01d46a5-6dc9-4545-9940-7e843777321d' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_SNAPSHOT("SNAPSHOT_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "ACRONYM",
+ "BRANCH_ID",
+ "PROJECT_ID",
+ "SEQ_NUM",
+ "ORIG_CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID") 
+VALUES ('e01d46a5-6dc9-4545-9940-7e843777321d' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 'e01d46a5-6dc9-4545-9940-7e843777321d' ,
+ '50f91713-f1c4-4859-897f-89720db5dc3e' ,
+ 'b691179d-e7a4-4a27-b89b-f2263d0280e7' ,
+ 256 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_SNAPSHOT WHERE SNAPSHOT_ID = '091c559c-c82f-4309-8050-1b66d98f6100' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_SNAPSHOT("SNAPSHOT_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "ACRONYM",
+ "BRANCH_ID",
+ "PROJECT_ID",
+ "SEQ_NUM",
+ "ORIG_CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID") 
+VALUES ('091c559c-c82f-4309-8050-1b66d98f6100' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ '091c559c-c82f-4309-8050-1b66d98f6100' ,
+ '7e0d6e21-f74c-3542-9f77-1472b63c22f1' ,
+ 'aa12f1cb-4661-3bd0-a351-45649d179885' ,
+ 256 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_SNAPSHOT WHERE SNAPSHOT_ID = '29dbc7ff-aace-481a-ba72-be56c0180448' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_SNAPSHOT("SNAPSHOT_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "ACRONYM",
+ "BRANCH_ID",
+ "PROJECT_ID",
+ "SEQ_NUM",
+ "ORIG_CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID") 
+VALUES ('29dbc7ff-aace-481a-ba72-be56c0180448' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ '29dbc7ff-aace-481a-ba72-be56c0180448' ,
+ '4961c615-3524-4196-90da-93c49d237009' ,
+ '4b3882d9-e886-4f08-9d0c-078ebda719b9' ,
+ 256 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_SNAPSHOT WHERE SNAPSHOT_ID = '17903f18-237b-45c2-8897-235e99ae7989' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_SNAPSHOT("SNAPSHOT_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "ACRONYM",
+ "BRANCH_ID",
+ "PROJECT_ID",
+ "SEQ_NUM",
+ "ORIG_CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID") 
+VALUES ('17903f18-237b-45c2-8897-235e99ae7989' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ '17903f18-237b-45c2-8897-235e99ae7989' ,
+ '32b9b971-a5b4-46ff-81a4-b0a75925e811' ,
+ 'bdf91468-0d01-4ae2-bb53-054b3b591f94' ,
+ 256 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_SNAPSHOT WHERE SNAPSHOT_ID = '24d7efbe-2444-43d4-9c26-7938f5a1c101' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_SNAPSHOT("SNAPSHOT_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "ACRONYM",
+ "BRANCH_ID",
+ "PROJECT_ID",
+ "SEQ_NUM",
+ "ORIG_CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID") 
+VALUES ('24d7efbe-2444-43d4-9c26-7938f5a1c101' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ '24d7efbe-2444-43d4-9c26-7938f5a1c101' ,
+ '7d491984-182d-45ce-ad8f-9561c773848c' ,
+ '54ab5985-73a7-4ff6-a443-3efd4193a711' ,
+ 256 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_SNAPSHOT WHERE SNAPSHOT_ID = 'a6a5cd8c-64ca-484e-b3ad-13ff55317cbc' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_SNAPSHOT("SNAPSHOT_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "ACRONYM",
+ "BRANCH_ID",
+ "PROJECT_ID",
+ "SEQ_NUM",
+ "ORIG_CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID") 
+VALUES ('a6a5cd8c-64ca-484e-b3ad-13ff55317cbc' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 'a6a5cd8c-64ca-484e-b3ad-13ff55317cbc' ,
+ '739cc732-eb97-4b1c-bf9b-f684df222f1c' ,
+ '56a4e5e8-4da1-429c-8d9b-b5be67e881d2' ,
+ 256 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_SNAPSHOT WHERE SNAPSHOT_ID = 'c3230282-22ff-4728-8d68-be2aec89484d' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_SNAPSHOT("SNAPSHOT_ID",
+ "CREATED_BY_USER_ID",
+ "CREATED_ON",
+ "ACRONYM",
+ "BRANCH_ID",
+ "PROJECT_ID",
+ "SEQ_NUM",
+ "ORIG_CREATED_ON",
+ "LAST_MODIFIED",
+ "LAST_MODIFIED_BY_USER_ID") 
+VALUES ('c3230282-22ff-4728-8d68-be2aec89484d' ,
+ 1 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 'c3230282-22ff-4728-8d68-be2aec89484d' ,
+ '83ee2bb2-72b4-4a4d-b8ae-37ecd983c05e' ,
+ 'ec5973da-aebe-40f6-aa02-a77962288f52' ,
+ 256 ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ to_date('01/01/1969 17:00:00', 'MM/DD/YYYY HH24:MI:SS') ,
+ 1) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ENV_TYPE WHERE ENV_TYPE_ID = 0 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ENV_TYPE("ENV_TYPE_ID",
+ "NAME",
+ "DESCRIPTION") 
+VALUES (0 ,
+ '0' ,
+ 'Development') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ENV_TYPE WHERE ENV_TYPE_ID = 1 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ENV_TYPE("ENV_TYPE_ID",
+ "NAME",
+ "DESCRIPTION") 
+VALUES (1 ,
+ '1' ,
+ 'Test') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ENV_TYPE WHERE ENV_TYPE_ID = 2 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ENV_TYPE("ENV_TYPE_ID",
+ "NAME",
+ "DESCRIPTION") 
+VALUES (2 ,
+ '2' ,
+ 'Staging') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ENV_TYPE WHERE ENV_TYPE_ID = 3 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ENV_TYPE("ENV_TYPE_ID",
+ "NAME",
+ "DESCRIPTION") 
+VALUES (3 ,
+ '3' ,
+ 'Production') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ENV_VAR_TYPE WHERE ENV_VAR_TYPE_ID = 0 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ENV_VAR_TYPE("ENV_VAR_TYPE_ID",
+ "NAME",
+ "DESCRIPTION") 
+VALUES (0 ,
+ '0' ,
+ 'General') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ENV_VAR_TYPE WHERE ENV_VAR_TYPE_ID = 1 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ENV_VAR_TYPE("ENV_VAR_TYPE_ID",
+ "NAME",
+ "DESCRIPTION") 
+VALUES (1 ,
+ '1' ,
+ 'ILOG Rules Server') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ENV_VAR_TYPE WHERE ENV_VAR_TYPE_ID = 2 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ENV_VAR_TYPE("ENV_VAR_TYPE_ID",
+ "NAME",
+ "DESCRIPTION") 
+VALUES (2 ,
+ '2' ,
+ 'ICI Web Service URL') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ENV_VAR_TYPE WHERE ENV_VAR_TYPE_ID = 3 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ENV_VAR_TYPE("ENV_VAR_TYPE_ID",
+ "NAME",
+ "DESCRIPTION") 
+VALUES (3 ,
+ '3' ,
+ 'ICI Connector Name') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ENV_VAR_TYPE WHERE ENV_VAR_TYPE_ID = 4 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ENV_VAR_TYPE("ENV_VAR_TYPE_ID",
+ "NAME",
+ "DESCRIPTION") 
+VALUES (4 ,
+ '4' ,
+ 'ICM Server') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ENV_VAR_TYPE WHERE ENV_VAR_TYPE_ID = 5 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ENV_VAR_TYPE("ENV_VAR_TYPE_ID",
+ "NAME",
+ "DESCRIPTION") 
+VALUES (5 ,
+ '5' ,
+ 'Server Property') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ENV_VAR_TYPE WHERE ENV_VAR_TYPE_ID = 6 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ENV_VAR_TYPE("ENV_VAR_TYPE_ID",
+ "NAME",
+ "DESCRIPTION") 
+VALUES (6 ,
+ '6' ,
+ 'ECM Server') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ENV_VAR_TYPE WHERE ENV_VAR_TYPE_ID = 7 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ENV_VAR_TYPE("ENV_VAR_TYPE_ID",
+ "NAME",
+ "DESCRIPTION") 
+VALUES (7 ,
+ '7' ,
+ 'Sametime Server') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ENV_VAR_TYPE WHERE ENV_VAR_TYPE_ID = 8 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ENV_VAR_TYPE("ENV_VAR_TYPE_ID",
+ "NAME",
+ "DESCRIPTION") 
+VALUES (8 ,
+ '8' ,
+ 'Connections Server') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ENV_VAR_TYPE WHERE ENV_VAR_TYPE_ID = 9 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ENV_VAR_TYPE("ENV_VAR_TYPE_ID",
+ "NAME",
+ "DESCRIPTION") 
+VALUES (9 ,
+ '9' ,
+ 'Web Service') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ENV_VAR_TYPE WHERE ENV_VAR_TYPE_ID = 10 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ENV_VAR_TYPE("ENV_VAR_TYPE_ID",
+ "NAME",
+ "DESCRIPTION") 
+VALUES (10 ,
+ '10' ,
+ 'SAP Server (deprecated)') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ENV_VAR_TYPE WHERE ENV_VAR_TYPE_ID = 11 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ENV_VAR_TYPE("ENV_VAR_TYPE_ID",
+ "NAME",
+ "DESCRIPTION") 
+VALUES (11 ,
+ '11' ,
+ 'REST') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TIME_PERIOD WHERE PERIOD_ID = 0 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TIME_PERIOD("PERIOD_ID",
+ "NAME",
+ "START_TIME",
+ "END_TIME",
+ "EFFECTIVE_DAYS") 
+VALUES (0 ,
+ '24X7' ,
+ '0000' ,
+ '2359' ,
+ 'mon,tue,wed,thu,fri,sat,sun') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TIME_PERIOD WHERE PERIOD_ID = 1 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TIME_PERIOD("PERIOD_ID",
+ "NAME",
+ "START_TIME",
+ "END_TIME",
+ "EFFECTIVE_DAYS") 
+VALUES (1 ,
+ '7AM-7PM M-F' ,
+ '0700' ,
+ '1900' ,
+ 'mon,tue,wed,thu,fri') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TIME_PERIOD WHERE PERIOD_ID = 2 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TIME_PERIOD("PERIOD_ID",
+ "NAME",
+ "START_TIME",
+ "END_TIME",
+ "EFFECTIVE_DAYS") 
+VALUES (2 ,
+ '7AM-7PM Every Day' ,
+ '0700' ,
+ '1900' ,
+ 'mon,tue,wed,thu,fri,sat,sun') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TIME_PERIOD WHERE PERIOD_ID = 3 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TIME_PERIOD("PERIOD_ID",
+ "NAME",
+ "START_TIME",
+ "END_TIME",
+ "EFFECTIVE_DAYS") 
+VALUES (3 ,
+ '9AM-5PM M-F' ,
+ '0900' ,
+ '1700' ,
+ 'mon,tue,wed,thu,fri') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TIME_PERIOD WHERE PERIOD_ID = 4 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TIME_PERIOD("PERIOD_ID",
+ "NAME",
+ "START_TIME",
+ "END_TIME",
+ "EFFECTIVE_DAYS") 
+VALUES (4 ,
+ '9AM-1PM Sat' ,
+ '0900' ,
+ '1300' ,
+ 'sat') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TIME_SCHEDULE WHERE SCHEDULE_ID = 0 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TIME_SCHEDULE("SCHEDULE_ID",
+ "NAME",
+ "EXCLUDE_HOLIDAY") 
+VALUES (0 ,
+ '24X7' ,
+ 'F') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TIME_SCHEDULE WHERE SCHEDULE_ID = 1 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TIME_SCHEDULE("SCHEDULE_ID",
+ "NAME",
+ "EXCLUDE_HOLIDAY") 
+VALUES (1 ,
+ '7AM-7PM M-F' ,
+ 'T') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TIME_SCHEDULE WHERE SCHEDULE_ID = 2 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TIME_SCHEDULE("SCHEDULE_ID",
+ "NAME",
+ "EXCLUDE_HOLIDAY") 
+VALUES (2 ,
+ '7AM-7PM Every Day' ,
+ 'F') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TIME_SCHEDULE WHERE SCHEDULE_ID = 3 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TIME_SCHEDULE("SCHEDULE_ID",
+ "NAME",
+ "EXCLUDE_HOLIDAY") 
+VALUES (3 ,
+ '9AM-5PM M-F' ,
+ 'T') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TIME_SCHEDULE WHERE SCHEDULE_ID = 4 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TIME_SCHEDULE("SCHEDULE_ID",
+ "NAME",
+ "EXCLUDE_HOLIDAY") 
+VALUES (4 ,
+ '9AM-5PM M-F , 9AM-1PM Sat' ,
+ 'T') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TIME_SCHEDULE_PERIOD WHERE SCHEDULE_ID = 0 AND PERIOD_ID = 0 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TIME_SCHEDULE_PERIOD("SCHEDULE_ID",
+ "PERIOD_ID") 
+VALUES (0 ,
+ 0) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TIME_SCHEDULE_PERIOD WHERE SCHEDULE_ID = 1 AND PERIOD_ID = 1 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TIME_SCHEDULE_PERIOD("SCHEDULE_ID",
+ "PERIOD_ID") 
+VALUES (1 ,
+ 1) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TIME_SCHEDULE_PERIOD WHERE SCHEDULE_ID = 2 AND PERIOD_ID = 2 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TIME_SCHEDULE_PERIOD("SCHEDULE_ID",
+ "PERIOD_ID") 
+VALUES (2 ,
+ 2) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TIME_SCHEDULE_PERIOD WHERE SCHEDULE_ID = 3 AND PERIOD_ID = 3 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TIME_SCHEDULE_PERIOD("SCHEDULE_ID",
+ "PERIOD_ID") 
+VALUES (3 ,
+ 3) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TIME_SCHEDULE_PERIOD WHERE SCHEDULE_ID = 4 AND PERIOD_ID = 3 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TIME_SCHEDULE_PERIOD("SCHEDULE_ID",
+ "PERIOD_ID") 
+VALUES (4 ,
+ 3) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_TIME_SCHEDULE_PERIOD WHERE SCHEDULE_ID = 4 AND PERIOD_ID = 4 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_TIME_SCHEDULE_PERIOD("SCHEDULE_ID",
+ "PERIOD_ID") 
+VALUES (4 ,
+ 4) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_HOLIDAY_SCHEDULE WHERE HOLIDAY_ID = 0 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_HOLIDAY_SCHEDULE("HOLIDAY_ID",
+ "NAME",
+ "HOLIDAY_LIST") 
+VALUES (0 ,
+ 'empty holiday' ,
+ '') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_LOCK WHERE LOCK_ID = 'IMPORT_LOCK_TWX_KEY' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_LOCK("LOCK_ID",
+ "DESCRIPTION") 
+VALUES ('IMPORT_LOCK_TWX_KEY' ,
+ 'Lock required importing twx file ') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_LOCK WHERE LOCK_ID = 'DEPLOYMENT_PKG_LOCK_KEY' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_LOCK("LOCK_ID",
+ "DESCRIPTION") 
+VALUES ('DEPLOYMENT_PKG_LOCK_KEY' ,
+ 'Lock required for add a deployment package to lsw_deployment_package ') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_LOCK WHERE LOCK_ID = 'LOG_ADD_LOCK_KEY' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_LOCK("LOCK_ID",
+ "DESCRIPTION") 
+VALUES ('LOG_ADD_LOCK_KEY' ,
+ 'Lock required for adding logs to bpm_repository_log and updating timestamp in bpm_project_subscription') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 3 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (3 ,
+ 3 ,
+ 2066 ,
+ '1b351583-e5cb-43b7-baee-340a63130ea7' ,
+ 63) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 4 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (4 ,
+ 4 ,
+ 2066 ,
+ '1b351583-e5cb-43b7-baee-340a63130ea7' ,
+ 63) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 5 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (5 ,
+ 3 ,
+ 2066 ,
+ 'bdf91468-0d01-4ae2-bb53-054b3b591f94' ,
+ 127) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 6 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (6 ,
+ 4 ,
+ 2066 ,
+ 'bdf91468-0d01-4ae2-bb53-054b3b591f94' ,
+ 127) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 7 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (7 ,
+ 3 ,
+ 2066 ,
+ 'dbecd816-afed-47b0-ba92-c13256fcb566' ,
+ 127) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 8 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (8 ,
+ 3 ,
+ 2066 ,
+ 'b691179d-e7a4-4a27-b89b-f2263d0280e7' ,
+ 63) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 9 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (9 ,
+ 4 ,
+ 2066 ,
+ 'b691179d-e7a4-4a27-b89b-f2263d0280e7' ,
+ 63) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 10 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (10 ,
+ 3 ,
+ 2066 ,
+ '4b3882d9-e886-4f08-9d0c-078ebda719b9' ,
+ 63) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 11 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (11 ,
+ 4 ,
+ 2066 ,
+ '4b3882d9-e886-4f08-9d0c-078ebda719b9' ,
+ 63) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 12 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (12 ,
+ 4 ,
+ 2066 ,
+ 'dbecd816-afed-47b0-ba92-c13256fcb566' ,
+ 5) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 13 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (13 ,
+ 3 ,
+ 2066 ,
+ '54ab5985-73a7-4ff6-a443-3efd4193a711' ,
+ 63) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 14 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (14 ,
+ 4 ,
+ 2066 ,
+ '54ab5985-73a7-4ff6-a443-3efd4193a711' ,
+ 63) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 15 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (15 ,
+ 3 ,
+ 2066 ,
+ '23d3ecec-6fdb-4033-9c57-e931aa13761f' ,
+ 127) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 16 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (16 ,
+ 3 ,
+ 2066 ,
+ 'c8cc5ba4-0c95-41bd-8aac-8136bc86ae85' ,
+ 127) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 17 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (17 ,
+ 3 ,
+ 2066 ,
+ '9ab0d0c6-d92c-4355-9ed5-d8a05acdc4b0' ,
+ 127) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 18 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (18 ,
+ 4 ,
+ 2066 ,
+ '9ab0d0c6-d92c-4355-9ed5-d8a05acdc4b0' ,
+ 127) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 19 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (19 ,
+ 3 ,
+ 2066 ,
+ '7b7f619b-1f3c-434f-a4be-63dd5508f388' ,
+ 127) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 20 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (20 ,
+ 4 ,
+ 2066 ,
+ '7b7f619b-1f3c-434f-a4be-63dd5508f388' ,
+ 127) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 21 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (21 ,
+ 3 ,
+ 2066 ,
+ '1052c1c9-0b2c-42d3-a2bd-cd73e6c89f9b' ,
+ 127) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 22 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (22 ,
+ 4 ,
+ 2066 ,
+ '1052c1c9-0b2c-42d3-a2bd-cd73e6c89f9b' ,
+ 127) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 23 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (23 ,
+ 3 ,
+ 2066 ,
+ '56a4e5e8-4da1-429c-8d9b-b5be67e881d2' ,
+ 127) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 24 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (24 ,
+ 4 ,
+ 2066 ,
+ '56a4e5e8-4da1-429c-8d9b-b5be67e881d2' ,
+ 63) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 25 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (25 ,
+ 3 ,
+ 2066 ,
+ 'aa12f1cb-4661-3bd0-a351-45649d179885' ,
+ 63) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 26 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (26 ,
+ 4 ,
+ 2066 ,
+ 'aa12f1cb-4661-3bd0-a351-45649d179885' ,
+ 63) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 27 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (27 ,
+ 3 ,
+ 2066 ,
+ 'ec5973da-aebe-40f6-aa02-a77962288f52' ,
+ 63) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 28 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (28 ,
+ 4 ,
+ 2066 ,
+ 'ec5973da-aebe-40f6-aa02-a77962288f52' ,
+ 63) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 29 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (29 ,
+ 3 ,
+ 2066 ,
+ 'e313a565-589e-4691-ad0d-85bad3f2562a' ,
+ 127) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 30 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (30 ,
+ 4 ,
+ 2066 ,
+ 'e313a565-589e-4691-ad0d-85bad3f2562a' ,
+ 127) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 31 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (31 ,
+ 3 ,
+ 2066 ,
+ 'e0eb3ba9-e2ef-32b7-a1b2-d3533a359a62' ,
+ 127) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 32 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (32 ,
+ 4 ,
+ 2066 ,
+ 'e0eb3ba9-e2ef-32b7-a1b2-d3533a359a62' ,
+ 127) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 33 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (33 ,
+ 3 ,
+ 2066 ,
+ '2ddde068-f8bc-39f8-bbde-8331e7efd0e2' ,
+ 127) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.LSW_ACL_ENTRY WHERE ACL_ENTRY_ID = 34 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.LSW_ACL_ENTRY("ACL_ENTRY_ID",
+ "GROUP_ID",
+ "PO_TYPE",
+ "PO_ID",
+ "MASK") 
+VALUES (34 ,
+ 4 ,
+ 2066 ,
+ '2ddde068-f8bc-39f8-bbde-8331e7efd0e2' ,
+ 127) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.BPM_SNAPSHOT_STATUS WHERE STATUS_ID = '1b351583-e5cb-43b7-baee-340a63130ea1' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.BPM_SNAPSHOT_STATUS("STATUS_ID",
+ "STATUS",
+ "IS_SYSTEM") 
+VALUES ('1b351583-e5cb-43b7-baee-340a63130ea1' ,
+ 'New' ,
+ 'T') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.BPM_SNAPSHOT_STATUS WHERE STATUS_ID = '1b351583-e5cb-43b7-baee-340a63130ea2' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.BPM_SNAPSHOT_STATUS("STATUS_ID",
+ "STATUS",
+ "IS_SYSTEM") 
+VALUES ('1b351583-e5cb-43b7-baee-340a63130ea2' ,
+ 'Rejected' ,
+ 'T') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.BPM_SNAPSHOT_STATUS WHERE STATUS_ID = '1b351583-e5cb-43b7-baee-340a63130ea3' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.BPM_SNAPSHOT_STATUS("STATUS_ID",
+ "STATUS",
+ "IS_SYSTEM") 
+VALUES ('1b351583-e5cb-43b7-baee-340a63130ea3' ,
+ 'Validated' ,
+ 'T') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.BPM_SNAPSHOT_STATUS WHERE STATUS_ID = '1b351583-e5cb-43b7-baee-340a63130ea7' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.BPM_SNAPSHOT_STATUS("STATUS_ID",
+ "STATUS",
+ "IS_SYSTEM") 
+VALUES ('1b351583-e5cb-43b7-baee-340a63130ea7' ,
+ 'Released' ,
+ 'T') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.BPM_EVENT_SUBSCRIPTION_TYPE WHERE EVENT_SUBSCRIPTION_TYPE_ID = 0 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.BPM_EVENT_SUBSCRIPTION_TYPE("EVENT_SUBSCRIPTION_TYPE_ID",
+ "NAME",
+ "DESCRIPTION") 
+VALUES (0 ,
+ '0' ,
+ 'ECM') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.BPM_UCA_EVENT_TYPE WHERE UCA_EVENT_TYPE_ID = 0 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.BPM_UCA_EVENT_TYPE("UCA_EVENT_TYPE_ID",
+ "NAME",
+ "DESCRIPTION") 
+VALUES (0 ,
+ '0' ,
+ 'Timer') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.BPM_UCA_EVENT_TYPE WHERE UCA_EVENT_TYPE_ID = 1 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.BPM_UCA_EVENT_TYPE("UCA_EVENT_TYPE_ID",
+ "NAME",
+ "DESCRIPTION") 
+VALUES (1 ,
+ '1' ,
+ 'Message') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.BPM_UCA_EVENT_TYPE WHERE UCA_EVENT_TYPE_ID = 2 ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.BPM_UCA_EVENT_TYPE("UCA_EVENT_TYPE_ID",
+ "NAME",
+ "DESCRIPTION") 
+VALUES (2 ,
+ '2' ,
+ 'Content') ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.BPM_GOVERNANCE_EVENT WHERE EVENT_TYPE_ID = 'dbecd816-afed-47b0-ba92-c13256fcb568' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.BPM_GOVERNANCE_EVENT("EVENT_TYPE_ID",
+ "EVENT_TYPE",
+ "EVENT_TYPE_NAME",
+ "GOV_DEFAULT_SNAPSHOT_ID",
+ "GOV_DEFAULT_PROCESS_ID",
+ "GOV_DEFAULT_PROCESS_TYPE") 
+VALUES ('dbecd816-afed-47b0-ba92-c13256fcb568' ,
+ 0 ,
+ 'Installation Requested' ,
+ '2a35d731-b79a-48e1-ae15-799f79e40087' ,
+ 'b0d87b96-5044-4390-b0f5-4ba05d63bc28' ,
+ 25) ; 
+END IF ;
+END ;      
+
+/
+
+    
+DECLARE
+v_table_count NUMBER;
+  BEGIN
+   SELECT COUNT(*) INTO v_table_count FROM 
+    bpmdb_owner.BPM_GOVERNANCE_EVENT WHERE EVENT_TYPE_ID = 'dbecd816-afed-47b0-ba92-c13256fcb569' ; 
+     IF (v_table_count = 0) THEN  
+      INSERT INTO 
+    bpmdb_owner.BPM_GOVERNANCE_EVENT("EVENT_TYPE_ID",
+ "EVENT_TYPE",
+ "EVENT_TYPE_NAME",
+ "GOV_DEFAULT_SNAPSHOT_ID",
+ "GOV_DEFAULT_PROCESS_ID",
+ "GOV_DEFAULT_PROCESS_TYPE") 
+VALUES ('dbecd816-afed-47b0-ba92-c13256fcb569' ,
+ 1 ,
+ 'Snapshot Status Change' ,
+ '2a35d731-b79a-48e1-ae15-799f79e40087' ,
+ '291536f1-aa21-4650-8ac9-c62eaa3fa110' ,
+ 25) ; 
+END IF ;
+END ;      
+
+/
+
+-- This file creates scheduler tables for background thread on PC Sharing feature.
+-- Scriptfile to create schema for DB2
+-- 1. Process this script in the DB2 command line processor
+-- Example:
+--             db2 connect to SCHEDDB
+--             db2 -tf createTable_Scheduler_Sharing.sql 
+
+
+CREATE TABLE bpmdb_owner."BPM_PCS_TASK"("TASKID" NUMBER(19) NOT NULL,
+               "VERSION" VARCHAR2(5) NOT NULL,
+               "ROW_VERSION" NUMBER(10) NOT NULL,
+               "TASKTYPE" NUMBER(10) NOT NULL,
+               "TASKSUSPENDED" NUMBER(1) NOT NULL,
+               "CANCELLED" NUMBER(1) NOT NULL,
+               "NEXTFIRETIME" NUMBER(19) NOT NULL,
+               "STARTBYINTERVAL" VARCHAR2(254),
+               "STARTBYTIME" NUMBER(19),
+               "VALIDFROMTIME" NUMBER(19),
+               "VALIDTOTIME" NUMBER(19),
+               "REPEATINTERVAL" VARCHAR2(254),
+               "MAXREPEATS" NUMBER(10) NOT NULL,
+               "REPEATSLEFT" NUMBER(10) NOT NULL,
+               "TASKINFO" BLOB,
+               "NAME" VARCHAR2(254),
+               "AUTOPURGE" NUMBER(10) NOT NULL,
+               "FAILUREACTION" NUMBER(10),
+               "MAXATTEMPTS" NUMBER(10),
+               "QOS" NUMBER(10),
+               "PARTITIONID" NUMBER(10),
+               "OWNERTOKEN" VARCHAR2(200) NOT NULL,
+               "CREATETIME" NUMBER(19) NOT NULL,
+               PRIMARY KEY ("TASKID") )
+
+/
+
+CREATE INDEX bpmdb_owner."BPM_PCS_TASK_IDX1" ON bpmdb_owner."BPM_PCS_TASK" ("TASKID",
+              "OWNERTOKEN")
+
+/
+
+CREATE INDEX bpmdb_owner."BPM_PCS_TASK_IDX2" ON bpmdb_owner."BPM_PCS_TASK" ("NEXTFIRETIME" ASC,
+               "REPEATSLEFT",
+               "PARTITIONID")
+/
+
+CREATE TABLE bpmdb_owner."BPM_PCS_TREG" ("REGKEY" VARCHAR2(254) NOT NULL ,
+               "REGVALUE" VARCHAR2(254) ,
+               PRIMARY KEY ( "REGKEY" ))
+
+/
+CREATE TABLE bpmdb_owner."BPM_PCS_LMGR" ("LEASENAME" VARCHAR2(254) NOT NULL,
+               "LEASEOWNER" VARCHAR2(254),
+               "LEASE_EXPIRE_TIME" NUMBER(19),
+               "DISABLED" VARCHAR2(254),
+               PRIMARY KEY ( "LEASENAME" ))
+
+/
+
+CREATE TABLE bpmdb_owner."BPM_PCS_LMPR" ("LEASENAME" VARCHAR2(254) NOT NULL,
+               "NAME" VARCHAR2(254) NOT NULL,
+               "VALUE" VARCHAR2(254) NOT NULL )
+/
+
+CREATE INDEX bpmdb_owner."BPM_PCS_LMPR_IDX1" ON bpmdb_owner."BPM_PCS_LMPR" ("LEASENAME",
+               "NAME") 
+
+/
+

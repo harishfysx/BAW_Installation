@@ -61,7 +61,11 @@ oracle soft stack 10240
  
  cd /u01/app/oracle/product/12.2.0/dbhome_1
  ./root.sh
- #############
+
+ ####################### Opening up ports #################
+firewall-cmd --zone=public --add-port=1521/tcp --add-port=5500/tcp --add-port=5520/tcp --add-port=3938/tcp --permanent
+firewall-cmd --reload
+ #############        Setting classpath ###############################
  vi /home/oracle/.bash_profile
  
  TMPDIR=$TMP; export TMPDIR
