@@ -1,0 +1,14 @@
+{
+  "BAW_DEV_HR": {
+    "hr_db_password":"baw_dev_hr_password",
+    "baw_api_creds": "baw_api_creds"
+  },
+  "BAW_DEV_151": {
+    "bpm_db_password":"baw_dev_bpm_password",
+    "baw_api_creds": "baw_api_creds"
+  },
+  "BAW_QA": {
+    "bpm_db_password":"baw_qa_bpm_password",
+    "baw_api_creds": "baw_api_creds"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "BAW_DEV_151": {
+    "bpm_schema": "bpmdb_owner",
+    "bpm_connStr":"192.168.0.151:1521/orcl151",
+    "bpm_conn_user":"HP_ARCHIVER",
+    "baw_pc_api_base_url": "https://centosbaw151:9444/rest/bpm/wle/v1",
+    "baw_pd_api_base_url": "https://centosbaw151:9444/rest/bpm/wle/pd/v1",
+    "bpm_hostname": "ORA151.XYZ.COM",
+    "bpm_db": "BPMDB01",
+    "pdw_hostname": "LEMUR01DBLXA.RJF.COM",
+    "pdw_db": "PDWDB01",
+    "pdw_conn_user": "testuser",
+    "pdw_schema": "pdwdb_owner",
+    "pdw_connStr": "ORA151.XYZ.COM",
+    "archiver_schema": "hparchivercr"
+  },
+  "BAW_QA": {
+    "bpm_schema": "hr",
+    "bpm_connStr":"192.168.0.150:1521/orcl150",
+    "bpm_conn_user":"HP_ARCHIVER"
+  },
+  "BAW_DEV_ARCH": {
+    "bpm_schema": "HP_ARCHIVER",
+    "bpm_connStr":"192.168.0.150:1521/orcl150"
+  },
+  "BAW_DEV_HR": {
+    "hr_schema": "hr",
+    "hr_connStr":"192.168.0.150:1521/orcl150"
+  }
+}
